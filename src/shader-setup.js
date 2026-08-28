@@ -853,6 +853,36 @@ fetch('/dati/segmenti.json')
   .then(function (d) { hudSegmenti = d.segmenti || null; })
   .catch(function () { hudSegmenti = null; });
 
+/* ══════════════════════════════════════════════════════════════════════
+   PONTI VIVI — il match cut non sta piu' nei 30 fotogrammi cotti: dentro
+   l'intervallo del ponte lo zoom e' CALCOLATO sul progresso continuo
+   (smorzato), sui due fermi-immagine sorgente, con crossfade all'apice.
+   Fluidita' per costruzione: nessun passo di scala, nessuno sdoppiamento.
+   I frame cotti restano nel film solo come durata di scroll.
+   ══════════════════════════════════════════════════════════════════════ */
+var PONTI_VIVI = [];
+fetch('/dati/ponti.json')
+  .then(function (r) { return r.json(); })
+  .then(function (d) { PONTI_VIVI = d.ponti || []; })
+  .catch(function () { PONTI_VIVI = []; });
+
+/* smootherstep quintico: velocita' nulla agli estremi, niente strappi */
+function sstep2(t) {
+  t = Math.max(0, Math.min(1, t));
+  return t * t * t * (t * (t * 6 - 15) + 10);
+}
+
+function trovaPonte(f0) {
+  for (var i = 0; i < PONTI_VIVI.length; i++) {
+    var p = PONTI_VIVI[i];
+    var lo = p.da - 1.5, hi = p.a - 0.5;   /* zona in indici 0-based continui */
+    if (f0 >= lo && f0 <= hi) {
+      return { dati: p, p: (f0 - lo) / (hi - lo) };
+    }
+  }
+  return null;
+}
+
 function nomeSegmento(frame) {
   if (!hudSegmenti) return '';
   for (var i = 0; i < hudSegmenti.length; i++) {
@@ -1053,11 +1083,27 @@ export function initShader() {
     /* ── Seleziona frame e transizione ── */
     var sel = selectFrames(scene.idx, scene.local);
 
+    /* ── Ponte vivo? Il match cut si calcola qui, in continuo ── */
+    var nFilm = (framesData[0] && framesData[0].n) || 1;
+    var ponteVivo = trovaPonte(attuale * (nFilm - 1));
+
     /* ── Zoom e pan ── */
     var zoomAVal, panAX, panAY;
     var zoomBVal, panBX, panBY;
 
-    if (sel.inTransition && sel._directCut) {
+    if (ponteVivo) {
+      var pv = ponteVivo.dati, pp = ponteVivo.p;
+      /* lato A: da campo pieno al dettaglio (zoom-in) */
+      zoomAVal = 1 + (pv.A.z - 1) * sstep2(pp / 0.55);
+      var sPanA = pv.A.z > 1 ? (1 - 1 / zoomAVal) / (1 - 1 / pv.A.z) : 0;
+      panAX = (pv.A.px - 0.5) * sPanA;
+      panAY = (pv.A.py - 0.5) * sPanA;
+      /* lato B: dal dettaglio al campo pieno (zoom-out) */
+      zoomBVal = 1 + (pv.B.z - 1) * sstep2((1 - pp) / 0.55);
+      var sPanB = pv.B.z > 1 ? (1 - 1 / zoomBVal) / (1 - 1 / pv.B.z) : 0;
+      panBX = (pv.B.px - 0.5) * sPanB;
+      panBY = (pv.B.py - 0.5) * sPanB;
+    } else if (sel.inTransition && sel._directCut) {
       /* Taglio diretto: B assesta esattamente come A — nessun salto zoom/pan */
       zoomAVal = SCENES[scene.idx].zoom;
       panAX = SCENES[scene.idx].pan[0];
@@ -1135,7 +1181,12 @@ export function initShader() {
       if (d >= -1 && d <= 1) { taglio = TAGLI[ti]; tProg = (d + 1) * 0.5; break; }
     }
 
-    if (taglio) {
+    if (ponteVivo) {
+      /* crossfade all'apice del ponte, quando entrambi i lati mostrano
+         lo stesso dettaglio a pieno quadro */
+      program.uniforms.mode.value = 17;
+      program.uniforms.progress.value = sstep2((ponteVivo.p - 0.38) / 0.24);
+    } else if (taglio) {
       program.uniforms.progress.value = tProg;
       program.uniforms.mode.value = taglio.modo;
       /* Il colore della tendina: ogni stacco porta il suo, campionato dai
@@ -1171,7 +1222,14 @@ export function initShader() {
       program.uniforms.img.value = [texA._realWidth, texA._realHeight];
     }
 
-    if (taglio) {
+    if (ponteVivo) {
+      /* i due fermi-immagine sorgente del match cut, zoomati dal vivo */
+      var tPA = getFrameTex(0, ponteVivo.dati.frameA);
+      var tPB = getFrameTex(0, ponteVivo.dati.frameB);
+      if (tPA) { program.uniforms.t1.value = tPA; program.uniforms.img.value = [tPA._realWidth, tPA._realHeight]; }
+      if (tPB) { program.uniforms.t2.value = tPB; }
+      else if (tPA) { program.uniforms.t2.value = tPA; }
+    } else if (taglio) {
       /* A = ultimo fotogramma prima del taglio, B = primo dopo:
          li scelgo dal manifesto, non dalla scena (che qui e' una sola). */
       var nTot = (framesData[0] && framesData[0].n) || 1;

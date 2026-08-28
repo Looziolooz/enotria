@@ -1,0 +1,142 @@
+{
+ "generato_da": "coordinate misurate (lab/misura-dettagli.mjs) + intervalli da segmenti.json",
+ "nota": "ponti vivi: lo zoom del match cut e calcolato nello shader sul progresso continuo, i 30 frame cotti nel film restano solo come durata di scroll",
+ "ponti": [
+  {
+   "id": "nave-approdo",
+   "da": 193,
+   "a": 222,
+   "frameA": 191,
+   "frameB": 222,
+   "A": {
+    "px": 0.236,
+    "py": 0.721,
+    "z": 3.2
+   },
+   "B": {
+    "px": 0.236,
+    "py": 0.723,
+    "z": 3.2
+   }
+  },
+  {
+   "id": "approdo-vigna",
+   "da": 415,
+   "a": 444,
+   "frameA": 413,
+   "frameB": 444,
+   "A": {
+    "px": 0.17,
+    "py": 0.72,
+    "z": 2.067
+   },
+   "B": {
+    "px": 0.25,
+    "py": 0.62,
+    "z": 2.067
+   }
+  },
+  {
+   "id": "vigna-raccolta",
+   "da": 637,
+   "a": 666,
+   "frameA": 635,
+   "frameB": 666,
+   "A": {
+    "px": 0.294,
+    "py": 0.287,
+    "z": 3.2
+   },
+   "B": {
+    "px": 0.771,
+    "py": 0.3,
+    "z": 3.2
+   }
+  },
+  {
+   "id": "raccolta-scambio",
+   "da": 859,
+   "a": 888,
+   "frameA": 857,
+   "frameB": 888,
+   "A": {
+    "px": 0.239,
+    "py": 0.321,
+    "z": 3.2
+   },
+   "B": {
+    "px": 0.779,
+    "py": 0.497,
+    "z": 3.2
+   }
+  },
+  {
+   "id": "scambio-trasporto",
+   "da": 933,
+   "a": 962,
+   "frameA": 931,
+   "frameB": 962,
+   "A": {
+    "px": 0.244,
+    "py": 0.637,
+    "z": 3.2
+   },
+   "B": {
+    "px": 0.414,
+    "py": 0.583,
+    "z": 3.2
+   }
+  },
+  {
+   "id": "trasporto-vasca",
+   "da": 1155,
+   "a": 1184,
+   "frameA": 1153,
+   "frameB": 1184,
+   "A": {
+    "px": 0.55,
+    "py": 0.588,
+    "z": 3.2
+   },
+   "B": {
+    "px": 0.474,
+    "py": 0.66,
+    "z": 3.2
+   }
+  },
+  {
+   "id": "travaso-rubinetto",
+   "da": 2577,
+   "a": 2606,
+   "frameA": 2575,
+   "frameB": 2606,
+   "A": {
+    "px": 0.35,
+    "py": 0.8,
+    "z": 2.067
+   },
+   "B": {
+    "px": 0.2,
+    "py": 0.75,
+    "z": 2.067
+   }
+  },
+  {
+   "id": "rubinetto-vino",
+   "da": 2730,
+   "a": 2759,
+   "frameA": 2728,
+   "frameB": 2759,
+   "A": {
+    "px": 0.564,
+    "py": 0.673,
+    "z": 3.2
+   },
+   "B": {
+    "px": 0.457,
+    "py": 0.747,
+    "z": 3.2
+   }
+  }
+ ]
+}

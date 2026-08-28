@@ -1092,17 +1092,33 @@ export function initShader() {
     var zoomBVal, panBX, panBY;
 
     if (ponteVivo) {
+      /* ── Coreografia del ponte: z indipendenti per lato (A puo'
+         fermarsi a meta' corsa, B aprire da fondo dettaglio), apice
+         mobile, e la DERIVA: un movimento laterale che segue il gesto
+         e attraversa il taglio — i due quadri condividono il vettore
+         di moto, non solo l'oggetto. ── */
       var pv = ponteVivo.dati, pp = ponteVivo.p;
-      /* lato A: da campo pieno al dettaglio (zoom-in) */
-      zoomAVal = 1 + (pv.A.z - 1) * sstep2(pp / 0.55);
+      var apice = pv.apice !== undefined ? pv.apice : 0.5;
+      var fusione = pv.fusione !== undefined ? pv.fusione : 0.24;
+      /* lato A: da campo pieno verso il dettaglio */
+      zoomAVal = 1 + (pv.A.z - 1) * sstep2(pp / Math.min(1, apice + fusione * 0.5));
       var sPanA = pv.A.z > 1 ? (1 - 1 / zoomAVal) / (1 - 1 / pv.A.z) : 0;
       panAX = (pv.A.px - 0.5) * sPanA;
       panAY = (pv.A.py - 0.5) * sPanA;
-      /* lato B: dal dettaglio al campo pieno (zoom-out) */
-      zoomBVal = 1 + (pv.B.z - 1) * sstep2((1 - pp) / 0.55);
+      /* lato B: dal dettaglio al campo pieno */
+      zoomBVal = 1 + (pv.B.z - 1) * sstep2((1 - pp) / Math.min(1, 1 - apice + fusione * 0.5));
       var sPanB = pv.B.z > 1 ? (1 - 1 / zoomBVal) / (1 - 1 / pv.B.z) : 0;
       panBX = (pv.B.px - 0.5) * sPanB;
       panBY = (pv.B.py - 0.5) * sPanB;
+      /* deriva del gesto: nulla agli estremi (continuita' col film),
+         piena attraverso l'apice — il movimento cavalca il taglio */
+      if (pv.dir) {
+        var bump = sstep2(pp / 0.3) * sstep2((1 - pp) / 0.3);
+        var derX = pv.dir[0] * (pp - apice) * bump;
+        var derY = pv.dir[1] * (pp - apice) * bump;
+        panAX += derX; panAY += derY;
+        panBX += derX; panBY += derY;
+      }
     } else if (sel.inTransition && sel._directCut) {
       /* Taglio diretto: B assesta esattamente come A — nessun salto zoom/pan */
       zoomAVal = SCENES[scene.idx].zoom;
@@ -1182,10 +1198,11 @@ export function initShader() {
     }
 
     if (ponteVivo) {
-      /* crossfade all'apice del ponte, quando entrambi i lati mostrano
-         lo stesso dettaglio a pieno quadro */
+      /* crossfade centrato sull'apice del ponte, largo quanto la fusione */
+      var apiceCf = ponteVivo.dati.apice !== undefined ? ponteVivo.dati.apice : 0.5;
+      var fusioneCf = ponteVivo.dati.fusione !== undefined ? ponteVivo.dati.fusione : 0.24;
       program.uniforms.mode.value = 17;
-      program.uniforms.progress.value = sstep2((ponteVivo.p - 0.38) / 0.24);
+      program.uniforms.progress.value = sstep2((ponteVivo.p - (apiceCf - fusioneCf * 0.5)) / fusioneCf);
     } else if (taglio) {
       program.uniforms.progress.value = tProg;
       program.uniforms.mode.value = taglio.modo;

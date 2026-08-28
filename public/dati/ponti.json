@@ -1,6 +1,6 @@
 {
- "generato_da": "coordinate misurate (lab/misura-dettagli.mjs) + intervalli da segmenti.json",
- "nota": "ponti vivi: lo zoom del match cut e calcolato nello shader sul progresso continuo, i 30 frame cotti nel film restano solo come durata di scroll",
+ "generato_da": "regia per giunzione + intervalli da segmenti.json + coordinate misurate",
+ "nota": "ponti vivi coreografati: z indipendenti per lato, apice mobile, deriva direzionale che attraversa il taglio",
  "ponti": [
   {
    "id": "nave-approdo",
@@ -11,13 +11,20 @@
    "A": {
     "px": 0.236,
     "py": 0.721,
-    "z": 3.2
+    "z": 1.5
    },
    "B": {
     "px": 0.236,
     "py": 0.723,
-    "z": 3.2
-   }
+    "z": 1.5
+   },
+   "apice": 0.5,
+   "fusione": 0.34,
+   "dir": [
+    -0.03,
+    0
+   ],
+   "nota": "ellissi temporale: si taglia sul sole come sul tramonto, fusione lunghissima, la nave deriva a sinistra"
   },
   {
    "id": "approdo-vigna",
@@ -28,13 +35,20 @@
    "A": {
     "px": 0.17,
     "py": 0.72,
-    "z": 2.067
+    "z": 2.4
    },
    "B": {
     "px": 0.25,
     "py": 0.62,
-    "z": 2.067
-   }
+    "z": 2.4
+   },
+   "apice": 0.45,
+   "fusione": 0.24,
+   "dir": [
+    -0.02,
+    -0.015
+   ],
+   "nota": "passaggio di luogo in salita; apice anticipato: piu respiro all inquadratura entrante, zoom pieno protettivo sul cambio di stile"
   },
   {
    "id": "vigna-raccolta",
@@ -45,13 +59,20 @@
    "A": {
     "px": 0.294,
     "py": 0.287,
-    "z": 3.2
+    "z": 2
    },
    "B": {
     "px": 0.771,
     "py": 0.3,
     "z": 3.2
-   }
+   },
+   "apice": 0.42,
+   "fusione": 0.22,
+   "dir": [
+    0.02,
+    -0.01
+   ],
+   "nota": "A a meta corsa, B apre da fondo dettaglio: il braccio che sale"
   },
   {
    "id": "raccolta-scambio",
@@ -62,13 +83,20 @@
    "A": {
     "px": 0.239,
     "py": 0.321,
-    "z": 3.2
+    "z": 2.6
    },
    "B": {
     "px": 0.779,
     "py": 0.497,
-    "z": 3.2
-   }
+    "z": 2.6
+   },
+   "apice": 0.5,
+   "fusione": 0.2,
+   "dir": [
+    0.03,
+    0.01
+   ],
+   "nota": "il dono: taglio teso, un filo prima del contatto delle mani, deriva verso di lui"
   },
   {
    "id": "scambio-trasporto",
@@ -79,13 +107,20 @@
    "A": {
     "px": 0.244,
     "py": 0.637,
-    "z": 3.2
+    "z": 1.8
    },
    "B": {
     "px": 0.414,
     "py": 0.583,
-    "z": 3.2
-   }
+    "z": 2.4
+   },
+   "apice": 0.45,
+   "fusione": 0.24,
+   "dir": [
+    0.005,
+    0.03
+   ],
+   "nota": "discesa nel cesto: deriva in basso, B apre dal cesto"
   },
   {
    "id": "trasporto-vasca",
@@ -96,13 +131,20 @@
    "A": {
     "px": 0.55,
     "py": 0.588,
-    "z": 3.2
+    "z": 1.35
    },
    "B": {
     "px": 0.474,
     "py": 0.66,
-    "z": 3.2
-   }
+    "z": 1.35
+   },
+   "apice": 0.5,
+   "fusione": 0.32,
+   "dir": [
+    0.03,
+    0
+   ],
+   "nota": "cesto su cesto: il taglio impercettibile, solo il passo verso destra"
   },
   {
    "id": "travaso-rubinetto",
@@ -113,13 +155,20 @@
    "A": {
     "px": 0.35,
     "py": 0.8,
-    "z": 2.067
+    "z": 1.6
    },
    "B": {
     "px": 0.2,
     "py": 0.75,
-    "z": 2.067
-   }
+    "z": 1.9
+   },
+   "apice": 0.45,
+   "fusione": 0.26,
+   "dir": [
+    0.01,
+    0.025
+   ],
+   "nota": "legno su legno, il vino scende: deriva in basso"
   },
   {
    "id": "rubinetto-vino",
@@ -135,8 +184,15 @@
    "B": {
     "px": 0.457,
     "py": 0.747,
-    "z": 3.2
-   }
+    "z": 2.2
+   },
+   "apice": 0.55,
+   "fusione": 0.24,
+   "dir": [
+    0,
+    -0.02
+   ],
+   "nota": "dentro il vino e si resta a lungo; il calice sale"
   }
  ]
 }

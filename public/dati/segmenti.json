@@ -1,0 +1,399 @@
+{
+ "generato_da": "lab/assembla-film-v3.mjs — derivato",
+ "film": {
+  "n": 2999,
+  "w": 1280,
+  "h": 720,
+  "fps": 24,
+  "tier": [
+   "frames/film (1280)",
+   "frames-m/film (720)"
+  ]
+ },
+ "verifica": "film v3: ponti match-cut al posto delle transizioni shader",
+ "segmenti": [
+  {
+   "id": "nave",
+   "da": 1,
+   "a": 192,
+   "n": 192,
+   "sorgente": "Clip-1.mp4",
+   "giunzione_in": null,
+   "giunzione_out": {
+    "at": 0.064,
+    "modo": "—",
+    "verso": "nave→ponte-nave-approdo"
+   }
+  },
+  {
+   "id": "ponte-nave-approdo",
+   "da": 193,
+   "a": 222,
+   "n": 30,
+   "sorgente": "lab/ponti/nave-approdo (match cut)",
+   "giunzione_in": {
+    "at": 0.064,
+    "modo": "—",
+    "verso": "nave→ponte-nave-approdo"
+   },
+   "giunzione_out": {
+    "at": 0.074,
+    "modo": "—",
+    "verso": "ponte-nave-approdo→approdo"
+   }
+  },
+  {
+   "id": "approdo",
+   "da": 223,
+   "a": 414,
+   "n": 192,
+   "sorgente": "clip-2.mp4",
+   "giunzione_in": {
+    "at": 0.074,
+    "modo": "—",
+    "verso": "ponte-nave-approdo→approdo"
+   },
+   "giunzione_out": {
+    "at": 0.138,
+    "modo": "—",
+    "verso": "approdo→ponte-approdo-vigna"
+   }
+  },
+  {
+   "id": "ponte-approdo-vigna",
+   "da": 415,
+   "a": 444,
+   "n": 30,
+   "sorgente": "lab/ponti/approdo-vigna (match cut)",
+   "giunzione_in": {
+    "at": 0.138,
+    "modo": "—",
+    "verso": "approdo→ponte-approdo-vigna"
+   },
+   "giunzione_out": {
+    "at": 0.148,
+    "modo": "—",
+    "verso": "ponte-approdo-vigna→vigna"
+   }
+  },
+  {
+   "id": "vigna",
+   "da": 445,
+   "a": 636,
+   "n": 192,
+   "sorgente": "clip-3.mp4",
+   "giunzione_in": {
+    "at": 0.148,
+    "modo": "—",
+    "verso": "ponte-approdo-vigna→vigna"
+   },
+   "giunzione_out": {
+    "at": 0.2121,
+    "modo": "—",
+    "verso": "vigna→ponte-vigna-raccolta"
+   }
+  },
+  {
+   "id": "ponte-vigna-raccolta",
+   "da": 637,
+   "a": 666,
+   "n": 30,
+   "sorgente": "lab/ponti/vigna-raccolta (match cut)",
+   "giunzione_in": {
+    "at": 0.2121,
+    "modo": "—",
+    "verso": "vigna→ponte-vigna-raccolta"
+   },
+   "giunzione_out": {
+    "at": 0.2221,
+    "modo": "—",
+    "verso": "ponte-vigna-raccolta→raccolta"
+   }
+  },
+  {
+   "id": "raccolta",
+   "da": 667,
+   "a": 858,
+   "n": 192,
+   "sorgente": "clip3-1.mp4",
+   "giunzione_in": {
+    "at": 0.2221,
+    "modo": "—",
+    "verso": "ponte-vigna-raccolta→raccolta"
+   },
+   "giunzione_out": {
+    "at": 0.2861,
+    "modo": "—",
+    "verso": "raccolta→ponte-raccolta-scambio"
+   }
+  },
+  {
+   "id": "ponte-raccolta-scambio",
+   "da": 859,
+   "a": 888,
+   "n": 30,
+   "sorgente": "lab/ponti/raccolta-scambio (match cut)",
+   "giunzione_in": {
+    "at": 0.2861,
+    "modo": "—",
+    "verso": "raccolta→ponte-raccolta-scambio"
+   },
+   "giunzione_out": {
+    "at": 0.2961,
+    "modo": "—",
+    "verso": "ponte-raccolta-scambio→scambio"
+   }
+  },
+  {
+   "id": "scambio",
+   "da": 889,
+   "a": 932,
+   "n": 44,
+   "sorgente": "clip-4.mp4",
+   "giunzione_in": {
+    "at": 0.2961,
+    "modo": "—",
+    "verso": "ponte-raccolta-scambio→scambio"
+   },
+   "giunzione_out": {
+    "at": 0.3108,
+    "modo": "—",
+    "verso": "scambio→ponte-scambio-trasporto"
+   }
+  },
+  {
+   "id": "ponte-scambio-trasporto",
+   "da": 933,
+   "a": 962,
+   "n": 30,
+   "sorgente": "lab/ponti/scambio-trasporto (match cut)",
+   "giunzione_in": {
+    "at": 0.3108,
+    "modo": "—",
+    "verso": "scambio→ponte-scambio-trasporto"
+   },
+   "giunzione_out": {
+    "at": 0.3208,
+    "modo": "—",
+    "verso": "ponte-scambio-trasporto→trasporto"
+   }
+  },
+  {
+   "id": "trasporto",
+   "da": 963,
+   "a": 1154,
+   "n": 192,
+   "sorgente": "clip-5.mp4",
+   "giunzione_in": {
+    "at": 0.3208,
+    "modo": "—",
+    "verso": "ponte-scambio-trasporto→trasporto"
+   },
+   "giunzione_out": {
+    "at": 0.3848,
+    "modo": "—",
+    "verso": "trasporto→ponte-trasporto-vasca"
+   }
+  },
+  {
+   "id": "ponte-trasporto-vasca",
+   "da": 1155,
+   "a": 1184,
+   "n": 30,
+   "sorgente": "lab/ponti/trasporto-vasca (match cut)",
+   "giunzione_in": {
+    "at": 0.3848,
+    "modo": "—",
+    "verso": "trasporto→ponte-trasporto-vasca"
+   },
+   "giunzione_out": {
+    "at": 0.3948,
+    "modo": "—",
+    "verso": "ponte-trasporto-vasca→vasca"
+   }
+  },
+  {
+   "id": "vasca",
+   "da": 1185,
+   "a": 1376,
+   "n": 192,
+   "sorgente": "clip-6.mp4",
+   "giunzione_in": {
+    "at": 0.3948,
+    "modo": "—",
+    "verso": "ponte-trasporto-vasca→vasca"
+   },
+   "giunzione_out": {
+    "at": 0.4588,
+    "modo": "—",
+    "verso": "vasca→pigiatura"
+   }
+  },
+  {
+   "id": "pigiatura",
+   "da": 1377,
+   "a": 1568,
+   "n": 192,
+   "sorgente": "clip-7.mp4",
+   "giunzione_in": {
+    "at": 0.4588,
+    "modo": "—",
+    "verso": "vasca→pigiatura"
+   },
+   "giunzione_out": {
+    "at": 0.5228,
+    "modo": "—",
+    "verso": "pigiatura→anfora"
+   }
+  },
+  {
+   "id": "anfora",
+   "da": 1569,
+   "a": 1760,
+   "n": 192,
+   "sorgente": "clip-8.mp4",
+   "giunzione_in": {
+    "at": 0.5228,
+    "modo": "—",
+    "verso": "pigiatura→anfora"
+   },
+   "giunzione_out": {
+    "at": 0.5869,
+    "modo": "—",
+    "verso": "anfora→porta"
+   }
+  },
+  {
+   "id": "porta",
+   "da": 1761,
+   "a": 1952,
+   "n": 192,
+   "sorgente": "clip-9.mp4",
+   "giunzione_in": {
+    "at": 0.5869,
+    "modo": "—",
+    "verso": "anfora→porta"
+   },
+   "giunzione_out": {
+    "at": 0.6509,
+    "modo": "—",
+    "verso": "porta→mondi"
+   }
+  },
+  {
+   "id": "mondi",
+   "da": 1953,
+   "a": 2144,
+   "n": 192,
+   "sorgente": "clip-10.mp4",
+   "giunzione_in": {
+    "at": 0.6509,
+    "modo": "—",
+    "verso": "porta→mondi"
+   },
+   "giunzione_out": {
+    "at": 0.7149,
+    "modo": "—",
+    "verso": "mondi→botti"
+   }
+  },
+  {
+   "id": "botti",
+   "da": 2145,
+   "a": 2336,
+   "n": 192,
+   "sorgente": "clip-11.mp4",
+   "giunzione_in": {
+    "at": 0.7149,
+    "modo": "—",
+    "verso": "mondi→botti"
+   },
+   "giunzione_out": {
+    "at": 0.7789,
+    "modo": "—",
+    "verso": "botti→travaso"
+   }
+  },
+  {
+   "id": "travaso",
+   "da": 2337,
+   "a": 2576,
+   "n": 240,
+   "sorgente": "clip-12.mp4",
+   "giunzione_in": {
+    "at": 0.7789,
+    "modo": "—",
+    "verso": "botti→travaso"
+   },
+   "giunzione_out": {
+    "at": 0.859,
+    "modo": "—",
+    "verso": "travaso→ponte-travaso-rubinetto"
+   }
+  },
+  {
+   "id": "ponte-travaso-rubinetto",
+   "da": 2577,
+   "a": 2606,
+   "n": 30,
+   "sorgente": "lab/ponti/travaso-rubinetto (match cut)",
+   "giunzione_in": {
+    "at": 0.859,
+    "modo": "—",
+    "verso": "travaso→ponte-travaso-rubinetto"
+   },
+   "giunzione_out": {
+    "at": 0.869,
+    "modo": "—",
+    "verso": "ponte-travaso-rubinetto→rubinetto"
+   }
+  },
+  {
+   "id": "rubinetto",
+   "da": 2607,
+   "a": 2729,
+   "n": 123,
+   "sorgente": "clip-13.mp4",
+   "giunzione_in": {
+    "at": 0.869,
+    "modo": "—",
+    "verso": "ponte-travaso-rubinetto→rubinetto"
+   },
+   "giunzione_out": {
+    "at": 0.91,
+    "modo": "—",
+    "verso": "rubinetto→ponte-rubinetto-vino"
+   }
+  },
+  {
+   "id": "ponte-rubinetto-vino",
+   "da": 2730,
+   "a": 2759,
+   "n": 30,
+   "sorgente": "lab/ponti/rubinetto-vino (match cut)",
+   "giunzione_in": {
+    "at": 0.91,
+    "modo": "—",
+    "verso": "rubinetto→ponte-rubinetto-vino"
+   },
+   "giunzione_out": {
+    "at": 0.92,
+    "modo": "—",
+    "verso": "ponte-rubinetto-vino→dentro-il-vino"
+   }
+  },
+  {
+   "id": "dentro-il-vino",
+   "da": 2760,
+   "a": 2999,
+   "n": 240,
+   "sorgente": "clip-14.mp4",
+   "giunzione_in": {
+    "at": 0.92,
+    "modo": "—",
+    "verso": "ponte-rubinetto-vino→dentro-il-vino"
+   },
+   "giunzione_out": null
+  }
+ ]
+}

@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="utf-8">
+  <title>Œnotria — prova cartina (stili veri)</title>
+  <link rel="stylesheet" href="/src/styles.css" />
+  <style>body { padding: 3rem; } .cartina { opacity: 1 !important; transform: none !important; }</style>
+</head>
+<body>
+  <div class="cartina" style="max-width: 1100px; margin: auto">
+    <div class="cartina__mappa" id="cartina-mappa"></div>
+    <div class="cartina__pannello" id="cartina-scheda"></div>
+  </div>
+  <div class="cartina__legenda" style="max-width: 1100px; margin: auto">
+    <p class="mono cartina__riga" id="cartina-igt"></p>
+    <p class="mono cartina__riga cartina__riga--autoctoni" id="cartina-autoctoni"></p>
+  </div>
+  <script type="module">
+    import { initCartina } from '/src/cartina.js';
+    initCartina();
+  </script>
+</body>
+</html>

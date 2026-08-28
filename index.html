@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="it">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ŒNOTRIA — La terra del vino aveva un nome greco</title>
+    <meta name="description" content="Œnotria: dove il vino ha un nome greco. Calabria, Magna Grecia, vitigni antichi." />
+    <link rel="stylesheet" href="/src/styles.css" />
+  </head>
+  <body>
+
+    <main id="top">
+      <section class="viaggio">
+        <!-- Lo spazio di scorrimento del film: 5300vh. Il pin sticky vive
+             QUI dentro, così gli atti che seguono partono davvero alla
+             fine del viaggio — non a 900px sopra il canvas. -->
+        <div class="stage">
+
+        <div class="pin">
+          <!-- Velo scuro #0B0A09 all'82% — pear.no lo fa con CSS, non con canvas -->
+          <div class="bg-veil"></div>
+
+          <!-- Canvas OGL: scene come frame scrubbed, transizioni shader -->
+          <canvas id="gl" class="stage-canvas"></canvas>
+
+          <!-- Overlay testo: generato da copione.json -->
+          <div class="stage-copy" id="stage-copy"></div>
+        </div>
+        </div><!-- /stage -->
+
+        <!-- ═══════════════════════════════════════════════════
+             CAPITOLI A FIGURE ROSSE
+             L'immagine occupa una meta', il testo l'altra, e si
+             alternano. Il fondo di ogni blocco e' il colore campionato
+             dall'argilla di quel pannello: la sezione e' monocroma e
+             richiama l'immagine invece di combatterla.
+             ═══════════════════════════════════════════════════ -->
+        <div class="capitoli">
+
+          <article class="cap cap--fig-destra" style="--cap-fondo:#0d0d0c">
+            <div class="cap__testo">
+              <p class="mono cap__num greco">Α&#x0374;</p>
+              <h2 class="display cap__titolo">Enotro salpa dall&#8217;Arcadia</h2>
+              <p class="cap__corpo">Il mito racconta di un figlio di Licaone che lascia la
+                montagna e prende il mare cercando terra da coltivare. Non un conquistatore:
+                un uomo che parte per restare altrove. La costa che trova prendera&#8217; il suo nome.</p>
+              <p class="mono cap__nota">Οἰνωτρός &#183; colui che sostiene la vite</p>
+            </div>
+            <div class="cap__fig"><div class="cap__quadro" role="img" aria-label="Il re Enotro sulla prua di una nave, nello stile della ceramica a figure rosse" style="background-image:url('/img/ceramica/re.webp')"></div></div>
+          </article>
+
+          <article class="cap cap--fig-sinistra" style="--cap-fondo:#0a0909">
+            <div class="cap__fig"><div class="cap__quadro" role="img" aria-label="Donna che versa vino in un cratere, ceramica a figure rosse" style="background-image:url('/img/ceramica/donna.webp')"></div></div>
+            <div class="cap__testo">
+              <p class="mono cap__num greco">Β&#x0374;</p>
+              <h2 class="display cap__titolo">Il vino non si beve puro</h2>
+              <p class="cap__corpo">Nel cratere il vino veniva mescolato all&#8217;acqua prima di
+                arrivare alle coppe: la misura era una questione civile, non di gusto. Berlo
+                schietto era cosa da barbari &#8212; cosi&#8217; almeno scrivevano i Greci.</p>
+              <p class="mono cap__nota">Κρατήρ &#183; il vaso del mescolare</p>
+            </div>
+          </article>
+
+          <article class="cap cap--fig-destra cap--chiaro" style="--cap-fondo:#ac6c3b">
+            <div class="cap__testo">
+              <p class="mono cap__num greco">Γ&#x0374;</p>
+              <h2 class="display cap__titolo">Il dono che si coltiva</h2>
+              <p class="cap__corpo">Dioniso e&#8217; il dio che porta la vite, ma la vite va potata,
+                legata e attesa. Il mito assegna l&#8217;origine a un dono; il resto lo fanno tremila
+                anni di mani. E&#8217; la stessa distanza che separa un&#8217;idea da un mestiere.</p>
+              <p class="mono cap__nota">Διόνυσος &#183; οἶνος</p>
+            </div>
+            <div class="cap__fig"><div class="cap__quadro" role="img" aria-label="Dioniso versa il vino in una kylix, ceramica a figure nere" style="background-image:url('/img/ceramica/dioniso.webp')"></div></div>
+          </article>
+
+          <article class="cap cap--fig-sinistra" style="--cap-fondo:#0b0a0a">
+            <div class="cap__fig"><div class="cap__quadro" role="img" aria-label="Due contadini potano una vite ad alberello, ceramica a figure rosse" style="background-image:url('/img/ceramica/vigna.webp')"></div></div>
+            <div class="cap__testo">
+              <p class="mono cap__num greco">Δ&#x0374;</p>
+              <h2 class="display cap__titolo">L&#8217;alberello, ancora oggi</h2>
+              <p class="cap__corpo">La vite tenuta bassa e senza sostegni e&#8217; il modo in cui la
+                piantavano allora, ed e&#8217; il modo in cui la si trova ancora nel Cirotano. Non e&#8217;
+                nostalgia: su questi suoli e con questo vento, regge meglio.</p>
+              <p class="mono cap__nota">Gaglioppo &#183; Greco Bianco &#183; Mantonico</p>
+            </div>
+          </article>
+
+        </div>
+
+        <!-- ═══════════════════════════════════════════════════
+             I produttori — dentro la section, DOPO lo spazio del film.
+             Appare dopo lo scroll del palco.
+             ═══════════════════════════════════════════════════ -->
+        <div class="act" data-act="produttori">
+          <div class="rule" data-beat="0" data-at="0.00"></div>
+          <div class="spacer-sm"></div>
+          <p class="mono" data-beat="1" data-at="0.04" style="letter-spacing:.14em;">
+            I produttori
+          </p>
+          <h2 class="display t-h2" data-beat="2" data-at="0.08" data-c>
+            Sei cantine che lavorano ancora oggi dove i Greci piantarono per primi.
+          </h2>
+          <p class="t-lead" data-beat="3" data-at="0.18">
+            Un riferimento, non una classifica.
+          </p>
+          <div class="spacer-sm"></div>
+          <div class="banda-bottiglie" data-beat="1" data-at="0.12" aria-hidden="true"></div>
+          <div class="spacer-sm"></div>
+          <p class="mono" data-beat="1" data-at="0.10" style="letter-spacing:.14em;">
+            Le zone
+          </p>
+          <h2 class="display t-h2" data-beat="1" data-at="0.10" data-c>
+            Nove denominazioni, cinque province, gli stessi vitigni di tremila anni fa.
+          </h2>
+          <div class="cartina" data-beat="2" data-at="0.14">
+            <div class="cartina__mappa" id="cartina-mappa"></div>
+            <div class="cartina__pannello" id="cartina-scheda"></div>
+          </div>
+          <div class="cartina__legenda">
+            <p class="mono cartina__riga" id="cartina-igt"></p>
+            <p class="mono cartina__riga cartina__riga--autoctoni" id="cartina-autoctoni"></p>
+          </div>
+        <div class="produttori-grid" id="produttori-grid">
+            <!-- Renderizzato da main.js -->
+          </div>
+        </div>
+
+        <!-- ═══════════════════════════════════════════════════
+             Chiusa
+             ═══════════════════════════════════════════════════ -->
+        <div class="act chiusa" data-act="chiusa">
+          <p class="display t-h1 chiusa-quote" data-beat="0" data-at="0.00" data-c>
+            Il vino calabrese non ha bisogno di essere scoperto. Ha bisogno di essere guardato.
+          </p>
+        </div>
+
+      </section>
+    </main>
+
+    <!-- ═══════════════════════════════════════════════════
+         FOOTER — solo disclaimer, nessun video.
+         ═══════════════════════════════════════════════════ -->
+    <footer class="site-footer" id="site-footer">
+      <div class="footer-content">
+        <div class="rule"></div>
+        <p>
+          Œnotria — proposta di concept per la promozione dei vini di Calabria. Proposta indipendente,
+          nessuna affiliazione con la Regione Calabria. I marchi e i nomi citati appartengono ai
+          rispettivi titolari.
+        </p>
+      </div>
+    </footer>
+
+    <script type="module" src="/src/main.js"></script>
+  </body>
+</html>

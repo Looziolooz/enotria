@@ -1,0 +1,16 @@
+totale fotogrammi: 631
+luminanza mediana: 120
+Failed to reallocate parser buffer to 999488
+[png @ 0000029c70407c00] Invalid PNG signature 0x46F6CE249FF8670A.
+[png @ 0000029c70419c40] Invalid PNG signature 0x46F6CE249FF8670A.
+[vist#0:0/png @ 0000029c704095c0] [dec:png @ 0000029c70417e40] Decoding error: Invalid data found when processing input
+[vist#0:0/png @ 0000029c704095c0] [dec:png @ 0000029c70417e40] Decode error rate 1 exceeds maximum 0.666667
+[vf#0:0 @ 0000029c704085c0] Cannot determine format of input 0:0 after EOF
+[vf#0:0 @ 0000029c704085c0] Task finished with error code: -1094995529 (Invalid data found when processing input)
+[vf#0:0 @ 0000029c704085c0] Terminating thread with return code -1094995529 (Invalid data found when processing input)
+[vost#0:0/libwebp @ 0000029c70407fc0] [enc:libwebp @ 0000029c703c7100] Could not open encoder before EOF
+[vost#0:0/libwebp @ 0000029c70407fc0] Task finished with error code: -22 (Invalid argument)
+[vost#0:0/libwebp @ 0000029c70407fc0] Terminating thread with return code -22 (Invalid argument)
+[vist#0:0/png @ 0000029c704095c0] [dec:png @ 0000029c70417e40] Task finished with error code: -1145393733 (Error number -1145393733 occurred)
+[vist#0:0/png @ 0000029c704095c0] [dec:png @ 0000029c70417e40] Terminating thread with return code -1145393733 (Error number -1145393733 occurred)
+[out#0/webp @ 0000029c703903c0] Nothing was written into output file, because at least one of its streams received no packets.

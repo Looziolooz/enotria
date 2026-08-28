@@ -1,0 +1,20 @@
+# dipendenze e build
+node_modules/
+dist/
+
+# materiale grezzo di lavorazione (video, keyframe, archivi frame) — resta locale
+_sorgenti/
+
+# intermedi pesanti o rigenerabili di lab/
+lab/clip19/
+lab/hf-transizioni/
+lab/ponti/
+lab/_tmp-frames/
+lab/*.raw
+
+# backup di lavorazione
+*.bak
+*.bak2
+*.pre-*
+nul
+.gstack/

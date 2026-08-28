@@ -1,0 +1,137 @@
+[
+ {
+  "atto": 1,
+  "at": 0.008,
+  "occhiello": "ΟΙΝΩΤΡΙΑ",
+  "greco": "occhiello",
+  "testo": "La terra del vino aveva un nome greco.",
+  "peso": "hero",
+  "meta": "VIII secolo a.C. · Costa ionica della Calabria — Σύβαρις 720 a.C. · Κρότων 710 a.C."
+ },
+ {
+  "atto": 1,
+  "at": 0.074,
+  "occhiello": "",
+  "testo": "I Greci sbarcarono qui quasi tremila anni fa. La vite cresceva già su queste colline. Diedero alla terra il nome del vino.",
+  "peso": "corpo"
+ },
+ {
+  "atto": 1,
+  "at": 0.121,
+  "occhiello": "",
+  "testo": "Οἰνωτρία",
+  "peso": "capitolo",
+  "greco": "testo",
+  "meta": "Enotria · la terra del vino"
+ },
+ {
+  "atto": 1,
+  "at": 0.158,
+  "occhiello": "",
+  "testo": "Οἰνωτρία, Oinotria. La radice è οἶνος: vino.",
+  "peso": "nota",
+  "greco": "testo"
+ },
+ {
+  "atto": 1,
+  "at": 0.214,
+  "occhiello": "Il nome",
+  "testo": "Prima ancora, il nome era di un uomo.",
+  "peso": "titolo"
+ },
+ {
+  "atto": 1,
+  "at": 0.273,
+  "occhiello": "",
+  "testo": "Enotro, figlio di Licaone, lasciò l'Arcadia con la sua gente e attraversò il mare in cerca di terra da coltivare. Approdò su questa costa. È un racconto, non una cronaca. Ma è il racconto che la Calabria ha scelto per dire da dove viene.",
+  "peso": "corpo"
+ },
+ {
+  "atto": 1,
+  "at": 0.327,
+  "occhiello": "",
+  "testo": "Οἰνωτρός, Oinotrós: colui che sostiene la vite.",
+  "peso": "nota",
+  "greco": "testo"
+ },
+ {
+  "atto": 1,
+  "at": 0.386,
+  "occhiello": "ΜΕΓΑΛΗ ΕΛΛΑΣ",
+  "testo": "Non arrivarono per conquistare. Arrivarono per restare.",
+  "peso": "titolo",
+  "greco": "occhiello"
+ },
+ {
+  "atto": 1,
+  "at": 0.445,
+  "occhiello": "",
+  "testo": "Sibari, Crotone, Locri Epizefiri. Le fondarono uomini partiti senza intenzione di tornare, e in tre generazioni divennero più ricche delle città che li avevano mandati. All'insieme toccò un nome nuovo: Μεγάλη Ἑλλάς, la Grande Grecia.",
+  "peso": "corpo"
+ },
+ {
+  "atto": 1,
+  "at": 0.508,
+  "occhiello": "",
+  "testo": "Σύβαρις · Κρότων · Λοκροὶ Ἐπιζεφύριοι",
+  "peso": "nota",
+  "greco": "testo"
+ },
+ {
+  "atto": 1,
+  "at": 0.567,
+  "occhiello": "L'oracolo",
+  "testo": "Crotone nacque da una domanda sbagliata.",
+  "peso": "titolo"
+ },
+ {
+  "atto": 1,
+  "at": 0.605,
+  "occhiello": "",
+  "testo": "Tremila anni, lo stesso gesto.",
+  "peso": "capitolo",
+  "tinta": "scura"
+ },
+ {
+  "atto": 1,
+  "at": 0.643,
+  "occhiello": "",
+  "testo": "Miscello andò a Delfi per chiedere dei figli. L'oracolo gli parlò invece di una città. Tornò indietro convinto di aver frainteso, e gli fu ripetuto di obbedire. Fondò Crotone. Da lì vennero Milone e Pitagora.",
+  "peso": "corpo"
+ },
+ {
+  "atto": 1,
+  "at": 0.683,
+  "occhiello": "Il lascito",
+  "testo": "Le colonne sono cadute. Le viti no.",
+  "peso": "titolo"
+ },
+ {
+  "atto": 1,
+  "at": 0.742,
+  "occhiello": "",
+  "testo": "Delle città restano fondamenta e qualche colonna. Nei filari resta molto di più. Il Mantonico prende nome da μαντικός, profetico. Il Gaglioppo da καλὸς πούς, bel piede, per la forma del grappolo. Nomi greci che nessuno ha mai tradotto e che si leggono ancora in etichetta.",
+  "peso": "corpo"
+ },
+ {
+  "atto": 1,
+  "at": 0.798,
+  "occhiello": "",
+  "testo": "Gaglioppo · Greco Bianco · Mantonico · Magliocco",
+  "peso": "nota"
+ },
+ {
+  "atto": 1,
+  "at": 0.858,
+  "occhiello": "La terra",
+  "testo": "Argilla rossa, calcare bianco, e il mare a vista.",
+  "peso": "titolo"
+ },
+ {
+  "atto": 1,
+  "at": 0.923,
+  "occhiello": "Oggi",
+  "testo": "La mano che sigillava l'anfora e quella che regola il termostato fanno lo stesso mestiere. In mezzo ci sono tremila anni e nessuna interruzione.",
+  "peso": "corpo"
+ }
+]

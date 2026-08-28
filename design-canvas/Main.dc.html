@@ -1,0 +1,79 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=EB+Garamond:wght@300;400&family=Instrument+Sans:wght@400;500&family=JetBrains+Mono:wght@400;500&family=GFS+Didot&display=swap">
+  <style>
+    body { margin: 0; }
+    a { color: #e8b06a; } a:hover { color: #E8DFCF; }
+    .riga-rivela { display: block; overflow: hidden; }
+    .riga-rivela > span {
+      display: block;
+      clip-path: inset(100% 0 -12% 0);
+      transform: translateY(34px);
+      animation: rivela-basso 1.15s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+    }
+    .riga-1 > span { animation-delay: 0.25s; }
+    .riga-2 > span { animation-delay: 0.44s; }
+    @keyframes rivela-basso {
+      to { clip-path: inset(-14% 0 -14% 0); transform: translateY(0); }
+    }
+    .fade-sfalsato {
+      opacity: 0;
+      animation: comparsa 0.9s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+    }
+    .fade-occhiello { animation-delay: 1.35s; }
+    .fade-meta { animation-delay: 1.62s; }
+    .fade-scroll { animation-delay: 2.15s; }
+    @keyframes comparsa {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .scroll-punto {
+      opacity: 0;
+      animation: scorri 2.6s cubic-bezier(0.22, 1, 0.36, 1) 2.4s infinite;
+    }
+    @keyframes scorri {
+      0% { transform: translateY(0); opacity: 0; }
+      18% { opacity: 0.85; }
+      68% { transform: translateY(44px); opacity: 0; }
+      100% { transform: translateY(44px); opacity: 0; }
+    }
+  </style>
+</helmet>
+<div style="width:1440px;height:900px;background:#0B0A09;overflow:hidden;position:relative;font-family:'Instrument Sans',sans-serif;color:#E8DFCF">
+  <img src="hero.webp" alt="" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover">
+  <div style="position:absolute;inset:0;background:linear-gradient(90deg, rgba(11,10,9,0.55) 0%, rgba(11,10,9,0.22) 52%, rgba(11,10,9,0.08) 100%), linear-gradient(to bottom, rgba(11,10,9,0.15) 0%, rgba(11,10,9,0.3) 55%, rgba(11,10,9,0.78) 100%), linear-gradient(rgba(11,10,9,0.45), rgba(11,10,9,0.45))"></div>
+  <div style="position:absolute;left:112px;top:0;bottom:0;display:flex;flex-direction:column;justify-content:center;gap:30px;max-width:900px">
+    <div class="fade-sfalsato fade-occhiello" style="display:flex;flex-direction:column;gap:14px">
+      <div style="font-family:'GFS Didot',serif;font-size:15px;letter-spacing:0.34em;color:#E8DFCF;opacity:0.66">ΟΙΝΩΤΡΙΑ</div>
+      <svg width="71" height="7" viewBox="0 0 71 7" fill="none" xmlns="http://www.w3.org/2000/svg" style="display:block;opacity:0.5">
+        <path d="M0 6.5 V1 H12 V4 H5 V2.5 H9" stroke="#E8DFCF" stroke-width="1" fill="none" />
+        <path d="M0 6.5 V1 H12 V4 H5 V2.5 H9" stroke="#E8DFCF" stroke-width="1" fill="none" transform="translate(14 0)" />
+        <path d="M0 6.5 V1 H12 V4 H5 V2.5 H9" stroke="#E8DFCF" stroke-width="1" fill="none" transform="translate(28 0)" />
+        <path d="M0 6.5 V1 H12 V4 H5 V2.5 H9" stroke="#E8DFCF" stroke-width="1" fill="none" transform="translate(42 0)" />
+        <path d="M0 6.5 V1 H12 V4 H5 V2.5 H9" stroke="#E8DFCF" stroke-width="1" fill="none" transform="translate(56 0)" />
+      </svg>
+    </div>
+    <h1 style="margin:0;font-family:'EB Garamond',serif;font-weight:300;font-size:86px;line-height:1.05;letter-spacing:-0.015em;color:#E8DFCF">
+      <span class="riga-rivela riga-1"><span>La terra del vino</span></span>
+      <span class="riga-rivela riga-2"><span>aveva un nome greco.</span></span>
+    </h1>
+    <div class="fade-sfalsato fade-meta" style="margin-top:8px">
+      <div style="font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:0.14em;color:#E8DFCF;opacity:0.78">VIII secolo a.C. &middot; Costa ionica della Calabria &mdash; <span style="font-family:'GFS Didot',serif;letter-spacing:0.16em">&Sigma;&#973;&beta;&alpha;&rho;&iota;&sigmaf;</span> 720 a.C. &middot; <span style="font-family:'GFS Didot',serif;letter-spacing:0.16em">&Kappa;&rho;&#972;&tau;&omega;&nu;</span> 710 a.C.</div>
+    </div>
+  </div>
+  <div class="fade-sfalsato fade-scroll" style="position:absolute;left:719px;bottom:36px;display:flex;flex-direction:column;align-items:center;gap:0">
+    <div style="position:relative;width:1px;height:56px;background:rgba(232,223,207,0.14);overflow:visible">
+      <div class="scroll-punto" style="position:absolute;left:-1px;top:0;width:3px;height:10px;background:rgba(232,223,207,0.8)"></div>
+    </div>
+  </div>
+</div>
+</x-dc>
+</body>
+</html>

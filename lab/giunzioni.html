@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<title>Œnotria — revisione giunzioni</title>
+<style>
+  body { background:#111; color:#ddd; font:14px/1.5 system-ui, sans-serif; margin:2rem; }
+  h1 { font-size:1.2rem; font-weight:600; }
+  .g { display:grid; grid-template-columns:1fr 1fr; gap:6px; margin:1.5rem 0; max-width:1100px; }
+  .g img { width:100%; display:block; }
+  .g figcaption { font-size:12px; color:#999; padding:2px 0; }
+  .verso { color:#c9a227; }
+</style>
+</head>
+<body>
+<h1>Giunzioni del film — ultimo fotogramma del segmento / primo del successivo</h1>
+<p>Dati da <code>/dati/segmenti.json</code> (derivato). Aprire con <code>npm run dev</code> → <code>/lab/giunzioni.html</code>.</p>
+<div id="out"></div>
+<script>
+  const pad = (n) => String(n).padStart(4, '0');
+  fetch('/dati/segmenti.json').then((r) => r.json()).then((d) => {
+    const out = document.getElementById('out');
+    for (let i = 0; i < d.segmenti.length - 1; i++) {
+      const a = d.segmenti[i], b = d.segmenti[i + 1];
+      out.insertAdjacentHTML('beforeend', `
+        <div class="g">
+          <figure><img loading="lazy" src="/frames/film/${pad(a.a)}.webp">
+            <figcaption>${a.id} · ultimo (${pad(a.a)})</figcaption></figure>
+          <figure><img loading="lazy" src="/frames/film/${pad(b.da)}.webp">
+            <figcaption>${b.id} · primo (${pad(b.da)}) — <span class="verso">modo ${b.giunzione_in.modo} · ${b.giunzione_in.verso}</span></figcaption></figure>
+        </div>`);
+    }
+  });
+</script>
+</body>
+</html>

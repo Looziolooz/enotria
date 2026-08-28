@@ -1,0 +1,203 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=EB+Garamond:wght@300;400&family=Instrument+Sans:wght@400;500&family=JetBrains+Mono:wght@400;500&family=GFS+Didot&display=swap">
+  <style>
+    body { margin: 0; }
+    a { color: #e8b06a; } a:hover { color: #E8DFCF; }
+    .taglio-slant {
+      animation: taglio-slant 3s cubic-bezier(0.22, 1, 0.36, 1) infinite;
+    }
+    @keyframes taglio-slant {
+      0%   { clip-path: polygon(-40% 0%, 0% 0%, -24% 100%, -64% 100%); }
+      38%  { clip-path: polygon(-40% 0%, 124% 0%, 100% 100%, -64% 100%); }
+      56%  { clip-path: polygon(-40% 0%, 124% 0%, 100% 100%, -64% 100%); }
+      92%  { clip-path: polygon(124% 0%, 124% 0%, 100% 100%, 100% 100%); }
+      100% { clip-path: polygon(124% 0%, 124% 0%, 100% 100%, 100% 100%); }
+    }
+    .taglio-iride {
+      animation: taglio-iride 3s cubic-bezier(0.22, 1, 0.36, 1) infinite;
+    }
+    @keyframes taglio-iride {
+      0%   { clip-path: circle(0% at 50% 50%); }
+      38%  { clip-path: circle(75% at 50% 50%); }
+      60%  { clip-path: circle(75% at 50% 50%); }
+      94%  { clip-path: circle(0% at 50% 50%); }
+      100% { clip-path: circle(0% at 50% 50%); }
+    }
+    .anello-iride {
+      animation: anello-iride 3s cubic-bezier(0.22, 1, 0.36, 1) infinite;
+    }
+    @keyframes anello-iride {
+      0%   { transform: scale(0.02); opacity: 0.9; }
+      38%  { transform: scale(1); opacity: 0; }
+      61%  { transform: scale(1); opacity: 0; }
+      94%  { transform: scale(0.02); opacity: 0.9; }
+      100% { transform: scale(0.02); opacity: 0.9; }
+    }
+    .taglio-arco {
+      animation: taglio-arco 3s cubic-bezier(0.22, 1, 0.36, 1) infinite;
+    }
+    @keyframes taglio-arco {
+      0%   { clip-path: ellipse(0% 160% at 0% 50%); }
+      40%  { clip-path: ellipse(132% 160% at 0% 50%); }
+      60%  { clip-path: ellipse(132% 160% at 0% 50%); }
+      94%  { clip-path: ellipse(0% 160% at 0% 50%); }
+      100% { clip-path: ellipse(0% 160% at 0% 50%); }
+    }
+    .tenda-pannello {
+      animation: tenda-pannello 4.2s cubic-bezier(0.22, 1, 0.36, 1) infinite;
+    }
+    @keyframes tenda-pannello {
+      0%   { transform: translateX(-102%); }
+      22%  { transform: translateX(0%); }
+      30%  { transform: translateX(0%); }
+      52%  { transform: translateX(102%); }
+      60%  { transform: translateX(102%); }
+      74%  { transform: translateX(0%); }
+      80%  { transform: translateX(0%); }
+      100% { transform: translateX(-102%); }
+    }
+    .tenda-scena {
+      animation: tenda-scena 4.2s cubic-bezier(0.22, 1, 0.36, 1) infinite;
+    }
+    @keyframes tenda-scena {
+      0%, 25%   { opacity: 0; }
+      27%, 76%  { opacity: 1; }
+      78%, 100% { opacity: 0; }
+    }
+    .dissolvenza-velo {
+      animation: dissolvenza-velo 3.2s cubic-bezier(0.22, 1, 0.36, 1) infinite;
+    }
+    @keyframes dissolvenza-velo {
+      0%, 6%    { opacity: 0; }
+      22%       { opacity: 0.96; }
+      36%       { opacity: 0; }
+      56%       { opacity: 0; }
+      72%       { opacity: 0.96; }
+      88%, 100% { opacity: 0; }
+    }
+    .dissolvenza-scena {
+      animation: dissolvenza-scena 3.2s cubic-bezier(0.22, 1, 0.36, 1) infinite;
+    }
+    @keyframes dissolvenza-scena {
+      0%, 20%   { opacity: 0; }
+      28%, 66%  { opacity: 1; }
+      76%, 100% { opacity: 0; }
+    }
+  </style>
+</helmet>
+<div style="width:1440px;height:1040px;background:#0B0A09;overflow:hidden;position:relative;font-family:'Instrument Sans',sans-serif;color:#E8DFCF;display:flex;flex-direction:column;gap:40px;padding:60px 72px 56px 72px;box-sizing:border-box">
+  <div style="display:flex;align-items:flex-end;justify-content:space-between;gap:32px">
+    <div style="display:flex;flex-direction:column;gap:14px">
+      <div style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.22em;text-transform:uppercase;color:#E8DFCF;opacity:0.55">&OElig;notria &middot; specifica transizioni &middot; dati/tagli.json</div>
+      <div style="font-family:'EB Garamond',serif;font-weight:300;font-size:54px;line-height:1;letter-spacing:-0.015em;color:#E8DFCF">Motion+</div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:7px;text-align:right;padding-bottom:6px">
+      <div style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.16em;text-transform:uppercase;color:#E8DFCF;opacity:0.5">Easing unico &middot; cubic-bezier(0.22, 1, 0.36, 1)</div>
+      <div style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.16em;text-transform:uppercase;color:#E8DFCF;opacity:0.5">Demo in loop &middot; ~3s per ciclo</div>
+    </div>
+  </div>
+  <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:44px 48px">
+    <div style="display:flex;flex-direction:column;gap:14px">
+      <div style="position:relative;width:400px;height:225px;overflow:hidden;border:1px solid rgba(232,223,207,0.14);border-radius:2px;background:#0B0A09">
+        <img src="t11a.webp" alt="" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover">
+        <img src="t11b.webp" alt="" class="taglio-slant" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover">
+      </div>
+      <div style="display:flex;align-items:baseline;gap:12px">
+        <span style="font-family:'GFS Didot',serif;font-size:13px;color:#E8DFCF;opacity:0.45">&Alpha;&#180;</span>
+        <span style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.12em;text-transform:uppercase;color:#E8DFCF;opacity:0.85">Spazzata inclinata &middot; mode 11 &middot; at 3.2%</span>
+      </div>
+      <div style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.08em;color:#E8DFCF;opacity:0.45;margin-top:-6px">15&rarr;1a &middot; wipe inclinato &middot; slant 0.42 &middot; w 0.020</div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:14px">
+      <div style="position:relative;width:400px;height:225px;overflow:hidden;border:1px solid rgba(232,223,207,0.14);border-radius:2px;background:#0B0A09">
+        <img src="t12a.webp" alt="" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover">
+        <img src="t12b.webp" alt="" class="taglio-iride" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover">
+        <div class="anello-iride" style="position:absolute;left:50%;top:50%;width:480px;height:480px;margin:-240px 0 0 -240px;border:2px solid #30666D;border-radius:50%"></div>
+      </div>
+      <div style="display:flex;align-items:baseline;gap:12px">
+        <span style="font-family:'GFS Didot',serif;font-size:13px;color:#E8DFCF;opacity:0.45">&Beta;&#180;</span>
+        <span style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.12em;text-transform:uppercase;color:#E8DFCF;opacity:0.85">Iride &middot; mode 12 &middot; at 25.3%</span>
+      </div>
+      <div style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.08em;color:#E8DFCF;opacity:0.45;margin-top:-6px">1c&rarr;2 &middot; iride: il mare si apre sul tempio &middot; anello rgb(48,102,109) &middot; w 0.026</div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:14px">
+      <div style="position:relative;width:400px;height:225px;overflow:hidden;border:1px solid rgba(232,223,207,0.14);border-radius:2px;background:#0B0A09">
+        <img src="t14a.webp" alt="" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover">
+        <img src="t14b.webp" alt="" class="taglio-arco" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover">
+      </div>
+      <div style="display:flex;align-items:baseline;gap:12px">
+        <span style="font-family:'GFS Didot',serif;font-size:13px;color:#E8DFCF;opacity:0.45">&Gamma;&#180;</span>
+        <span style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.12em;text-transform:uppercase;color:#E8DFCF;opacity:0.85">Spazzata bombata &middot; mode 14 &middot; at 30.8%</span>
+      </div>
+      <div style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.08em;color:#E8DFCF;opacity:0.45;margin-top:-6px">2&rarr;3 &middot; wipe con arco, da sinistra &middot; fronte ad arco sin &middot; w 0.022</div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:14px">
+      <div style="position:relative;width:400px;height:225px;overflow:hidden;border:1px solid rgba(232,223,207,0.14);border-radius:2px;background:#0B0A09">
+        <img src="t13a.webp" alt="" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover">
+        <img src="t13b.webp" alt="" class="tenda-scena" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover">
+        <div class="tenda-pannello" style="position:absolute;inset:0;background:linear-gradient(180deg, #8a8272 0%, #807868 45%, #6f6759 100%)"></div>
+      </div>
+      <div style="display:flex;align-items:baseline;gap:12px">
+        <span style="font-family:'GFS Didot',serif;font-size:13px;color:#E8DFCF;opacity:0.45">&Delta;&#180;</span>
+        <span style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.12em;text-transform:uppercase;color:#E8DFCF;opacity:0.85">Tenda opaca &middot; mode 13 &middot; at 36.4%</span>
+      </div>
+      <div style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.08em;color:#E8DFCF;opacity:0.45;margin-top:-6px">3&rarr;3a4 &middot; tenda opaca, colore della colonna rgb(128,120,104) &middot; w 0.024</div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:14px">
+      <div style="position:relative;width:400px;height:225px;overflow:hidden;border:1px solid rgba(232,176,106,0.28);border-radius:2px;background:linear-gradient(150deg, #171110 0%, #241416 60%, #100c0b 100%)">
+        <div class="dissolvenza-scena" style="position:absolute;inset:0;background:linear-gradient(145deg, #38181b 0%, #4a282b 55%, #241114 100%)"></div>
+        <div class="dissolvenza-velo" style="position:absolute;inset:0;background:repeating-conic-gradient(from 0deg at 32% 40%, rgba(232,176,106,0.5) 0deg 0.6deg, rgba(107,34,36,0.85) 0.6deg 1.4deg, rgba(58,26,24,0.8) 1.4deg 2.1deg), repeating-conic-gradient(from 90deg at 70% 65%, rgba(232,223,207,0.12) 0deg 0.4deg, transparent 0.4deg 1.1deg), linear-gradient(140deg, #6B2224 0%, #4a282b 100%)"></div>
+      </div>
+      <div style="display:flex;align-items:baseline;gap:12px">
+        <span style="font-family:'GFS Didot',serif;font-size:13px;color:#e8b06a;opacity:0.8">&Epsilon;&#180;</span>
+        <span style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.12em;text-transform:uppercase;color:#e8b06a;opacity:0.9">Dissolvenza a colore &middot; proposta motion+</span>
+      </div>
+      <div style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.08em;color:#E8DFCF;opacity:0.45;margin-top:-6px">grana via repeating-conic-gradient &middot; per le giunzioni oltre 0.40</div>
+    </div>
+    <div style="display:flex;flex-direction:column;justify-content:flex-end;gap:18px;padding-bottom:44px">
+      <div style="display:flex;align-items:center;gap:12px">
+        <div style="width:14px;height:14px;background:#30666D;border:1px solid rgba(232,223,207,0.2)"></div>
+        <div style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.08em;color:#E8DFCF;opacity:0.6">mode 12 &middot; col 0.188 / 0.400 / 0.427 &rarr; rgb(48,102,109)</div>
+      </div>
+      <div style="display:flex;align-items:center;gap:12px">
+        <div style="width:14px;height:14px;background:#807868;border:1px solid rgba(232,223,207,0.2)"></div>
+        <div style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.08em;color:#E8DFCF;opacity:0.6">mode 13 &middot; col 0.502 / 0.471 / 0.408 &rarr; rgb(128,120,104)</div>
+      </div>
+      <div style="display:flex;align-items:flex-end;gap:16px;margin-top:8px">
+        <svg width="132" height="66" viewBox="0 0 132 66" fill="none" xmlns="http://www.w3.org/2000/svg" style="display:block">
+          <rect x="6" y="6" width="120" height="54" stroke="rgba(232,223,207,0.14)" stroke-width="1" fill="none" />
+          <path d="M6 60 C32.4 6 49.2 6 126 6" stroke="#e8b06a" stroke-width="1.5" fill="none" />
+        </svg>
+        <div style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.08em;color:#E8DFCF;opacity:0.6;padding-bottom:4px">cubic-bezier<br>(0.22, 1, 0.36, 1)</div>
+      </div>
+    </div>
+  </div>
+  <div style="display:flex;flex-direction:column;gap:12px;margin-top:auto">
+    <div style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.18em;text-transform:uppercase;color:#E8DFCF;opacity:0.5">Posizione dei tagli lungo il film &middot; 0 &rarr; 1</div>
+    <div style="position:relative;height:48px">
+      <div style="position:absolute;left:0;right:0;top:10px;height:1px;background:rgba(232,223,207,0.14)"></div>
+      <div style="position:absolute;left:40%;right:0;top:7px;height:7px;background:repeating-linear-gradient(90deg, rgba(232,176,106,0.4) 0 1px, transparent 1px 8px)"></div>
+      <div style="position:absolute;left:3.17%;top:3px;width:1px;height:15px;background:rgba(232,223,207,0.7)"></div>
+      <div style="position:absolute;left:3.17%;top:26px;transform:translateX(-50%);font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:0.08em;color:#E8DFCF;opacity:0.6">3.2 &middot; m11</div>
+      <div style="position:absolute;left:25.29%;top:3px;width:1px;height:15px;background:rgba(232,223,207,0.7)"></div>
+      <div style="position:absolute;left:25.29%;top:26px;transform:translateX(-50%);font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:0.08em;color:#E8DFCF;opacity:0.6">25.3 &middot; m12</div>
+      <div style="position:absolute;left:30.82%;top:3px;width:1px;height:15px;background:rgba(232,223,207,0.7)"></div>
+      <div style="position:absolute;left:30.82%;top:26px;transform:translateX(-50%);font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:0.08em;color:#E8DFCF;opacity:0.6">30.8 &middot; m14</div>
+      <div style="position:absolute;left:36.35%;top:3px;width:1px;height:15px;background:rgba(232,223,207,0.7)"></div>
+      <div style="position:absolute;left:36.35%;top:26px;transform:translateX(-50%);font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:0.08em;color:#E8DFCF;opacity:0.6">36.4 &middot; m13</div>
+      <div style="position:absolute;left:40%;top:3px;width:1px;height:15px;background:rgba(232,176,106,0.7)"></div>
+      <div style="position:absolute;right:0;top:26px;font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:0.08em;color:#e8b06a;opacity:0.75">0.40 &rarr; 1.00 &middot; giunzioni scoperte &middot; proposta &Epsilon;&#180;</div>
+    </div>
+  </div>
+</div>
+</x-dc>
+</body>
+</html>

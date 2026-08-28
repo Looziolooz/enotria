@@ -1,0 +1,15 @@
+import { chromium } from 'playwright-core';
+import http from 'http'; import fs from 'fs'; import path from 'path';
+const DIST=path.resolve('dist');
+const MIME={'.html':'text/html','.js':'application/javascript','.css':'text/css','.webp':'image/webp','.json':'application/json','.woff2':'font/woff2','.png':'image/png'};
+const srv=await new Promise(r=>{const s=http.createServer((q,res)=>{let u=decodeURIComponent(q.url.split('?')[0]);if(u==='/')u='/index.html';const f=path.join(DIST,u);if(fs.existsSync(f)&&fs.statSync(f).isFile()){res.setHeader('Content-Type',MIME[path.extname(f)]||'application/octet-stream');fs.createReadStream(f).pipe(res);}else{res.statusCode=404;res.end();}});s.listen(4421,()=>r(s));});
+const b=await chromium.launch({executablePath:'C:/Program Files (x86)/Google/Chrome/Application/chrome.exe',headless:true});
+const p=await b.newPage({viewport:{width:1440,height:900}});
+const q=new Set(); p.on('response',r=>{if(r.status()===404)q.add(new URL(r.url()).pathname);});
+const st=[]; p.on('pageerror',x=>st.push(x.stack||x.message));
+await p.goto('http://localhost:4421/',{waitUntil:'networkidle'});
+await p.waitForTimeout(3000);
+console.log('404 unici:',[...q].slice(0,6));
+console.log('--- stack primo errore ---');
+console.log((st[0]||'nessuno').split('\n').slice(0,4).join('\n'));
+await b.close(); srv.close();

@@ -1,0 +1,138 @@
+[
+ {
+  "cart": "1",
+  "file": "1.mp4",
+  "da": 0,
+  "a": 1,
+  "tenuti": 20,
+  "su": 20
+ },
+ {
+  "cart": "2",
+  "file": "2.mp4",
+  "da": 0,
+  "a": 1,
+  "tenuti": 19,
+  "su": 19
+ },
+ {
+  "cart": "3",
+  "file": "3.mp4",
+  "da": 0,
+  "a": 1,
+  "tenuti": 23,
+  "su": 23
+ },
+ {
+  "cart": "3-4",
+  "file": "transizione da 3 a 4.mp4",
+  "da": 0,
+  "a": 1,
+  "tenuti": 20,
+  "su": 20
+ },
+ {
+  "cart": "4",
+  "file": "4.mp4",
+  "da": 0,
+  "a": 1,
+  "tenuti": 18,
+  "su": 18
+ },
+ {
+  "cart": "5",
+  "file": "5.mp4",
+  "da": 0,
+  "a": 1,
+  "tenuti": 20,
+  "su": 20
+ },
+ {
+  "cart": "6",
+  "file": "6.mp4",
+  "da": 0,
+  "a": 1,
+  "tenuti": 20,
+  "su": 20
+ },
+ {
+  "cart": "6-7",
+  "file": "transizione 6-7.mp4",
+  "da": 0.4,
+  "a": 0.95,
+  "tenuti": 11,
+  "su": 20
+ },
+ {
+  "cart": "7",
+  "file": "7.mp4",
+  "da": 0.2308,
+  "a": 1,
+  "tenuti": 10,
+  "su": 13
+ },
+ {
+  "cart": "7-9",
+  "file": "transizione 7-9.mp4",
+  "da": 0,
+  "a": 1,
+  "tenuti": 20,
+  "su": 20
+ },
+ {
+  "cart": "9",
+  "file": "9.mp4",
+  "da": 0,
+  "a": 1,
+  "tenuti": 19,
+  "su": 19
+ },
+ {
+  "cart": "10",
+  "file": "10.mp4",
+  "da": 0,
+  "a": 1,
+  "tenuti": 20,
+  "su": 20
+ },
+ {
+  "cart": "10-11",
+  "file": "transizione 10-11.mp4",
+  "da": 0,
+  "a": 1,
+  "tenuti": 20,
+  "su": 20
+ },
+ {
+  "cart": "11",
+  "file": "11.mp4",
+  "da": 0,
+  "a": 1,
+  "tenuti": 19,
+  "su": 19
+ },
+ {
+  "cart": "12",
+  "file": "12.mp4",
+  "da": 0,
+  "a": 1,
+  "tenuti": 20,
+  "su": 20
+ },
+ {
+  "cart": "12-13",
+  "file": "transizione 12-13.mp4",
+  "da": 0.2667,
+  "a": 1,
+  "tenuti": 22,
+  "su": 30
+ },
+ {
+  "cart": "16",
+  "file": "transizione 16.mp4",
+  "da": 0,
+  "a": 1,
+  "tenuti": 30,
+  "su": 30
+ }
+]

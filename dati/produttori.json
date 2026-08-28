@@ -1,0 +1,50 @@
+[
+  {
+    "nome": "Ippolito 1845",
+    "comune": "Cirò Marina (KR)",
+    "denominazione": "Cirò DOC",
+    "riga": "La più antica cantina tuttora attiva in Calabria: oltre centosettanta anni e più di cento ettari fra collina e pianura, a ridosso dello Ionio.",
+    "uve": ["Gaglioppo", "Greco Bianco", "Pecorello", "Greco Nero"],
+    "sito": "https://www.ippolito1845.it/"
+  },
+  {
+    "nome": "Fattoria San Francesco",
+    "comune": "Cirò (KR)",
+    "denominazione": "Cirò DOC · IGT Calabria",
+    "riga": "Nel cuore della zona classica del Cirò, dove la vite incontra il mare.",
+    "uve": ["Gaglioppo", "Greco Bianco", "Magliocco", "Pecorello"],
+    "sito": "https://www.fattoriasanfrancesco.it/"
+  },
+  {
+    "nome": "Cantina Malena",
+    "comune": "Cirò Marina (KR)",
+    "denominazione": "Cirò DOC · IGP Calabria",
+    "riga": "Dal 1908, quattro generazioni sugli stessi vigneti storici di Cirò Marina.",
+    "uve": ["Gaglioppo", "Greco Bianco"],
+    "sito": "https://malena.it/"
+  },
+  {
+    "nome": "Caparra & Siciliani",
+    "comune": "Cirò Marina (KR)",
+    "denominazione": "Cirò DOC",
+    "riga": "Cantina cooperativa che raccoglie i conferimenti dei soci della zona classica.",
+    "uve": ["Gaglioppo", "Greco Bianco"],
+    "sito": "https://caparraesiciliani.com/"
+  },
+  {
+    "nome": "Senatore Vini",
+    "comune": "Cirò Marina (KR)",
+    "denominazione": "Cirò DOC",
+    "riga": "Quattro generazioni di famiglia; Gaglioppo da agricoltura biologica a resa ridotta.",
+    "uve": ["Gaglioppo", "Greco Bianco"],
+    "sito": "https://www.senatorevini.com/"
+  },
+  {
+    "nome": "Baroni Capoano",
+    "comune": "Cirò (KR)",
+    "denominazione": "Cirò DOP · IGP Calabria",
+    "riga": "Circa venti ettari di vigneti autoctoni fra uliveti secolari.",
+    "uve": ["Gaglioppo", "Greco Bianco"],
+    "sito": "https://www.capoano.it/"
+  }
+]

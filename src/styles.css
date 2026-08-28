@@ -1,0 +1,1647 @@
+@import "tailwindcss";
+@import "./fonts.css";
+
+/* ================================================================
+   ŒNOTRIA — palette, typography, choreography rest state.
+   Un solo easing ovunque: cubic-bezier(0.22, 1, 0.36, 1).
+   Struttura pear.no: un solo palco sticky, images:0, tutto canvas.
+   ================================================================ */
+
+@theme {
+  --color-fondo: #0B0A09;
+  --color-terra: #6B2224;
+  --color-calce: #E8DFCF;
+  --color-ionio: #1F5E5B;
+  --color-inchiostro: #241416;
+
+  --font-display: "EB Garamond", "Fraunces", serif;
+  --font-body: "Instrument Sans", sans-serif;
+  --font-mono: "JetBrains Mono", monospace;
+}
+
+/* ——— Fluid type scale (pear.no moderate proportions) ——— */
+:root {
+  --t-body: clamp(0.875rem, 1vw, 1rem);
+  --t-lead: clamp(1.0625rem, 1.35vw, 1.375rem);
+  --t-h2: clamp(1.25rem, 2.4vw, 2.75rem);
+  --t-h1: clamp(1.75rem, 3.4vw, 3.5rem);
+  --t-mono: clamp(0.6875rem, 0.78vw, 0.8125rem);
+  --ease: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+html {
+  scroll-behavior: auto;
+}
+
+body {
+  background: var(--color-fondo);
+  color: var(--color-calce);
+  font-family: var(--font-body);
+  font-size: var(--t-body);
+  font-weight: 400;
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+/* ——— Display type: optical size axis, Light 300 ——— */
+.display {
+  font-family: var(--font-display);
+  font-weight: 300;
+  font-variation-settings: "opsz" 72, "SOFT" 0, "WONK" 0;
+  letter-spacing: -0.015em;
+  line-height: 1.05;
+}
+
+.display-sm {
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-variation-settings: "opsz" 24;
+  letter-spacing: -0.005em;
+  line-height: 1.18;
+}
+
+body,
+.body-text {
+  font-variation-settings: "opsz" 9;
+}
+
+/* ——— Mono labels ——— */
+.mono {
+  font-family: var(--font-mono);
+  font-size: var(--t-mono);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+/* ——— Type hierarchy ——— */
+.t-h1 { font-size: var(--t-h1); }
+.t-h2 { font-size: var(--t-h2); }
+.t-lead { font-size: var(--t-lead); line-height: 1.38; }
+.t-body { font-size: var(--t-body); }
+
+/* ══════════════════════════════════════════════════════════════════
+   CHOREOGRAPHY REST STATE — pear.no vocabolario.
+   Stato di riposo: scale(0.96) + blur(5px) + spostamento DUE assi.
+   Non opacity:0 + translateY(40px).
+   ══════════════════════════════════════════════════════════════════ */
+[data-beat] {
+  opacity: 0;
+  transform: translate3d(var(--dx, -24px), var(--dy, -8px), 0) scale(0.96);
+  filter: blur(5px);
+  transition:
+    opacity 0.9s var(--ease),
+    transform 0.9s var(--ease),
+    filter 0.9s var(--ease);
+}
+[data-beat].on {
+  opacity: 1;
+  transform: none;
+  filter: blur(0);
+}
+
+[data-out="d"].exit { transform: translate3d(0, 40px, 0) scale(0.96); opacity: 0; filter: blur(5px); }
+[data-out="u"].exit { transform: translate3d(0, -40px, 0) scale(0.96); opacity: 0; filter: blur(5px); }
+[data-out="l"].exit { transform: translate3d(-40px, 0, 0) scale(0.96); opacity: 0; filter: blur(5px); }
+[data-out="r"].exit { transform: translate3d(40px, 0, 0) scale(0.96); opacity: 0; filter: blur(5px); }
+[data-out="ld"].exit { transform: translate3d(-30px, 30px, 0) scale(0.96); opacity: 0; filter: blur(5px); }
+[data-out="rd"].exit { transform: translate3d(30px, 30px, 0) scale(0.96); opacity: 0; filter: blur(5px); }
+
+/* ——— Split letters ——— */
+.split-letter {
+  display: inline-block;
+  transition:
+    opacity 0.6s var(--ease),
+    transform 0.6s var(--ease),
+    filter 0.6s var(--ease);
+}
+[data-beat].on .split-letter {
+  opacity: 1;
+  transform: none;
+  filter: none;
+}
+
+/* ——— Reduced motion ——— */
+@media (prefers-reduced-motion: reduce) {
+  [data-beat] {
+    opacity: 1;
+    transform: none;
+    filter: none;
+    transition: none;
+  }
+  .split-letter {
+    opacity: 1;
+    transform: none;
+    filter: none;
+    transition: none;
+  }
+}
+
+/* ══════════════════════════════════════════════════════════════════
+    PALCO — il cuore della timeline (film v2: 2759 fotogrammi, 15 clip)
+    Struttura pear.no: 1 section, 1 pin, 100svh.
+    9000vh: film v3 da 2999 fotogrammi a ~3vh a fotogramma.
+    ══════════════════════════════════════════════════════════════════ */
+.stage {
+  position: relative;
+  height: 9000vh;
+}
+
+.pin {
+  position: sticky;
+  top: 0;
+  height: 100svh;
+  overflow: hidden;
+}
+
+/* ——— Video di fondale: rimosso, scroll-world usa frame scrubbed ——— */
+
+/* ——— Velo scuro — pear.no lo usa in 16 punti col CSS ——— */
+.bg-veil {
+  position: absolute;
+  inset: 0;
+  /* SOPRA il canvas: prima stava sotto e non scuriva niente.
+     E' il velo che fa leggere inserti, linee e testo. */
+  z-index: 2;
+  background: #0B0A09;
+  opacity: 0.55;
+  pointer-events: none;
+}
+
+/* ——— Canvas OGL ——— */
+.stage-canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+  z-index: 2;
+}
+
+/* ——— Overlay testo ——— */
+.stage-copy {
+  position: absolute;
+  inset: 0;
+  z-index: 4;   /* sopra velo, inserti e linee */
+  pointer-events: none;
+}
+
+/* ——— Blocchi testo del palco: maschera gradient sullo sfondo ——— */
+.stage-text {
+  position: absolute;
+  max-width: min(46ch, 44vw);
+  display: flex;
+  align-items: flex-end;
+  padding: clamp(2rem, 6vw, 8rem);
+  opacity: 0;
+  transform: scale(0.96);
+  filter: blur(5px);
+  pointer-events: none;
+  transition: none;
+}
+/* Il genitore si limita ad accendersi: entrata, uscita e deriva vivono
+   sull'inner, animato dal JS. Senza questa regola l'inner si anima
+   dentro un blocco invisibile — ed e' esattamente il bug che c'era. */
+.stage-text.acceso {
+  opacity: 1;
+  transform: none;
+  filter: none;
+}
+
+/* Velo: maschera gradient, non lastra piatta — pear.no usa 16 mask-image */
+.stage-text__inner {
+  position: relative;
+  display: inline-block;
+  padding: 1.1rem 1.4rem;
+  -webkit-mask-image: linear-gradient(175deg, rgba(0,0,0,.92), rgba(0,0,0,.35) 72%, transparent);
+  mask-image: linear-gradient(175deg, rgba(0,0,0,.92), rgba(0,0,0,.35) 72%, transparent);
+  will-change: transform, opacity, filter;
+}
+
+/* Occhiello / label */
+.stage-text__label {
+  margin-bottom: 0.35rem;
+  color: var(--color-ionio);
+  font-size: .68rem;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  opacity: .66;
+  position: relative;
+  z-index: 1;
+}
+
+/* Titolo */
+.stage-text__title {
+  margin-bottom: 0.5rem;
+  font-size: var(--t-h2);
+  line-height: 1.05;
+  font-variation-settings: 'opsz' 72, 'SOFT' 0, 'WONK' 0;
+  color: #E8DFCF;
+  margin: .35rem 0 0;
+  text-shadow: 0 1px 18px rgba(20,10,12,.55);
+  position: relative;
+  z-index: 1;
+}
+
+/* Corpo */
+.stage-text__body {
+  font-size: var(--t-lead);
+  color: #E8DFCF;
+  opacity: .94;
+  margin: .4rem 0 0;
+  max-width: 40ch;
+  line-height: 1.38;
+  text-shadow: 0 1px 14px rgba(20,10,12,.6);
+  position: relative;
+  z-index: 1;
+}
+
+/* Nota: mono piccolo, opacità .62 */
+.stage-text__nota {
+  font-family: var(--font-mono);
+  font-size: .72rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  opacity: 0.62;
+  color: #E8DFCF;
+  margin: .4rem 0 0;
+  position: relative;
+  z-index: 1;
+}
+
+/* ——— Act sections (produttori, chiusa — dopo il palco) ——— */
+.act {
+  position: relative;
+  z-index: 1;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: clamp(2rem, 6vw, 8rem);
+}
+
+/* ——— Utility ——— */
+.ink { color: var(--color-inchiostro); }
+.terra-bg { background: var(--color-terra); }
+.calce-bg { background: var(--color-calce); }
+.ionio-border { border-color: var(--color-ionio); }
+
+/* ——— Spacing ——— */
+.spacer-sm { height: clamp(3rem, 8vh, 6rem); }
+.spacer-md { height: clamp(5rem, 14vh, 10rem); }
+.spacer-lg { height: clamp(8rem, 20vh, 16rem); }
+
+/* ——— Decorative line ——— */
+.rule {
+  height: 1px;
+  background: currentColor;
+  opacity: 0.15;
+}
+
+/* ——— Regia delle battute: sei posti sullo schermo ——— */
+.st-sl { left: 6%;  top: 56%; }
+.st-tr { right: 6%; top: 14%; text-align: right; }
+.st-bl { left: 7%;  bottom: 10%; }
+.st-cr { right: 8%; top: 46%; text-align: right; }
+.st-tl { left: 6%;  top: 13%; }
+.st-br { right: 7%; bottom: 12%; text-align: right; }
+
+/* il titolo si compone lettera per lettera */
+.stage-text .sl { display: inline-block; opacity: 0;
+  transform: translateY(.65em) rotate(5deg);
+  transition: opacity .5s cubic-bezier(.22,1,.36,1), transform .62s cubic-bezier(.22,1,.36,1); }
+.stage-text.acceso .sl { opacity: 1; transform: none; }
+
+/* ——— Griglia produttori ——— */
+.produttori-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: clamp(1rem, 2vw, 2rem);
+}
+
+@media (max-width: 1024px) {
+  .produttori-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 640px) {
+  .produttori-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ——— Scheda produttore ——— */
+.produttore-card {
+  border: 1px solid rgba(232, 223, 207, 0.12);
+  border-radius: 2px;
+  padding: clamp(1rem, 2vw, 1.5rem);
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.produttore-card__nome {
+  font-family: var(--font-display);
+  font-weight: 300;
+  font-variation-settings: "opsz" 72;
+  font-size: clamp(1.25rem, 2vw, 1.75rem);
+  line-height: 1.15;
+}
+
+.produttore-card__meta {
+  font-family: var(--font-mono);
+  font-size: var(--t-mono);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  opacity: 0.7;
+}
+
+.produttore-card__riga {
+  font-size: var(--t-body);
+  line-height: 1.5;
+}
+
+.produttore-card__uve {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.375rem;
+}
+
+.produttore-card__uva {
+  font-family: var(--font-mono);
+  font-size: clamp(0.625rem, 0.7vw, 0.75rem);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 0.2em 0.5em;
+  border: 1px solid rgba(232, 223, 207, 0.2);
+  border-radius: 2px;
+  color: var(--color-ionio);
+}
+
+.produttore-card__link {
+  margin-top: auto;
+  padding-top: 0.5rem;
+}
+
+.produttore-card__link a {
+  font-family: var(--font-mono);
+  font-size: var(--t-mono);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-calce);
+  text-decoration: none;
+  border-bottom: 1px solid rgba(232, 223, 207, 0.3);
+  transition: border-color 0.3s var(--ease);
+}
+
+.produttore-card__link a:hover {
+  border-color: var(--color-calce);
+}
+
+.produttore-card__link a[aria-disabled="true"] {
+  opacity: 0.35;
+  pointer-events: none;
+  border-bottom-style: dashed;
+}
+
+/* ——— Chiusa ——— */
+.chiusa {
+  min-height: 60vh;
+}
+
+.chiusa-quote {
+  text-align: center;
+  max-width: 48rem;
+  margin: 0 auto;
+}
+
+/* ══════════════════════════════════════════════════════════════════
+    FOOTER — solo disclaimer, nessun video.
+    ══════════════════════════════════════════════════════════════════ */
+.site-footer {
+  position: relative;
+  padding: clamp(2rem, 6vw, 8rem);
+  padding-top: clamp(1rem, 3vw, 2rem);
+  overflow: hidden;
+}
+
+.footer-content {
+  position: relative;
+  z-index: 2;
+}
+
+.site-footer .rule {
+  margin-bottom: clamp(1.5rem, 4vw, 3rem);
+}
+
+.site-footer p {
+  font-family: var(--font-mono);
+  font-size: clamp(0.6875rem, 0.75vw, 0.8125rem);
+  line-height: 1.7;
+  letter-spacing: 0.02em;
+  opacity: 0.55;
+  max-width: 48rem;
+}
+
+/* ——— Reduced motion: palco statici ——— */
+@media (prefers-reduced-motion: reduce) {
+  .stage-text {
+    opacity: 1 !important;
+    transform: none !important;
+    filter: none !important;
+    pointer-events: auto !important;
+  }
+}
+
+/* ——— Responsive: testi palco ——— */
+@media (max-width: 640px) {
+  .stage-text { max-width: 82vw; }
+  .st-tr, .st-cr, .st-br { right: 5%; }
+}
+
+/* ═══════════════════════════════════════════════════════════
+   GRECO · VETRO · FONDO RUBINO
+   ═══════════════════════════════════════════════════════════ */
+
+/* ——— Le parole greche ———
+   Il greco cade in GFS Didot per unicode-range: non serve marcare il testo.
+   .greco aggiunge il trattamento epigrafico: capitali larghe, incise. */
+.greco {
+  font-family: 'GFS Didot', 'Fraunces', serif;
+  letter-spacing: 0.22em;
+  font-weight: 400;
+  text-transform: none;
+}
+.stage-text__label.greco { letter-spacing: 0.26em; font-size: .74rem; }
+
+/* ——— Vetro: sostituisce il velo scuro ———
+   Il bordo chiaro sottile e il riflesso interno sono ciò che fa leggere
+   «vetro» invece che «riquadro scuro»: senza quelli è solo un fondo opaco. */
+.stage-text__inner {
+  /* piu' scuro di prima (.28): il committente non riusciva a leggere
+     sopra i fotogrammi chiari */
+  background: rgba(11, 10, 9, 0.55);
+  backdrop-filter: blur(18px) saturate(140%);
+  -webkit-backdrop-filter: blur(18px) saturate(140%);
+  border: 1px solid rgba(232, 223, 207, 0.14);
+  border-radius: 14px;
+  box-shadow: 0 8px 40px rgba(0, 0, 0, .28), inset 0 1px 0 rgba(255, 255, 255, .06);
+  padding: clamp(1rem, 2vw, 1.75rem);
+}
+/* Dove il browser non sfoca il fondo, il vetro diventa opaco: senza questo
+   il testo resterebbe su un velo trasparente e illeggibile. */
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  .stage-text__inner { background: rgba(11, 10, 9, 0.72); }
+}
+
+/* ——— Fondo rubino: il colore dell'ultimo fotogramma del film v2 ———
+   Campionato dal frame 2759 (dentro il bicchiere): rgb(97,21,23).
+   Abbastanza scuro da reggere il testo calce senza correzioni:
+   lo scroll esce dal vino ed entra nella pagina con lo stesso colore. */
+:root { --color-rubino: #611517; }
+.act[data-act="produttori"],
+.act[data-act="chiusa"],
+.site-footer {
+  background: var(--color-rubino);
+}
+
+/* ═══════════════════════════════════════════════════════════
+   SEZIONE PRODUTTORI — vetro, linee, squadratura
+   L'idea: tutto ciò che è moderno (schede, linee, dati) è NETTO
+   e geometrico; tutto ciò che è antico (i dipinti) è morbido.
+   Il contrasto fra i due è il tema del sito, non un vezzo grafico.
+   ═══════════════════════════════════════════════════════════ */
+
+.act[data-act="produttori"] { position: relative; }
+
+/* ——— Squadratura: una cornice sottile che inquadra la sezione ———
+   Non un bordo pieno: solo i quattro angoli, come una guida di stampa. */
+.act[data-act="produttori"]::before,
+.act[data-act="produttori"]::after {
+  content: "";
+  position: absolute;
+  width: clamp(2rem, 6vw, 5rem);
+  height: clamp(2rem, 6vw, 5rem);
+  border: 1px solid rgba(232, 223, 207, .22);
+  pointer-events: none;
+}
+.act[data-act="produttori"]::before {
+  top: clamp(1rem, 3vw, 3rem); left: clamp(1rem, 3vw, 3rem);
+  border-right: 0; border-bottom: 0;
+}
+.act[data-act="produttori"]::after {
+  bottom: clamp(1rem, 3vw, 3rem); right: clamp(1rem, 3vw, 3rem);
+  border-left: 0; border-top: 0;
+}
+
+/* ——— Le schede diventano vetro, come le didascalie del palco ——— */
+.produttore-card {
+  position: relative;
+  background: rgba(11, 10, 9, 0.30);
+  backdrop-filter: blur(16px) saturate(135%);
+  -webkit-backdrop-filter: blur(16px) saturate(135%);
+  border: 1px solid rgba(232, 223, 207, .14);
+  border-radius: 14px;
+  box-shadow: 0 8px 40px rgba(0, 0, 0, .30), inset 0 1px 0 rgba(255, 255, 255, .06);
+  padding: clamp(1.1rem, 2vw, 1.6rem);
+  overflow: hidden;
+  transition: transform .6s var(--ease), border-color .6s var(--ease),
+              box-shadow .6s var(--ease);
+}
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  .produttore-card { background: rgba(11, 10, 9, .74); }
+}
+
+/* Riflesso: una banda di luce che attraversa il vetro in alto.
+   È ciò che distingue una superficie di vetro da un rettangolo scuro. */
+.produttore-card::before {
+  content: "";
+  position: absolute; inset: 0 0 auto 0; height: 1px;
+  background: linear-gradient(90deg,
+    transparent, rgba(232, 223, 207, .45) 30%, rgba(232, 223, 207, .10) 70%, transparent);
+}
+
+.produttore-card:hover {
+  transform: translateY(-4px);
+  border-color: rgba(232, 223, 207, .30);
+  box-shadow: 0 16px 60px rgba(0, 0, 0, .40), inset 0 1px 0 rgba(255, 255, 255, .10);
+}
+
+/* ——— Linee di connessione fra le schede ———
+   Sottili, orizzontali, disegnate fra una scheda e l'altra: legano la
+   griglia invece di lasciare sei riquadri che galleggiano. */
+.produttori-grid { position: relative; }
+.produttore-card:not(:last-child)::after {
+  content: "";
+  position: absolute;
+  top: 50%; right: calc(-1 * clamp(1rem, 2vw, 2rem));
+  width: clamp(1rem, 2vw, 2rem); height: 1px;
+  background: linear-gradient(90deg, rgba(232, 223, 207, .28), rgba(232, 223, 207, .04));
+  pointer-events: none;
+}
+@media (max-width: 900px) {
+  .produttore-card:not(:last-child)::after { display: none; }
+}
+
+/* ——— Il nome del produttore: netto, moderno, in contrasto col dipinto ——— */
+.produttore-card__nome {
+  letter-spacing: -0.01em;
+}
+.produttore-card__uva {
+  border: 1px solid rgba(232, 223, 207, .18);
+  border-radius: 999px;
+  padding: .18em .7em;
+  font-family: var(--font-mono);
+  font-size: .68rem;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  opacity: .82;
+}
+
+/* ——— Banda bottiglie: apre la sezione produttori ———
+   Immagine di fondo, non un <img>: la pagina resta senza immagini nel DOM,
+   come il palco. Le bottiglie sono generate e senza etichetta: i marchi
+   veri entrano solo quando le cantine forniranno i loro materiali. */
+.banda-bottiglie {
+  height: clamp(9rem, 22vw, 17rem);
+  margin-bottom: clamp(1.5rem, 4vw, 3rem);
+  border-radius: 14px;
+  border: 1px solid rgba(232, 223, 207, .12);
+  background-image: url('/img/produttori/bottiglie-03.webp');
+  background-size: cover;
+  background-position: center;
+  position: relative;
+  overflow: hidden;
+}
+/* Sfumatura in basso: la banda non taglia netta, si posa sul rubino. */
+.banda-bottiglie::after {
+  content: "";
+  position: absolute; inset: 0;
+  background: linear-gradient(to bottom, transparent 45%, var(--color-rubino) 100%);
+}
+
+/* ═══════════════════════════════════════════════════════════
+   ARCHI ELLITTICI · SFUMATURE
+   Geometria netta sopra pittura morbida: è il contrasto che
+   fa leggere il sito come moderno invece che come una cartolina.
+   ═══════════════════════════════════════════════════════════ */
+
+.stage-text__inner { position: relative; }
+
+/* L'arco esce dal riquadro: lega la scritta alla scena dietro. */
+.stage-text__arco {
+  position: absolute;
+  left: -8%; top: -18%;
+  width: 116%; height: 136%;
+  overflow: visible;
+  pointer-events: none;
+  z-index: 0;
+}
+.stage-text__inner > *:not(.stage-text__arco) { position: relative; z-index: 1; }
+
+.stage-text__ellisse {
+  fill: none;
+  stroke: rgba(232, 223, 207, .42);
+  stroke-width: 1;
+  vector-effect: non-scaling-stroke;
+  /* pathLength normalizza il tracciato a 1: lo scopriamo con dashoffset */
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  transition: stroke-dashoffset .9s var(--ease), opacity .6s var(--ease);
+}
+
+.stage-text__punto {
+  fill: rgba(232, 223, 207, .70);
+  opacity: 0;
+  transition: opacity .5s var(--ease) .35s;
+}
+.stage-text.acceso .stage-text__punto { opacity: .8; }
+
+/* ——— Sfumatura ai bordi del vetro ———
+   Il riquadro non taglia netto: si dissolve in alto e in basso, così
+   il blocco appoggia sulla pittura invece di ritagliarsi sopra. */
+.stage-text__inner {
+  -webkit-mask-image: linear-gradient(to bottom,
+    transparent 0%, #000 7%, #000 93%, transparent 100%);
+  mask-image: linear-gradient(to bottom,
+    transparent 0%, #000 7%, #000 93%, transparent 100%);
+}
+
+/* ——— Riflesso sul vetro delle didascalie, come sulle schede ——— */
+.stage-text__inner::before {
+  content: "";
+  position: absolute; inset: 0 0 auto 0; height: 1px;
+  background: linear-gradient(90deg,
+    transparent, rgba(232, 223, 207, .40) 35%, rgba(232, 223, 207, .08) 75%, transparent);
+  z-index: 2;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .stage-text__ellisse { transition: none; stroke-dashoffset: 0; }
+  .stage-text__punto { transition: none; opacity: .8; }
+}
+
+/* ═══════════════════════════════════════════════════════════
+   SEGNI DEL MONDO CLASSICO — meandro, numerali, anfora
+   Il fregio geometrico greco si chiama proprio «greca»: qui fa
+   da filo conduttore grafico, sottile e color calce, mai pieno.
+   ═══════════════════════════════════════════════════════════ */
+
+/* ——— Meandro sotto l'occhiello di ogni capitolo ——— */
+.stage-text__label::after {
+  content: "";
+  display: block;
+  width: 4.5em;
+  height: 7px;
+  margin-top: .55em;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='7'%3E%3Cpath d='M0 6.5 V1 H12 V4 H5 V2.5 H9' fill='none' stroke='%23E8DFCF' stroke-opacity='.55' stroke-width='1'/%3E%3C/svg%3E");
+  background-repeat: repeat-x;
+}
+
+/* ——— Meandro come regola della sezione produttori e del footer ——— */
+.rule {
+  border: 0;
+  height: 7px;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='7'%3E%3Cpath d='M0 6.5 V1 H12 V4 H5 V2.5 H9' fill='none' stroke='%23E8DFCF' stroke-opacity='.35' stroke-width='1'/%3E%3C/svg%3E");
+  background-repeat: repeat-x;
+}
+.site-footer {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='7'%3E%3Cpath d='M0 6.5 V1 H12 V4 H5 V2.5 H9' fill='none' stroke='%23E8DFCF' stroke-opacity='.25' stroke-width='1'/%3E%3C/svg%3E");
+  background-repeat: repeat-x;
+  background-position: top center;
+  padding-top: clamp(1.5rem, 3vw, 2.5rem);
+}
+
+/* ——— Anfora lineare accanto alle note ———
+   Disegno a un solo tratto, come su un vaso a figure: corpo, collo,
+   due anse. Nessun riempimento. */
+.stage-text__nota::before {
+  content: "";
+  display: inline-block;
+  width: .95em; height: 1.25em;
+  margin-right: .5em;
+  vertical-align: -18%;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 26'%3E%3Cpath d='M7 1 h6 M8 1 v3 M12 1 v3 M8 4 C3 6 3 12 6 17 C8 20 12 20 14 17 C17 12 17 6 12 4 Z M6 6 C3 5 2 8 5 9 M14 6 C17 5 18 8 15 9 M7 22 h6 M6 25 h8' fill='none' stroke='%23E8DFCF' stroke-opacity='.6' stroke-width='1.3' stroke-linecap='round'/%3E%3C/svg%3E");
+  background-size: contain;
+  background-repeat: no-repeat;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   MATERIA — pennellata, pergamena, legno di botte
+   ═══════════════════════════════════════════════════════════ */
+
+/* ——— I titoli entrano dentro una pennellata ———
+   La texture (impasto bianco su nero) fa da maschera di luminanza:
+   il colpo di pennello attraversa il blocco e lo scopre. Dove il
+   browser non regge mask-mode, il titolo appare senza maschera. */
+@supports (mask-mode: luminance) {
+  .stage-text.pennellata {
+    mask-image: url('/img/texture/pennellata.webp');
+    mask-mode: luminance;
+    mask-repeat: no-repeat;
+    mask-size: 300% 340%;
+    mask-position: 145% 50%;
+    transition: mask-position 1.25s var(--ease), mask-size 1.25s var(--ease);
+  }
+  .stage-text.pennellata.acceso {
+    mask-position: 50% 50%;
+    mask-size: 420% 480%;
+  }
+}
+
+/* ——— Le note stanno su pergamena, con inchiostro ——— */
+.stage-text.pergamena .stage-text__inner {
+  background: url('/img/texture/pergamena.webp') center / cover;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  border-color: rgba(36, 20, 22, .22);
+  box-shadow: 0 10px 40px rgba(0, 0, 0, .38);
+}
+.stage-text.pergamena .stage-text__nota,
+.stage-text.pergamena .stage-text__label {
+  color: #2a1a14;
+}
+/* meandro e anfora passano all'inchiostro sulla pergamena */
+.stage-text.pergamena .stage-text__label::after {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='7'%3E%3Cpath d='M0 6.5 V1 H12 V4 H5 V2.5 H9' fill='none' stroke='%232a1a14' stroke-opacity='.55' stroke-width='1'/%3E%3C/svg%3E");
+}
+.stage-text.pergamena .stage-text__nota::before {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 26'%3E%3Cpath d='M7 1 h6 M8 1 v3 M12 1 v3 M8 4 C3 6 3 12 6 17 C8 20 12 20 14 17 C17 12 17 6 12 4 Z M6 6 C3 5 2 8 5 9 M14 6 C17 5 18 8 15 9 M7 22 h6 M6 25 h8' fill='none' stroke='%232a1a14' stroke-opacity='.65' stroke-width='1.3' stroke-linecap='round'/%3E%3C/svg%3E");
+}
+/* arco e riflesso di vetro non hanno senso sulla carta */
+.stage-text.pergamena .stage-text__arco,
+.stage-text.pergamena .stage-text__inner::before { display: none; }
+
+/* ——— La chiusa appoggia sul legno di botte ———
+   Un velo scuro tiene la citazione leggibile: il legno si intuisce,
+   non grida. */
+.act[data-act="chiusa"] {
+  background-image:
+    linear-gradient(rgba(11, 10, 9, .74), rgba(11, 10, 9, .80)),
+    url('/img/texture/legno-botte.webp');
+  background-size: cover;
+  background-position: center;
+}
+
+/* ——— Le schede dei titoli respirano ———
+   Prima erano cosi' strette da spezzare le parole a meta'
+   («conquista/re»): larghezza vera e niente rotture interne. */
+.stage-text { max-width: min(58ch, 54vw); }
+.stage-text__title,
+.stage-text__body {
+  overflow-wrap: normal;
+  word-break: keep-all;
+  hyphens: none;
+}
+@media (max-width: 720px) {
+  .stage-text { max-width: 86vw; }
+}
+
+/* ——— Schermata di capitolo: tinta unita dietro, scritta grande ———
+   Nessun vetro, nessun arco: la tinta e' gia' il fondo. Solo il testo,
+   centrato e a corpo pieno, con le lettere che si compongono. */
+.st-capitolo {
+  inset: 0;
+  max-width: none;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+.capitolo .stage-text__inner {
+  background: transparent;
+  border: 0;
+  box-shadow: none;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  -webkit-mask-image: none;
+  mask-image: none;
+}
+.capitolo .stage-text__inner::before,
+.capitolo .stage-text__arco { display: none; }
+.stage-text__capitolo {
+  font-family: var(--font-display);
+  font-weight: 300;
+  font-size: clamp(2.4rem, 6.5vw, 5.5rem);
+  line-height: 1.06;
+  letter-spacing: .02em;
+  color: #241416;                 /* inchiostro sulla pietra chiara */
+  text-shadow: 0 1px 0 rgba(255,255,255,.18);
+}
+.capitolo--scuro .stage-text__capitolo {
+  color: var(--color-calce);      /* calce sul legno scuro */
+  text-shadow: 0 2px 24px rgba(0,0,0,.55);
+}
+
+/* ═══════════════════════════════════════════════════════════
+   DETTAGLI — archi visibili, HUD pixel, a-capo, angoli
+   ═══════════════════════════════════════════════════════════ */
+
+/* archi piu' presenti: prima erano un filo da 1px al 42% — invisibili
+   sopra una pittura densa */
+.stage-text__arco {
+  left: -12%; top: -26%;
+  width: 124%; height: 152%;
+}
+.stage-text__ellisse { stroke: rgba(232, 223, 207, .68); stroke-width: 1.6; }
+
+/* il margine esterno enorme strozzava la riga e spezzava le parole */
+.stage-text { padding: clamp(1rem, 2vw, 2.25rem); }
+.stage-text__title { text-wrap: balance; }
+
+/* angoli tecnici sulle schede di vetro: un più in basso a destra e un
+   pixel in alto a sinistra — il tocco HUD sopra la materia antica */
+.stage-text__inner::after {
+  content: "+";
+  position: absolute;
+  right: .55em; bottom: .35em;
+  font-family: var(--font-mono);
+  font-size: .8rem;
+  color: rgba(232, 223, 207, .45);
+  z-index: 2;
+}
+.pergamena .stage-text__inner::after { color: rgba(42, 26, 20, .45); }
+.capitolo .stage-text__inner::after { display: none; }
+
+/* ——— HUD ——— */
+.hud {
+  position: fixed;
+  top: 1.1rem; left: 1.2rem;
+  z-index: 6;
+  display: flex;
+  align-items: center;
+  gap: .7em;
+  font-size: .6rem;
+  letter-spacing: .16em;
+  color: rgba(232, 223, 207, .55);
+  pointer-events: none;
+  mix-blend-mode: difference;
+}
+.hud__pixel { display: inline-flex; gap: 3px; }
+.hud__pixel i {
+  width: 4px; height: 4px;
+  background: rgba(232, 223, 207, .22);
+  display: inline-block;
+}
+.hud__pixel i.on { background: rgba(232, 223, 207, .9); }
+.hud__cursore { animation: hud-lampeggio 1.1s steps(1) infinite; }
+@keyframes hud-lampeggio { 50% { opacity: 0; } }
+@media (prefers-reduced-motion: reduce) { .hud__cursore { animation: none; } }
+
+/* ——— Hero: l'apertura del sito, a corpo pieno ———
+   Titolo in H1, e sotto la riga che colloca il lettore:
+   quando (VIII secolo a.C.) e dove (la costa ionica). */
+.st-hero {
+  inset: 0;
+  max-width: none;
+  align-items: center;
+  justify-content: flex-start;
+  padding-left: clamp(2rem, 8vw, 7rem);
+}
+.st-hero .stage-text__inner { max-width: min(56vw, 680px); }
+.stage-text__hero,
+.stage-text__capitolo {
+  overflow-wrap: normal;
+  word-break: keep-all;
+  hyphens: none;
+}
+.stage-text__hero {
+  font-size: clamp(2.6rem, 6vw, 5.2rem);
+  line-height: 1.04;
+  letter-spacing: -0.015em;
+  text-wrap: balance;
+}
+.stage-text__meta {
+  margin-top: 1.1em;
+  font-size: .68rem;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  opacity: .8;
+}
+
+/* il gruppo-parola non si spezza mai al suo interno */
+.stage-text .parola,
+.chiusa-quote .parola,
+[data-c] .parola { display: inline-block; white-space: nowrap; }
+
+/* ——— Inserti greci: segni a tratto sparsi lungo il film ———
+   Nessuno sfondo, colore in currentColor: si ribalta secondo la
+   luminanza del fotogramma sotto (manifesto dati/luma.json). */
+.inserti {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 3;                 /* sopra il canvas, sotto le didascalie */
+  color: var(--color-calce);  /* fondo scuro: segni di calce */
+  transition: color .5s var(--ease);
+}
+.inserti--inchiostro { color: #241416; }   /* fondo chiaro: inchiostro */
+
+.inserto {
+  position: absolute;
+  opacity: 0;
+  transform: translate(-50%, -50%);
+  transition: opacity .55s var(--ease);
+  /* ombra piu' marcata: sui bordi il segno deve staccarsi dal dipinto */
+  filter: drop-shadow(0 3px 16px rgba(0, 0, 0, .45));
+}
+.inserti--inchiostro .inserto {
+  filter: drop-shadow(0 2px 10px rgba(255, 255, 255, .30));
+}
+/* Il segno e' un rettangolo di colore ritagliato dalla maschera:
+   il disegno vive nel canale alfa del PNG, il colore nel CSS. */
+.inserto {
+  background-color: currentColor;
+  -webkit-mask-repeat: no-repeat; mask-repeat: no-repeat;
+  -webkit-mask-position: center;  mask-position: center;
+  -webkit-mask-size: contain;     mask-size: contain;
+}
+@media (prefers-reduced-motion: reduce) {
+  .inserto { transition: none; }
+}
+
+/* ═══════════════════════════════════════════════════════════
+   CAPITOLI A FIGURE ROSSE
+   Immagine su una meta', testo sull'altra, alternate. Il fondo di
+   ogni blocco e' il colore campionato dall'argilla di quel pannello
+   (--cap-fondo, scritto inline): la sezione richiama l'immagine
+   invece di combatterla.
+   ═══════════════════════════════════════════════════════════ */
+
+.capitoli { position: relative; z-index: 1; }
+
+.cap {
+  background: var(--cap-fondo, #0b0a09);
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-items: center;
+  gap: clamp(1.5rem, 4vw, 4rem);
+  padding: clamp(2.5rem, 7vw, 7rem) clamp(1.5rem, 6vw, 6rem);
+  min-height: 78vh;
+}
+
+/* L'immagine riempie la sua meta' e si fonde col fondo: nessun bordo
+   netto, il pannello sembra dipinto sulla parete della sezione. */
+.cap__fig { position: relative; }
+.cap__fig img,
+.cap__quadro {
+  display: block;
+  width: 100%;
+  height: auto;
+  max-height: 72vh;
+  object-fit: contain;
+  -webkit-mask-image: radial-gradient(ellipse 78% 82% at 50% 50%, #000 58%, transparent 100%);
+  mask-image: radial-gradient(ellipse 78% 82% at 50% 50%, #000 58%, transparent 100%);
+}
+
+/* Stessa resa dell'<img> contain, ma dipinta da sfondo: il DOM resta a zero immagini. */
+.cap__quadro {
+  aspect-ratio: 2 / 3;
+  background-position: center;
+  background-size: contain;
+  background-repeat: no-repeat;
+}
+
+.cap__num {
+  font-size: .78rem;
+  opacity: .75;
+  margin-bottom: 1.1em;
+}
+.cap__titolo {
+  font-weight: 300;
+  font-size: clamp(1.9rem, 3.6vw, 3.2rem);
+  line-height: 1.08;
+  letter-spacing: -0.012em;
+  text-wrap: balance;
+  margin-bottom: .7em;
+}
+.cap__corpo {
+  font-size: var(--t-lead);
+  line-height: 1.55;
+  max-width: 42ch;
+  opacity: .92;
+}
+.cap__nota {
+  margin-top: 1.6em;
+  font-size: .7rem;
+  letter-spacing: .12em;
+  opacity: .68;
+}
+
+/* ——— Su argilla chiara il testo passa a inchiostro ——— */
+.cap--chiaro { color: #241416; }
+.cap--chiaro .cap__corpo { opacity: .9; }
+
+/* ——— L'alternanza ———
+   L'ordine nel markup e' gia' corretto; qui si assegnano solo le colonne,
+   cosi' il testo cade SEMPRE sulla meta' vuota del pannello. */
+.cap--fig-destra .cap__testo { grid-column: 1; }
+.cap--fig-destra .cap__fig   { grid-column: 2; }
+.cap--fig-sinistra .cap__fig   { grid-column: 1; }
+.cap--fig-sinistra .cap__testo { grid-column: 2; }
+
+@media (max-width: 820px) {
+  .cap {
+    grid-template-columns: 1fr;
+    min-height: 0;
+    gap: 1.5rem;
+  }
+  .cap__fig, .cap__testo { grid-column: 1 !important; }
+  .cap--fig-sinistra .cap__fig { order: -1; }
+  .cap__fig img, .cap__quadro { max-height: 46vh; margin-inline: auto; max-width: 30rem; }
+}
+
+/* Il numerale greco del capitolo: era minuscolo perche' ereditava il
+   corpo della mono. Va trattato come un'iniziale, non come un'etichetta. */
+.cap__num.greco {
+  font-family: 'GFS Didot', 'Fraunces', serif;
+  font-size: clamp(1.3rem, 2vw, 1.7rem);
+  letter-spacing: .12em;
+  opacity: .6;
+  margin-bottom: .8em;
+}
+/* meandro sotto il numerale, come nelle didascalie del palco */
+.cap__num::after {
+  content: "";
+  display: block;
+  width: 3.2em; height: 7px;
+  margin-top: .5em;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='7'%3E%3Cpath d='M0 6.5 V1 H12 V4 H5 V2.5 H9' fill='none' stroke='%23E8DFCF' stroke-opacity='.45' stroke-width='1'/%3E%3C/svg%3E");
+  background-repeat: repeat-x;
+}
+.cap--chiaro .cap__num::after {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='7'%3E%3Cpath d='M0 6.5 V1 H12 V4 H5 V2.5 H9' fill='none' stroke='%23241416' stroke-opacity='.5' stroke-width='1'/%3E%3C/svg%3E");
+}
+
+/* ——— Costellazione: canvas 2D sopra la scena, sotto il testo ——— */
+.linee {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 3;
+}
+@media (prefers-reduced-motion: reduce) { .linee { display: none; } }
+
+/* ═══════════════════════════════════════════════════════════
+   VETRO SPESSO — il contrasto fra antico e moderno
+   Un vetro sottile davanti a una pittura si legge come velo.
+   Uno spesso si legge come OGGETTO: bordo illuminato in alto,
+   ombra propria sotto, e una rifrazione che scurisce verso il
+   basso. E' lo spessore a fare il contrasto, non l'opacita'.
+   ═══════════════════════════════════════════════════════════ */
+
+.stage-text__inner,
+.produttore-card {
+  /* la lastra ha una faccia: piu' chiara in alto, piu' densa in basso */
+  background-image:
+    linear-gradient(to bottom,
+      rgba(255, 255, 255, .070) 0%,
+      rgba(255, 255, 255, .022) 26%,
+      rgba(11, 10, 9, .10) 72%,
+      rgba(11, 10, 9, .22) 100%);
+  backdrop-filter: blur(26px) saturate(150%) brightness(.92);
+  -webkit-backdrop-filter: blur(26px) saturate(150%) brightness(.92);
+  border-radius: 18px;
+  /* spessore: bordo illuminato sopra, buio sotto, piu' l'ombra portata */
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, .30),
+    inset 0 -1px 0 rgba(0, 0, 0, .34),
+    inset 1px 0 0 rgba(255, 255, 255, .10),
+    inset -1px 0 0 rgba(0, 0, 0, .18),
+    0 1px 0 rgba(255, 255, 255, .06),
+    0 18px 50px -12px rgba(0, 0, 0, .55),
+    0 2px 8px rgba(0, 0, 0, .30);
+  border: 1px solid rgba(232, 223, 207, .20);
+}
+
+/* Il taglio di luce sul bordo superiore: e' il dettaglio che fa
+   percepire il vetro come spesso invece che come un rettangolo. */
+.stage-text__inner::before,
+.produttore-card::before {
+  height: 1.5px;
+  background: linear-gradient(90deg,
+    transparent 4%,
+    rgba(255, 255, 255, .68) 32%,
+    rgba(255, 255, 255, .22) 64%,
+    transparent 96%);
+  border-radius: 18px 18px 0 0;
+}
+
+/* Sotto il vetro, un'ombra netta e stretta: la lastra sta SOPRA
+   la pittura, non dentro. */
+.stage-text__inner::after {
+  right: .7em; bottom: .5em;
+  font-size: .72rem;
+  opacity: .55;
+}
+
+/* La pergamena resta materia opaca: niente vetro sulla carta. */
+.stage-text.pergamena .stage-text__inner {
+  background-image: none;
+  box-shadow: 0 14px 44px -10px rgba(0, 0, 0, .5), 0 2px 6px rgba(0,0,0,.28);
+  border-color: rgba(36, 20, 22, .28);
+}
+
+/* Le schede produttore: stessa lastra, ma il sollevamento al passaggio
+   del mouse aumenta anche l'ombra — cosi' si vede che si alza. */
+.produttore-card:hover {
+  transform: translateY(-6px);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, .38),
+    inset 0 -1px 0 rgba(0, 0, 0, .34),
+    0 30px 70px -14px rgba(0, 0, 0, .62),
+    0 3px 10px rgba(0, 0, 0, .34);
+}
+
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  .stage-text__inner,
+  .produttore-card { background-color: rgba(11, 10, 9, .74); }
+}
+
+/* ═══════════════════════════════════════════════════════════
+   RIVELAZIONE MASCHERATA
+   Il titolo non compare in dissolvenza: una maschera lo attraversa
+   e lo scopre. E' la grammatica di golden-portal — venti occorrenze
+   di «reveal» contro due di «scroll»: quel sito non scorre, rivela.
+   ═══════════════════════════════════════════════════════════ */
+
+.stage-text__title,
+.stage-text__hero,
+.stage-text__capitolo {
+  --rivela: 112%;
+  /* il fronte e' inclinato di 100deg: taglia le lettere in diagonale,
+     molto piu' vivo di un fronte verticale */
+  -webkit-mask-image: linear-gradient(84deg,
+    #000 0%,
+    #000 var(--rivela),
+    rgba(0, 0, 0, .55) calc(var(--rivela) + 12%),
+    transparent calc(var(--rivela) + 28%),
+    transparent 100%);
+  mask-image: linear-gradient(84deg,
+    #000 0%,
+    #000 var(--rivela),
+    rgba(0, 0, 0, .55) calc(var(--rivela) + 12%),
+    transparent calc(var(--rivela) + 28%),
+    transparent 100%);
+  -webkit-mask-size: 100% 100%;
+  mask-size: 100% 100%;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .stage-text__title,
+  .stage-text__hero,
+  .stage-text__capitolo { -webkit-mask-image: none; mask-image: none; }
+}
+
+/* ——— Il capitolo deve reggere anche su un fondo vivo ———
+   Οἰνωτρία in inchiostro sul mantello rosso spariva. Un alone scuro
+   dietro il testo, non una lastra: il colore della scena resta visibile
+   ma la lettera si stacca. */
+.capitolo .stage-text__inner {
+  background: radial-gradient(ellipse 78% 120% at 50% 50%,
+    rgba(11, 10, 9, .68) 0%,
+    rgba(11, 10, 9, .42) 55%,
+    transparent 100%);
+  padding: clamp(2rem, 6vw, 5rem) clamp(1.5rem, 8vw, 7rem);
+}
+.stage-text__capitolo {
+  color: var(--color-calce);
+  text-shadow: 0 2px 28px rgba(0, 0, 0, .78), 0 1px 3px rgba(0, 0, 0, .55);
+}
+/* sul legno scuro serviva gia' la calce: ora vale per tutti */
+.capitolo--scuro .stage-text__capitolo { color: var(--color-calce); }
+
+/* Il nome italiano sotto quello greco: piu' piccolo, in mono spaziata,
+   perche' si legga come una traduzione e non come un secondo titolo. */
+.capitolo .stage-text__meta {
+  margin-top: .9em;
+  font-size: clamp(.68rem, 1vw, .82rem);
+  letter-spacing: .22em;
+  text-transform: uppercase;
+  opacity: .85;
+  text-shadow: 0 1px 12px rgba(0, 0, 0, .7);
+}
+
+/* ═══════════════════════════════════════════════════════════
+   VETRO SU CARTA NAUTICA
+   La lastra non e' piu' vuota: sotto il vetro c'e' la fibra della
+   pergamena e il reticolo di una carta da navigazione. Il vetro resta
+   vetro (bordo illuminato, spessore, sfocatura del fondo), ma quello
+   che contiene appartiene al mondo antico.
+   ═══════════════════════════════════════════════════════════ */
+
+.stage-text__inner,
+.produttore-card {
+  background-image:
+    /* 1. il reticolo della carta: meridiani e paralleli, appena accennati */
+    repeating-linear-gradient(90deg,
+      rgba(232, 223, 207, .055) 0 1px, transparent 1px 74px),
+    repeating-linear-gradient(0deg,
+      rgba(232, 223, 207, .055) 0 1px, transparent 1px 74px),
+    /* 2. la faccia del vetro: chiara in alto, densa in basso */
+    linear-gradient(to bottom,
+      rgba(255, 255, 255, .070) 0%,
+      rgba(255, 255, 255, .022) 26%,
+      rgba(11, 10, 9, .10) 72%,
+      rgba(11, 10, 9, .22) 100%),
+    /* 3. la fibra della pergamena, sotto tutto */
+    url('/img/texture/pergamena.webp');
+  background-size: auto, auto, 100% 100%, cover;
+  background-repeat: repeat, repeat, no-repeat, no-repeat;
+  background-position: center, center, center, center;
+  /* la pergamena non deve schiarire il vetro: soft-light le lascia solo
+     la grana, non la luminosita' */
+  background-blend-mode: normal, normal, normal, soft-light;
+}
+
+/* La rosa dei venti in filigrana nell'angolo: un segno di carta nautica,
+   non un ornamento — sta sotto il testo e quasi non si vede. */
+.produttore-card::after {
+  content: "";
+  position: absolute;
+  right: -14px; bottom: -14px;
+  width: 92px; height: 92px;
+  opacity: .10;
+  pointer-events: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cg fill='none' stroke='%23E8DFCF' stroke-width='1'%3E%3Ccircle cx='32' cy='32' r='27'/%3E%3Ccircle cx='32' cy='32' r='20'/%3E%3Cpath d='M32 2 L36 28 L32 32 L28 28 Z M32 62 L36 36 L32 32 L28 36 Z M2 32 L28 28 L32 32 L28 36 Z M62 32 L36 28 L32 32 L36 36 Z'/%3E%3Cpath d='M11 11 L30 30 M53 11 L34 30 M11 53 L30 34 M53 53 L34 34'/%3E%3C/g%3E%3C/svg%3E");
+  background-size: contain;
+  background-repeat: no-repeat;
+}
+
+/* La pergamena vera resta materia opaca: niente reticolo sopra la carta. */
+.stage-text.pergamena .stage-text__inner {
+  background-image: url('/img/texture/pergamena.webp');
+  background-size: cover;
+  background-blend-mode: normal;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   PERGAMENA AL POSTO DEL VETRO
+   Il vetro non reggeva il livello: su una pittura a olio una lastra
+   traslucida legge come un pannello di interfaccia, non come un
+   oggetto del mondo. La carta appartiene alla storia che raccontiamo.
+   Conseguenza obbligata: il testo passa a inchiostro. Su carta chiara
+   il colore calce spariva, ed e' quello che si vedeva nelle schede.
+   ═══════════════════════════════════════════════════════════ */
+
+:root { --inchiostro: #2b1a14; }
+
+.stage-text__inner,
+.produttore-card {
+  background-image: url('/img/texture/pergamena.webp');
+  background-size: cover;
+  background-position: center;
+  background-blend-mode: normal;
+  background-color: #e8ddc4;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  border: 1px solid rgba(43, 26, 20, .22);
+  border-radius: 3px;                 /* la carta non ha angoli morbidi */
+  color: var(--inchiostro);
+  /* la carta ha spessore proprio: ombra corta e netta, non un alone */
+  box-shadow:
+    0 1px 0 rgba(255, 252, 240, .55) inset,
+    0 14px 34px -12px rgba(0, 0, 0, .60),
+    0 2px 5px rgba(0, 0, 0, .28);
+}
+
+/* Il bordo strappato: la carta non finisce con una riga dritta. */
+.stage-text__inner::before,
+.produttore-card::before {
+  height: 2px;
+  background: linear-gradient(90deg,
+    transparent 2%, rgba(43, 26, 20, .16) 18%, transparent 34%,
+    rgba(43, 26, 20, .12) 56%, transparent 72%, rgba(43, 26, 20, .18) 88%, transparent 98%);
+  border-radius: 0;
+}
+
+/* ——— Tutto il testo passa a inchiostro ——— */
+.stage-text__inner .stage-text__title,
+.stage-text__inner .stage-text__hero,
+.stage-text__inner .stage-text__body,
+.stage-text__inner .stage-text__nota,
+.stage-text__inner .stage-text__label,
+.stage-text__inner .stage-text__meta,
+.produttore-card,
+.produttore-card__nome,
+.produttore-card__meta,
+.produttore-card__riga {
+  color: var(--inchiostro);
+  text-shadow: none;
+}
+.stage-text__inner .stage-text__label,
+.produttore-card__meta { opacity: .72; }
+
+/* meandro, anfora e segno d'angolo in inchiostro */
+.stage-text__inner .stage-text__label::after {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='7'%3E%3Cpath d='M0 6.5 V1 H12 V4 H5 V2.5 H9' fill='none' stroke='%232b1a14' stroke-opacity='.55' stroke-width='1'/%3E%3C/svg%3E");
+}
+.stage-text__inner::after { color: rgba(43, 26, 20, .40); }
+
+/* i tag delle uve: incisi nella carta, non riquadri luminosi */
+.produttore-card__uva {
+  border-color: rgba(43, 26, 20, .30);
+  color: var(--inchiostro);
+  opacity: .78;
+}
+.produttore-card a,
+.produttore-card__link {
+  color: var(--inchiostro);
+  text-decoration-color: rgba(43, 26, 20, .45);
+}
+
+/* la rosa dei venti si scurisce per restare visibile sulla carta */
+.produttore-card::after {
+  opacity: .13;
+  filter: invert(1) sepia(.4);
+}
+
+/* L'arco ellittico era pensato per il vetro: sulla carta stona. */
+.stage-text__arco { display: none; }
+
+/* Il capitolo resta senza carta: sta sul fondo pieno, e li' serve la calce. */
+.capitolo .stage-text__inner {
+  background-image: none;
+  background-color: transparent;
+  border: 0;
+  box-shadow: none;
+}
+.capitolo .stage-text__inner::before { display: none; }
+
+/* ═══════════════════════════════════════════════════════════
+   DUE CARATTERI PER LE SCHEDE, COMMUTABILI
+   ?schede=nudo    → nessun contenitore, solo testo sul dipinto
+   ?schede=lastra  → lastra scura piena, opaca e netta
+   Il confronto si fa sullo stesso fotogramma, non a memoria.
+   ═══════════════════════════════════════════════════════════ */
+
+/* ——— NUDO: nessun contenitore ———
+   Il testo sta direttamente sul dipinto. Regge grazie a due ombre
+   sovrapposte: una stretta che stacca la lettera dal fondo, una larga
+   che scava un alone scuro sotto il blocco. E' il trattamento dei
+   sottotitoli cinematografici, dove nessuna cornice e' ammessa. */
+html.schede-nudo .stage-text__inner,
+html.schede-nudo .produttore-card {
+  background: none !important;
+  background-image: none !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  border: 0 !important;
+  box-shadow: none !important;
+  border-radius: 0 !important;
+  padding: 0 !important;
+  color: var(--color-calce) !important;
+}
+html.schede-nudo .stage-text__inner::before,
+html.schede-nudo .stage-text__inner::after,
+html.schede-nudo .produttore-card::before,
+html.schede-nudo .produttore-card::after { display: none !important; }
+
+html.schede-nudo .stage-text__title,
+html.schede-nudo .stage-text__hero,
+html.schede-nudo .stage-text__body,
+html.schede-nudo .stage-text__nota,
+html.schede-nudo .stage-text__label,
+html.schede-nudo .stage-text__meta,
+html.schede-nudo .produttore-card__nome,
+html.schede-nudo .produttore-card__meta,
+html.schede-nudo .produttore-card__riga {
+  color: var(--color-calce) !important;
+  text-shadow:
+    0 1px 2px rgba(0, 0, 0, .95),
+    0 2px 14px rgba(0, 0, 0, .85),
+    0 6px 46px rgba(0, 0, 0, .70);
+}
+html.schede-nudo .stage-text { max-width: min(46ch, 44vw); }
+
+/* ——— LASTRA: fondo scuro pieno ———
+   Nessuna trasparenza, nessuna texture, nessuna sfocatura: un
+   rettangolo opaco che non compete col dipinto e non finge di
+   essere materia. Il bordo e' un filo, non una cornice. */
+html.schede-lastra .stage-text__inner,
+html.schede-lastra .produttore-card {
+  background: #131110 !important;
+  background-image: none !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  border: 1px solid rgba(232, 223, 207, .16) !important;
+  border-radius: 2px !important;
+  box-shadow: 0 20px 60px -18px rgba(0, 0, 0, .78) !important;
+  color: var(--color-calce) !important;
+  padding: clamp(1.1rem, 2vw, 1.9rem) !important;
+}
+html.schede-lastra .stage-text__inner::before,
+html.schede-lastra .produttore-card::before {
+  height: 1px;
+  background: rgba(232, 223, 207, .22);
+  border-radius: 0;
+}
+html.schede-lastra .stage-text__title,
+html.schede-lastra .stage-text__hero,
+html.schede-lastra .stage-text__body,
+html.schede-lastra .stage-text__nota,
+html.schede-lastra .stage-text__label,
+html.schede-lastra .stage-text__meta,
+html.schede-lastra .produttore-card__nome,
+html.schede-lastra .produttore-card__meta,
+html.schede-lastra .produttore-card__riga {
+  color: var(--color-calce) !important;
+  text-shadow: none !important;
+}
+html.schede-lastra .stage-text__label,
+html.schede-lastra .produttore-card__meta { opacity: .68; }
+html.schede-lastra .produttore-card__uva {
+  border-color: rgba(232, 223, 207, .24) !important;
+  color: var(--color-calce) !important;
+}
+html.schede-lastra .stage-text__inner::after { color: rgba(232, 223, 207, .38) !important; }
+
+/* ——— Ornamenti a tratto: SVG in currentColor, niente maschera ——— */
+.inserto--orna {
+  background: none;
+  -webkit-mask-image: none;
+  mask-image: none;
+  filter: drop-shadow(0 2px 12px rgba(0, 0, 0, .35));
+}
+.inserti--inchiostro .inserto--orna {
+  filter: drop-shadow(0 1px 8px rgba(255, 255, 255, .25));
+}
+.inserto--orna svg { display: block; width: 100%; height: 100%; }
+
+/* ═══════════════════════════════════════════════════════════
+   CARTINA — nove denominazioni, cinque province, a tratto
+   Disegno a tratto coerente con gli ornamenti di inserti.js
+   (arco, meandro): niente foto, niente loghi, solo linea e
+   macchia di colore dai toni della palette.
+   ═══════════════════════════════════════════════════════════ */
+
+.cartina {
+  display: grid;
+  grid-template-columns: 1.4fr 1fr;
+  gap: clamp(1.5rem, 4vw, 3rem);
+  align-items: start;
+  margin-bottom: clamp(1.5rem, 4vw, 3rem);
+}
+@media (max-width: 820px) {
+  .cartina { grid-template-columns: 1fr; }
+}
+
+.cartina__mappa svg {
+  width: 100%;
+  height: auto;
+  display: block;
+  color: var(--color-calce);
+}
+
+/* Il contorno della regione: un filo, non una costa da atlante */
+.cartina__costa {
+  fill: none;
+  stroke: var(--color-calce);
+  stroke-opacity: .5;
+  stroke-width: 1;
+  vector-effect: non-scaling-stroke;
+}
+
+/* Macchie di provincia: opacita' leggere di terra/ionio, mai colore nuovo */
+.cartina__regione {
+  stroke-width: .6;
+  vector-effect: non-scaling-stroke;
+  transition: fill-opacity .6s var(--ease), stroke-opacity .6s var(--ease);
+}
+.cartina__regione--terra { fill: var(--color-terra); stroke: var(--color-terra); fill-opacity: .12; stroke-opacity: .3; }
+.cartina__regione--ionio { fill: var(--color-ionio); stroke: var(--color-ionio); fill-opacity: .12; stroke-opacity: .3; }
+.cartina__provincia--attiva .cartina__regione { fill-opacity: .22; stroke-opacity: .5; }
+
+.cartina__provincia {
+  font-family: var(--font-mono);
+  font-size: 8.5px;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  fill: currentColor;
+  opacity: .62;
+  cursor: pointer;
+  outline: none;
+  transition: opacity .4s var(--ease);
+}
+.cartina__provincia:hover,
+.cartina__provincia:focus { opacity: 1; }
+
+/* ——— Punti DOC ——— */
+.cartina__punto { cursor: pointer; outline: none; }
+.cartina__perno {
+  fill: #e8b06a;
+  transition: r .3s var(--ease);
+}
+.cartina__punto--attivo .cartina__perno { r: 5.5; }
+
+.cartina__alone {
+  fill: rgba(232, 176, 106, .12);
+  opacity: 0;
+  transform: scale(.5);
+  transform-origin: 0 0;
+  transition: opacity .4s var(--ease), transform .4s var(--ease);
+}
+.cartina__punto:hover .cartina__alone,
+.cartina__punto:focus .cartina__alone,
+.cartina__punto--attivo .cartina__alone { opacity: 1; transform: scale(1); }
+
+.cartina__punto-etichetta {
+  font-family: var(--font-mono);
+  font-size: 7px;
+  letter-spacing: .05em;
+  text-transform: uppercase;
+  fill: currentColor;
+  opacity: .5;
+  pointer-events: none;
+  transition: opacity .4s var(--ease);
+}
+.cartina__punto:hover .cartina__punto-etichetta,
+.cartina__punto:focus .cartina__punto-etichetta,
+.cartina__punto--attivo .cartina__punto-etichetta { opacity: .9; }
+
+/* ——— Pannello: la lastra scura, niente vetro / backdrop-filter ———
+   (il vetro era stato scartato altrove nel progetto: non si riapre). */
+.cartina__pannello {
+  background: rgba(11, 10, 9, .72);
+  border: 1px solid rgba(232, 223, 207, .14);
+  border-radius: 2px;
+  padding: clamp(1rem, 2vw, 1.5rem);
+  min-height: 12rem;
+  transition: border-color .5s var(--ease);
+}
+.cartina__pannello:hover { border-color: rgba(232, 223, 207, .24); }
+
+.cartina__scheda-tipo {
+  font-size: .66rem;
+  letter-spacing: .16em;
+  opacity: .6;
+  margin-bottom: .5em;
+}
+.cartina__scheda-nome {
+  font-family: var(--font-display);
+  font-weight: 300;
+  font-size: clamp(1.3rem, 2vw, 1.8rem);
+  line-height: 1.1;
+  margin-bottom: .4em;
+}
+.cartina__scheda-comuni {
+  font-family: var(--font-mono);
+  font-size: var(--t-mono);
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  opacity: .72;
+  margin-bottom: .7em;
+}
+.cartina__scheda-vitigni { display: flex; flex-wrap: wrap; gap: .375rem; margin-bottom: .8em; }
+.cartina__vitigno {
+  font-family: var(--font-mono);
+  font-size: .66rem;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  padding: .18em .6em;
+  border: 1px solid rgba(232, 223, 207, .18);
+  border-radius: 999px;
+  color: var(--color-ionio);
+  opacity: .85;
+}
+.cartina__scheda-nota { font-size: var(--t-body); line-height: 1.5; opacity: .9; }
+
+/* ——— Directory "altre cantine": mono, colonne responsive ——— */
+.cartina__scheda-label { margin-bottom: .5em; }
+.cartina__cantine {
+  columns: 2;
+  column-gap: 1.5rem;
+  list-style: none;
+  margin: 0 0 .9em;
+  padding: 0;
+  font-family: var(--font-mono);
+  font-size: clamp(.62rem, .7vw, .72rem);
+  letter-spacing: .04em;
+  text-transform: uppercase;
+  opacity: .8;
+  line-height: 1.9;
+}
+.cartina__cantine li { break-inside: avoid; }
+@media (max-width: 820px) { .cartina__cantine { columns: 1; } }
+.cartina__fonte {
+  font-style: italic;
+  font-size: .72rem;
+  line-height: 1.4;
+  opacity: .45;
+}
+
+/* ——— Righe legenda: IGT e vitigni autoctoni ——— */
+.cartina__legenda { margin-top: clamp(1rem, 2vw, 1.5rem); }
+.cartina__riga {
+  font-size: .66rem;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  opacity: .8;
+  margin: 0 0 .35em;
+}
+.cartina__riga--autoctoni { opacity: .6; }
+

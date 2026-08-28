@@ -95,6 +95,24 @@ var sceneEnds = [];
 var fallbackTextures = [];
 
 /* ══════════════════════════════════════════════════════════════════════
+   TIER E INQUADRATURA SU SCHERMO STRETTO
+   Sotto gli 820 px si serve il tier mobile (720p, meta' peso e meta'
+   memoria GPU). E su un ritratto il cover ritaglia gia' moltissimo:
+   gli zoom vanno smorzati, altrimenti il soggetto esce dal quadro.
+   ══════════════════════════════════════════════════════════════════════ */
+var TIER = (typeof window !== 'undefined' && window.innerWidth < 820) ? 'frames-m' : 'frames';
+
+function fattoreZoom() {
+  if (typeof window === 'undefined') return 1;
+  var ar = window.innerWidth / Math.max(1, window.innerHeight);
+  if (ar >= 1.2) return 1;              /* orizzontale: regia piena */
+  if (ar <= 0.62) return 0.34;          /* ritratto stretto: il cover ha gia' ingrandito */
+  return 0.34 + (ar - 0.62) * (0.66 / 0.58);
+}
+var ZOOM_K = fattoreZoom();
+function zSchermo(z) { return 1 + (z - 1) * ZOOM_K; }
+
+/* ══════════════════════════════════════════════════════════════════════
    Utilita
    ══════════════════════════════════════════════════════════════════════ */
 
@@ -113,7 +131,7 @@ function loadFrame(gl, url) {
     img.crossOrigin = 'anonymous';
     img.onload = function () {
       try {
-        var tex = new Texture(gl, { image: img });
+        var tex = new Texture(gl, { image: img, generateMipmaps: false, minFilter: gl.LINEAR, magFilter: gl.LINEAR, wrapS: gl.CLAMP_TO_EDGE, wrapT: gl.CLAMP_TO_EDGE });
         tex.image = img;
         tex.needsUpdate = true;
         tex._realWidth = img.naturalWidth;
@@ -154,7 +172,7 @@ function loadScene(gl, sceneIdx) {
   sceneFrames[sceneIdx]._loaded = false;
 
   var nn = CLIP_FOLDERS[sceneIdx];
-  var basePath = '/frames/' + nn + '/';
+  var basePath = '/' + TIER + '/' + nn + '/';
   var BATCH = 24;
   var total = data.n;
 
@@ -229,8 +247,8 @@ function getFrameTex(sceneIdx, frameIdx) {
    dal centro verso i bordi, si distruggono le texture fuori finestra.
    ══════════════════════════════════════════════════════════════════════ */
 
-var FIN_DIETRO = 45;        /* fotogrammi tenuti dietro il playhead */
-var FIN_AVANTI = 110;       /* fotogrammi tenuti davanti */
+var FIN_DIETRO = TIER === "frames-m" ? 30 : 45;        /* fotogrammi tenuti dietro il playhead */
+var FIN_AVANTI = TIER === "frames-m" ? 70 : 110;       /* fotogrammi tenuti davanti */
 
 /* Sonda diagnostica (solo lettura, usata da lab/qa-scrub.mjs) */
 if (typeof window !== 'undefined') {
@@ -278,7 +296,7 @@ function curaFinestra(gl) {
     _richiesti[idx] = 1;
     _inflight++;
     var num = String(idx + 1).padStart(4, '0');
-    loadFrame(gl, '/frames/' + CLIP_FOLDERS[0] + '/' + num + '.webp').then(function (tex) {
+    loadFrame(gl, '/' + TIER + '/' + CLIP_FOLDERS[0] + '/' + num + '.webp').then(function (tex) {
       _inflight--;
       delete _richiesti[idx];
       if (!tex) { _falliti[idx] = (_falliti[idx] || 0) + 1; return; }
@@ -866,19 +884,51 @@ fetch('/dati/ponti.json')
   .then(function (d) { PONTI_VIVI = d.ponti || []; })
   .catch(function () { PONTI_VIVI = []; });
 
+/* ══════════════════════════════════════════════════════════════════════
+   INQUADRATURE — la camera dentro le scene: entra su una mano, un volto,
+   un oggetto, tiene, e riapre. Il film continua a scorrere sotto.
+   Fuori da queste finestre (e dai ponti) si sta a pieno quadro.
+   ══════════════════════════════════════════════════════════════════════ */
+var INQUADRATURE = [];
+fetch('/dati/inquadrature.json')
+  .then(function (r) { return r.json(); })
+  .then(function (d) { INQUADRATURE = d.inquadrature || []; })
+  .catch(function () { INQUADRATURE = []; });
+
+function trovaInquadratura(f0) {
+  for (var i = 0; i < INQUADRATURE.length; i++) {
+    var q = INQUADRATURE[i];
+    var entra = q.entra || 30, esce = q.esce || 30;
+    if (f0 < q.da - entra || f0 > q.a + esce) continue;
+    var peso;
+    if (f0 < q.da) peso = sstep2((f0 - (q.da - entra)) / entra);
+    else if (f0 > q.a) peso = sstep2(1 - (f0 - q.a) / esce);
+    else peso = 1;
+    return { q: q, peso: peso };
+  }
+  return null;
+}
+
 /* smootherstep quintico: velocita' nulla agli estremi, niente strappi */
 function sstep2(t) {
   t = Math.max(0, Math.min(1, t));
   return t * t * t * (t * (t * 6 - 15) + 10);
 }
 
+/* Un ponte ha fino a tre zone:
+   pre  — la camera scende sul dettaglio MENTRE il film continua a scorrere
+   core — i 30 fotogrammi cotti: fermo immagine su entrambi i lati, fusione
+   post — la camera riapre mentre il film e' gia' ripartito
+   pre/post sono opzionali (campi preA/postB in fotogrammi): servono ai
+   raccordi lenti, dove lo zoom deve respirare oltre la durata del taglio. */
 function trovaPonte(f0) {
   for (var i = 0; i < PONTI_VIVI.length; i++) {
     var p = PONTI_VIVI[i];
-    var lo = p.da - 1.5, hi = p.a - 0.5;   /* zona in indici 0-based continui */
-    if (f0 >= lo && f0 <= hi) {
-      return { dati: p, p: (f0 - lo) / (hi - lo) };
-    }
+    var lo = p.da - 1.5, hi = p.a - 0.5;
+    var pre = p.preA || 0, post = p.postB || 0;
+    if (f0 >= lo && f0 <= hi) return { dati: p, zona: 'core', p: (f0 - lo) / (hi - lo) };
+    if (pre && f0 >= lo - pre && f0 < lo) return { dati: p, zona: 'pre', p: (f0 - (lo - pre)) / pre };
+    if (post && f0 > hi && f0 <= hi + post) return { dati: p, zona: 'post', p: (f0 - hi) / post };
   }
   return null;
 }
@@ -905,7 +955,11 @@ function aggiornaHud(progresso) {
   if (frame === hudUltimo) return;
   hudUltimo = frame;
   if (!hudEl) {
+    hudEl = document.getElementById('hud-film');
+  }
+  if (!hudEl) {
     hudEl = document.createElement('div');
+    hudEl.id = 'hud-film';
     hudEl.className = 'hud mono';
     hudEl.setAttribute('aria-hidden', 'true');
     var testo = document.createElement('span');
@@ -923,6 +977,7 @@ function aggiornaHud(progresso) {
   }
   hudEl.style.opacity = (frame >= n - 2) ? '0' : '1';
   var nomeSeg = nomeSegmento(frame);
+  if (nomeSeg && window.innerWidth < 720) nomeSeg = nomeSeg.split(' · ')[0];
   hudEl.firstChild.textContent = 'KAPE ' + String(frame + 1).padStart(3, '0') + ' / ' + n +
     (nomeSeg ? '   ' + nomeSeg : '');
   var pieni = Math.round((frame / (n - 1)) * 12);
@@ -1100,16 +1155,38 @@ export function initShader() {
       var pv = ponteVivo.dati, pp = ponteVivo.p;
       var apice = pv.apice !== undefined ? pv.apice : 0.5;
       var fusione = pv.fusione !== undefined ? pv.fusione : 0.24;
+      /* ⚠️ ponti.json tiene le coordinate in spazio IMMAGINE (y verso il
+         basso, come le misura ffmpeg); lo shader campiona con y verso
+         l'alto. Il ribaltamento va fatto qui, una volta sola. */
+      var ayA = 1 - pv.A.py, ayB = 1 - pv.B.py;
+      /* La corsa dello zoom e' UNA sola, continua attraverso le tre zone:
+         pre (0→f1), core (f1→f2), post (f2→1). Cosi' la camera non ha
+         scalini di velocita' ai confini di zona. */
+      var preF = pv.preA || 0, postF = pv.postB || 0;
+      var durCore = (pv.a - 0.5) - (pv.da - 1.5);
+      var tot = preF + durCore + postF;
+      var f1 = preF / tot, f2 = (preF + durCore) / tot;
+      var T = ponteVivo.zona === 'pre' ? pp * f1
+            : ponteVivo.zona === 'core' ? f1 + pp * (f2 - f1)
+            : f2 + pp * (1 - f2);
+      var apiceT = f1 + apice * (f2 - f1);
       /* lato A: da campo pieno verso il dettaglio */
-      zoomAVal = 1 + (pv.A.z - 1) * sstep2(pp / Math.min(1, apice + fusione * 0.5));
-      var sPanA = pv.A.z > 1 ? (1 - 1 / zoomAVal) / (1 - 1 / pv.A.z) : 0;
+      zoomAVal = 1 + (zSchermo(pv.A.z) - 1) * sstep2(T / Math.max(0.05, apiceT + (f2 - f1) * fusione * 0.5));
+      var zAmax = zSchermo(pv.A.z);
+      var sPanA = zAmax > 1 ? (1 - 1 / zoomAVal) / (1 - 1 / zAmax) : 0;
       panAX = (pv.A.px - 0.5) * sPanA;
-      panAY = (pv.A.py - 0.5) * sPanA;
+      panAY = (ayA - 0.5) * sPanA;
       /* lato B: dal dettaglio al campo pieno */
-      zoomBVal = 1 + (pv.B.z - 1) * sstep2((1 - pp) / Math.min(1, 1 - apice + fusione * 0.5));
-      var sPanB = pv.B.z > 1 ? (1 - 1 / zoomBVal) / (1 - 1 / pv.B.z) : 0;
+      zoomBVal = 1 + (zSchermo(pv.B.z) - 1) * sstep2((1 - T) / Math.max(0.05, 1 - apiceT + (f2 - f1) * fusione * 0.5));
+      var zBmax = zSchermo(pv.B.z);
+      var sPanB = zBmax > 1 ? (1 - 1 / zoomBVal) / (1 - 1 / zBmax) : 0;
       panBX = (pv.B.px - 0.5) * sPanB;
-      panBY = (pv.B.py - 0.5) * sPanB;
+      panBY = (ayB - 0.5) * sPanB;
+      /* pre/post: il film SCORRE ancora, la camera lo accompagna — un solo
+         zoom per entrambe le texture (sub-frame), niente fermo immagine */
+      if (ponteVivo.zona === 'pre') { zoomBVal = zoomAVal; panBX = panAX; panBY = panAY; }
+      if (ponteVivo.zona === 'post') { zoomAVal = zoomBVal; panAX = panBX; panAY = panBY; }
+      ponteVivo.T = T; ponteVivo.apiceT = apiceT; ponteVivo.f1 = f1; ponteVivo.f2 = f2;
       /* deriva del gesto: nulla agli estremi (continuita' col film),
          piena attraverso l'apice — il movimento cavalca il taglio */
       if (pv.dir) {
@@ -1162,6 +1239,18 @@ export function initShader() {
       zoomAVal = lerp(SCENES[scene.idx].zoomStart, SCENES[scene.idx].zoom, scene.local);
       panAX = lerp(SCENES[scene.idx].panStart[0], SCENES[scene.idx].pan[0], scene.local);
       panAY = lerp(SCENES[scene.idx].panStart[1], SCENES[scene.idx].pan[1], scene.local);
+      /* ── Inquadratura ravvicinata dentro la scena: la camera scende su
+         una mano, un volto, un oggetto, tiene, e riapre — mentre il film
+         scorre. Il peso vale 0 fuori, 1 nel cuore dell'inquadratura. ── */
+      var inq = trovaInquadratura(attuale * ((framesData[0] && framesData[0].n) || 1) - 1);
+      if (inq && inq.peso > 0.001) {
+        var qzMax = zSchermo(inq.q.z);
+        var qz = 1 + (qzMax - 1) * inq.peso;
+        var sQ = qzMax > 1 ? (1 - 1 / qz) / (1 - 1 / qzMax) : 0;
+        zoomAVal = qz;
+        panAX = (inq.q.px - 0.5) * sQ;
+        panAY = ((1 - inq.q.py) - 0.5) * sQ;
+      }
       zoomBVal = zoomAVal;
       panBX = panAX;
       panBY = panAY;
@@ -1198,11 +1287,20 @@ export function initShader() {
     }
 
     if (ponteVivo) {
-      /* crossfade centrato sull'apice del ponte, largo quanto la fusione */
-      var apiceCf = ponteVivo.dati.apice !== undefined ? ponteVivo.dati.apice : 0.5;
-      var fusioneCf = ponteVivo.dati.fusione !== undefined ? ponteVivo.dati.fusione : 0.24;
       program.uniforms.mode.value = 17;
-      program.uniforms.progress.value = sstep2((ponteVivo.p - (apiceCf - fusioneCf * 0.5)) / fusioneCf);
+      if (ponteVivo.zona === 'core') {
+        /* fusione centrata sull'apice fra i due fermi-immagine */
+        var fusioneCf = ponteVivo.dati.fusione !== undefined ? ponteVivo.dati.fusione : 0.24;
+        var apiceCf = ponteVivo.dati.apice !== undefined ? ponteVivo.dati.apice : 0.5;
+        program.uniforms.progress.value = sstep2((ponteVivo.p - (apiceCf - fusioneCf * 0.5)) / fusioneCf);
+      } else {
+        /* pre/post: fusione sub-frame fra N e N+1, il film scorre */
+        var nSubP = (framesData[0] && framesData[0].n) || 1;
+        var fSubP = attuale * (nSubP - 1);
+        ponteVivo.subA = Math.floor(fSubP);
+        ponteVivo.subB = Math.min(nSubP - 1, ponteVivo.subA + 1);
+        program.uniforms.progress.value = fSubP - ponteVivo.subA;
+      }
     } else if (taglio) {
       program.uniforms.progress.value = tProg;
       program.uniforms.mode.value = taglio.modo;
@@ -1240,9 +1338,12 @@ export function initShader() {
     }
 
     if (ponteVivo) {
-      /* i due fermi-immagine sorgente del match cut, zoomati dal vivo */
-      var tPA = getFrameTex(0, ponteVivo.dati.frameA);
-      var tPB = getFrameTex(0, ponteVivo.dati.frameB);
+      /* core: i due fermi-immagine del match cut. pre/post: i fotogrammi
+         vivi del film, che continua a scorrere sotto la camera. */
+      var iPA = ponteVivo.zona === 'core' ? ponteVivo.dati.frameA : ponteVivo.subA;
+      var iPB = ponteVivo.zona === 'core' ? ponteVivo.dati.frameB : ponteVivo.subB;
+      var tPA = getFrameTex(0, iPA);
+      var tPB = getFrameTex(0, iPB);
       if (tPA) { program.uniforms.t1.value = tPA; program.uniforms.img.value = [tPA._realWidth, tPA._realHeight]; }
       if (tPB) { program.uniforms.t2.value = tPB; }
       else if (tPA) { program.uniforms.t2.value = tPA; }

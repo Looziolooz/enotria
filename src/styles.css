@@ -1724,3 +1724,41 @@ html.schede-lastra .stage-text__inner::after { color: rgba(232, 223, 207, .38) !
 /* La directory delle cantine minori respira su due colonne */
 .cartina__cantine { columns: 2; column-gap: 2rem; }
 @media (max-width: 720px) { .cartina__cantine { columns: 1; } }
+
+/* ═══════════════════════════════════════════════════════════
+   MOBILE E TABLET — il film e la pagina su schermo stretto.
+   Il palco resta a pieno schermo (il cover dello shader pensa
+   all'inquadratura); qui si accorcia lo scroll, si compatta
+   l'HUD e si lasciano respirare testo e schede.
+   ═══════════════════════════════════════════════════════════ */
+
+/* Una sola riga per l'HUD: mai a capo, mai due righe */
+.hud {
+  white-space: nowrap;
+  max-width: calc(100vw - 2rem);
+  overflow: hidden;
+}
+
+@media (max-width: 1024px) {
+  /* Il film su tablet: passo di scroll piu corto, il racconto non si allunga */
+  .stage { height: 6400vh; }
+}
+
+@media (max-width: 720px) {
+  .stage { height: 5200vh; }
+  .hud { font-size: 0.62rem; letter-spacing: 0.06em; }
+  .hud__pixel { display: none; }
+  /* Le battute del copione non devono mai superare la meta' bassa */
+  .stage-text { max-width: min(88vw, 34rem); }
+  .produttori-grid { grid-template-columns: 1fr; }
+  .cartina { display: block; }
+  .cartina__mappa { max-width: 100%; }
+  .cartina__pannello { margin-top: 1.25rem; }
+  .cartina__cantine { columns: 1; }
+  .capitoli .cap { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 520px) {
+  .produttore-card__n { position: static; text-align: right; opacity: .32; }
+  .banda-bottiglie { display: none; }
+}

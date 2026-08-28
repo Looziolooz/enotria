@@ -77,7 +77,8 @@ body,
 /* ——— Type hierarchy ——— */
 .t-h1 { font-size: var(--t-h1); }
 .t-h2 { font-size: var(--t-h2); }
-.t-lead { font-size: var(--t-lead); line-height: 1.38; }
+.t-lead {
+  text-wrap: pretty; font-size: var(--t-lead); line-height: 1.38; }
 .t-body { font-size: var(--t-body); }
 
 /* ══════════════════════════════════════════════════════════════════
@@ -406,6 +407,10 @@ body,
 }
 
 /* ——— Chiusa ——— */
+/* ── Contrasto nudo: chip vitigni e link leggibili sul rubino ── */
+html.schede-nudo .produttore-card__uva { color: var(--color-calce) !important; border-color: rgba(232,223,207,.35) !important; }
+html.schede-nudo .produttore-card__link a { color: var(--color-calce) !important; }
+
 .chiusa {
   min-height: 60vh;
 }
@@ -865,6 +870,8 @@ body,
 
 /* ——— HUD ——— */
 .hud {
+  text-shadow: 0 1px 3px rgba(11, 10, 9, 0.55);
+  transition: opacity .6s cubic-bezier(0.22, 1, 0.36, 1);
   position: fixed;
   top: 1.1rem; left: 1.2rem;
   z-index: 6;
@@ -1398,8 +1405,8 @@ html.schede-nudo .produttore-card {
 }
 html.schede-nudo .stage-text__inner::before,
 html.schede-nudo .stage-text__inner::after,
-html.schede-nudo .produttore-card::before,
 html.schede-nudo .produttore-card::after { display: none !important; }
+/* il fregio a greca (::before) sopravvive alla variante nudo: e identita, non decorazione */
 
 html.schede-nudo .stage-text__title,
 html.schede-nudo .stage-text__hero,
@@ -1645,3 +1652,75 @@ html.schede-lastra .stage-text__inner::after { color: rgba(232, 223, 207, .38) !
 }
 .cartina__riga--autoctoni { opacity: .6; }
 
+
+/* ═══════════════════════════════════════════════════════════
+   REFERENZE PREMIUM — le card dei produttori come schede di
+   catalogo: numerate (ΟΙ·01…), fregio a meandro stilizzato in
+   testa, sollevamento sul compositing layer all'hover, link che
+   si sottolinea da solo. Tutto animato solo su transform /
+   opacity / border-color: niente layout, niente jank.
+   ═══════════════════════════════════════════════════════════ */
+
+.produttore-card {
+  position: relative;
+  background: linear-gradient(180deg, rgba(232, 223, 207, 0.035), rgba(232, 223, 207, 0.008) 55%);
+  transition: transform .45s cubic-bezier(0.22, 1, 0.36, 1),
+              border-color .45s cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: transform;
+}
+
+/* Fregio in testa: una greca stilizzata in puro CSS — trattini
+   d'oro spento che si accendono all'hover. */
+.produttore-card::before {
+  content: '';
+  position: absolute;
+  top: -1px;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: repeating-linear-gradient(90deg,
+    rgba(201, 162, 39, 0.38) 0 10px, transparent 10px 16px,
+    rgba(201, 162, 39, 0.38) 16px 18px, transparent 18px 26px);
+  opacity: 0.45;
+  transition: opacity .45s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.produttore-card:hover {
+  transform: translate3d(0, -5px, 0);
+  border-color: rgba(201, 162, 39, 0.42);
+}
+
+.produttore-card:hover::before { opacity: 1; }
+
+.produttore-card__n {
+  position: absolute;
+  top: 0.85rem;
+  right: 1rem;
+  font-size: var(--t-mono);
+  letter-spacing: 0.14em;
+  opacity: 0.38;
+}
+
+.produttore-card__link a {
+  position: relative;
+  text-decoration: none;
+}
+
+.produttore-card__link a::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: -3px;
+  width: 100%;
+  height: 1px;
+  background: rgba(201, 162, 39, 0.75);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform .5s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.produttore-card:hover .produttore-card__link a::after { transform: scaleX(1); }
+
+/* La directory delle cantine minori respira su due colonne */
+.cartina__cantine { columns: 2; column-gap: 2rem; }
+@media (max-width: 720px) { .cartina__cantine { columns: 1; } }

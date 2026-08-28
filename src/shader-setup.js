@@ -41,15 +41,6 @@ var CLIP_FOLDERS = ['film'];
 var SCENE_INDICES = [0];
 var BRIDGE_INDICES = [];
 
-/* ── Mappa sceneIdx → cartella clip ── */
-var CLIP_FOLDERS = ['film'];
-
-/* ── Indici delle scene (no raccordi, no ponti) ── */
-var SCENE_INDICES = [0, 1, 2, 4, 6, 7, 9, 11, 14];
-
-/* ── Indici dei ponti colore ── */
-var BRIDGE_INDICES = [0, 2];
-
 /* ── Parametri scena tempio (index 2, clip 03) ── */
 var TEMPLE = {
   idx: -1,
@@ -85,6 +76,7 @@ var stageEl = null;
 var stageProgress = 0;
 var bersaglio = 0;
 var attuale = 0;
+var velScrub = 0;      /* velocita di scrub smorzata, per la finitura shader */
 var TAGLI = [];
 var FINESTRA_TAGLIO = 0.034;   /* meta' finestra, in progresso di film */
 var lastFrameTime = performance.now();
@@ -115,19 +107,23 @@ function clamp01(v) { return Math.max(0, Math.min(1, v)); }
 
 function loadFrame(gl, url) {
   return new Promise(function (resolve) {
+    var chiuso = false;
+    function esci(v) { if (!chiuso) { chiuso = true; resolve(v); } }
     var img = new Image();
     img.crossOrigin = 'anonymous';
     img.onload = function () {
-      var tex = new Texture(gl, { image: img });
-      tex.image = img;
-      tex.needsUpdate = true;
-      tex._realWidth = img.naturalWidth;
-      tex._realHeight = img.naturalHeight;
-      resolve(tex);
+      try {
+        var tex = new Texture(gl, { image: img });
+        tex.image = img;
+        tex.needsUpdate = true;
+        tex._realWidth = img.naturalWidth;
+        tex._realHeight = img.naturalHeight;
+        esci(tex);
+      } catch (e) { esci(null); }
     };
-    img.onerror = function () {
-      resolve(null);
-    };
+    img.onerror = function () { esci(null); };
+    /* watchdog: una richiesta in stallo non deve occupare uno slot per sempre */
+    setTimeout(function () { esci(null); }, 30000);
     img.src = url;
   });
 }
@@ -233,8 +229,8 @@ function getFrameTex(sceneIdx, frameIdx) {
    dal centro verso i bordi, si distruggono le texture fuori finestra.
    ══════════════════════════════════════════════════════════════════════ */
 
-var FIN_DIETRO = 90;        /* fotogrammi tenuti dietro il playhead */
-var FIN_AVANTI = 200;       /* fotogrammi tenuti davanti */
+var FIN_DIETRO = 45;        /* fotogrammi tenuti dietro il playhead */
+var FIN_AVANTI = 110;       /* fotogrammi tenuti davanti */
 
 /* Sonda diagnostica (solo lettura, usata da lab/qa-scrub.mjs) */
 if (typeof window !== 'undefined') {
@@ -245,10 +241,11 @@ if (typeof window !== 'undefined') {
     inflight: function () { return _inflight; },
   };
 }
-var FIN_SGOMBERO = 60;      /* isteresi prima di distruggere */
+var FIN_SGOMBERO = 40;      /* isteresi prima di distruggere */
 var MAX_INFLIGHT = 48;      /* richieste di rete contemporanee */
 var _inflight = 0;
 var _richiesti = {};
+var _falliti = {};
 var _sgomberoTick = 0;
 
 function curaFinestra(gl) {
@@ -272,30 +269,33 @@ function curaFinestra(gl) {
     }
   }
 
-  /* Caricamento dei mancanti, dal playhead verso i bordi */
+  /* Caricamento dei mancanti, dal playhead verso i bordi.
+     I controlli stanno FUORI dalla chiusura: in regime stazionario
+     (finestra piena) il ciclo non alloca niente. I frame che falliscono
+     (404, decodifica) finiscono in _falliti e dopo 3 tentativi non si
+     richiedono piu': niente retry infinito che satura la banda. */
+  function carica(idx) {
+    _richiesti[idx] = 1;
+    _inflight++;
+    var num = String(idx + 1).padStart(4, '0');
+    loadFrame(gl, '/frames/' + CLIP_FOLDERS[0] + '/' + num + '.webp').then(function (tex) {
+      _inflight--;
+      delete _richiesti[idx];
+      if (!tex) { _falliti[idx] = (_falliti[idx] || 0) + 1; return; }
+      /* se nel frattempo la finestra e' scappata via, non tenerla */
+      var c2 = Math.round(attuale * (n - 1));
+      if (idx < c2 - FIN_DIETRO - FIN_SGOMBERO || idx > c2 + FIN_AVANTI + FIN_SGOMBERO) {
+        if (tex.destroy) tex.destroy(gl);
+        return;
+      }
+      frames[idx] = tex;
+    });
+  }
   var maxD = Math.max(c - lo, hi - c);
   for (var d = 0; d <= maxD && _inflight < MAX_INFLIGHT; d++) {
-    var due = d === 0 ? [c] : [c + d, c - d];
-    for (var k = 0; k < due.length && _inflight < MAX_INFLIGHT; k++) {
-      (function (idx) {
-        if (idx < lo || idx > hi || frames[idx] || _richiesti[idx]) return;
-        _richiesti[idx] = 1;
-        _inflight++;
-        var num = String(idx + 1).padStart(4, '0');
-        loadFrame(gl, '/frames/' + CLIP_FOLDERS[0] + '/' + num + '.webp').then(function (tex) {
-          _inflight--;
-          delete _richiesti[idx];
-          if (!tex) return;
-          /* se nel frattempo la finestra e' scappata via, non tenerla */
-          var c2 = Math.round(attuale * (n - 1));
-          if (idx < c2 - FIN_DIETRO - FIN_SGOMBERO || idx > c2 + FIN_AVANTI + FIN_SGOMBERO) {
-            if (tex.destroy) tex.destroy(gl);
-            return;
-          }
-          frames[idx] = tex;
-        });
-      })(due[k]);
-    }
+    var idxA = c + d, idxB = c - d;
+    if (idxA <= hi && !frames[idxA] && !_richiesti[idxA] && (_falliti[idxA] || 0) < 3) carica(idxA);
+    if (d > 0 && idxB >= lo && _inflight < MAX_INFLIGHT && !frames[idxB] && !_richiesti[idxB] && (_falliti[idxB] || 0) < 3) carica(idxB);
   }
 }
 
@@ -568,6 +568,7 @@ function computeSeamDiffs() {
 var ATTO_TO_SCENE = { 1: 0, 3: 2, 5: 4, 7: 6, 9: 9, 11: 11, 14: 13 };
 
 function generateStageText(copione) {
+  stageCache = null;
   var container = document.getElementById('stage-copy');
   if (!container) return;
 
@@ -701,8 +702,24 @@ function generateStageText(copione) {
    2) Uscita (ultimi 10% di visibilita): scale down, blur, translate via
    ══════════════════════════════════════════════════════════════════════ */
 
+var stageCache = null;   /* record precalcolati: niente querySelectorAll/parseFloat per frame */
+
 function animateStageText(progress) {
-  var blocks = document.querySelectorAll('.stage-text[data-stage-text]');
+  if (!stageCache) {
+    var nl = document.querySelectorAll('.stage-text[data-stage-text]');
+    if (!nl.length) return;   /* copione non ancora generato */
+    stageCache = [];
+    for (var j = 0; j < nl.length; j++) {
+      stageCache.push({
+        block: nl[j],
+        inner: nl[j].firstElementChild,
+        at: parseFloat(nl[j].dataset.at),
+        dx: parseFloat(nl[j].dataset.dx || 0),
+        dy: parseFloat(nl[j].dataset.dy || 0),
+        nascosto: false,
+      });
+    }
+  }
   var entranceWindow = 0.025;
   /* Il profilo che rende leggibile una battuta non e' la durata della
      finestra (allargarla farebbe sovrapporre battute vicine) ma la sua
@@ -711,24 +728,29 @@ function animateStageText(progress) {
      un istante prima di sparire. */
   var exitStart = 0.45;
 
-  for (var i = 0; i < blocks.length; i++) {
-    var block = blocks[i];
-    var inner = block.firstElementChild;
-    var at = parseFloat(block.dataset.at);
+  for (var i = 0; i < stageCache.length; i++) {
+    var rec = stageCache[i];
+    var block = rec.block;
+    var inner = rec.inner;
+    var at = rec.at;
 
     var local = (progress - at) / entranceWindow;
 
-    var dx = parseFloat(block.dataset.dx || 0);
-    var dy = parseFloat(block.dataset.dy || 0);
+    var dx = rec.dx;
+    var dy = rec.dy;
 
-    /* ── Non visibile ── */
+    /* ── Non visibile: scrivi gli stili UNA volta, poi salta ── */
     if (local < -1 || local > 1) {
-      block.classList.remove('acceso');
-      inner.style.opacity = '0';
-      inner.style.transform = 'translate3d(' + dx + 'px,' + (dy - 10) + 'px,0) scale(0.96)';
-      inner.style.filter = 'blur(5px)';
+      if (!rec.nascosto) {
+        rec.nascosto = true;
+        block.classList.remove('acceso');
+        inner.style.opacity = '0';
+        inner.style.transform = 'translate3d(' + dx + 'px,' + (dy - 10) + 'px,0) scale(0.96)';
+        inner.style.filter = 'blur(5px)';
+      }
       continue;
     }
+    rec.nascosto = false;
 
     /* ── Visibile: calcola entry e exit ── */
     /* piena opacita' gia' a un quarto della finestra, poi pianoro */
@@ -804,6 +826,49 @@ function animateStageText(progress) {
    Decorazione moderna che da' un battito costante alla pagina, e copre
    le tenute lunghe fra uno zoom e l'altro: qualcosa si muove sempre. */
 var hudEl = null, hudUltimo = -1;
+/* ── HUD narrativo: il contatore dice DOVE sei nel racconto. ──
+   I nomi vengono da segmenti.json; il greco e la parola giusta del
+   mestiere (lenos e la vasca di pigiatura, sponde la libagione).
+   Durante un ponte si mostra la destinazione: → nome. */
+var HUD_NOMI = {
+  'nave': 'ΝΑΥΣ · la nave',
+  'approdo': 'ΑΦΙΞΙΣ · l’approdo',
+  'vigna': 'ΑΜΠΕΛΟΣ · la vite',
+  'raccolta': 'ΤΡΥΓΗΤΟΣ · la raccolta',
+  'scambio': 'ΔΟΣΙΣ · lo scambio',
+  'trasporto': 'ΦΟΡΑ · il trasporto',
+  'vasca': 'ΛΗΝΟΣ · la vasca',
+  'pigiatura': 'ΠΑΤΗΣΙΣ · la pigiatura',
+  'anfora': 'ΑΜΦΟΡΕΥΣ · l’anfora',
+  'porta': 'ΘΥΡΑ · la porta',
+  'mondi': 'ΠΑΡΑΔΟΣΙΣ · la consegna',
+  'botti': 'ΠΙΘΟΣ · la botte',
+  'travaso': 'ΣΠΟΝΔΗ · il travaso',
+  'rubinetto': 'ΓΕΥΣΙΣ · l’assaggio',
+  'dentro-il-vino': 'ΟΙΝΟΣ · il vino',
+};
+var hudSegmenti = null;
+fetch('/dati/segmenti.json')
+  .then(function (r) { return r.json(); })
+  .then(function (d) { hudSegmenti = d.segmenti || null; })
+  .catch(function () { hudSegmenti = null; });
+
+function nomeSegmento(frame) {
+  if (!hudSegmenti) return '';
+  for (var i = 0; i < hudSegmenti.length; i++) {
+    var s = hudSegmenti[i];
+    if (frame + 1 >= s.da && frame + 1 <= s.a) {
+      if (s.id.indexOf('ponte-') === 0) {
+        var next = hudSegmenti[i + 1];
+        var nomeNext = next && HUD_NOMI[next.id];
+        return nomeNext ? '→ ' + nomeNext : '';
+      }
+      return HUD_NOMI[s.id] || '';
+    }
+  }
+  return '';
+}
+
 function aggiornaHud(progresso) {
   var n = (framesData[0] && framesData[0].n) || 1;
   var frame = Math.max(0, Math.min(n - 1, Math.round(progresso * (n - 1))));
@@ -826,7 +891,10 @@ function aggiornaHud(progresso) {
     hudEl.appendChild(cur);
     document.body.appendChild(hudEl);
   }
-  hudEl.firstChild.textContent = 'KAPE ' + String(frame + 1).padStart(3, '0') + ' / ' + n;
+  hudEl.style.opacity = (frame >= n - 2) ? '0' : '1';
+  var nomeSeg = nomeSegmento(frame);
+  hudEl.firstChild.textContent = 'KAPE ' + String(frame + 1).padStart(3, '0') + ' / ' + n +
+    (nomeSeg ? '   ' + nomeSeg : '');
   var pieni = Math.round((frame / (n - 1)) * 12);
   var dots = hudEl.querySelector('.hud__pixel').children;
   for (var k = 0; k < 12; k++) dots[k].className = k < pieni ? 'on' : '';
@@ -856,7 +924,7 @@ export function initShader() {
     dpr: Math.min(window.devicePixelRatio, 2),
     alpha: false,
     antialias: false,
-    preserveDrawingBuffer: true,
+    preserveDrawingBuffer: new URLSearchParams(location.search).has("qa"),
   });
 
   var gl = renderer.gl;
@@ -878,6 +946,7 @@ export function initShader() {
       panA: { value: [0, 0] },
       panB: { value: [0, 0] },
       bridgeColor: { value: BRIDGE_B_COLOR },
+      vel: { value: 0 },
     },
   });
 
@@ -960,13 +1029,19 @@ export function initShader() {
     }
 
     var now = performance.now();
-    var dt = (now - lastFrameTime) / 1000;
+    var dt = Math.min((now - lastFrameTime) / 1000, 0.1);   /* clamp: al ritorno da tab in background niente teletrasporto */
     lastFrameTime = now;
 
     computeStageProgress();
     bersaglio = stageProgress;
     var k = 1 - Math.pow(1 - 0.075, dt * 60);
     attuale += (bersaglio - attuale) * k;
+
+    /* ── Velocita di scrub smorzata (0 da fermo, ~1 nei salti):
+       alimenta la finitura dello shader — vignetta, grana, esposizione. ── */
+    var velRaw = Math.min(1, Math.abs(bersaglio - attuale) * 9);
+    velScrub += (velRaw - velScrub) * Math.min(1, dt * 6);
+    program.uniforms.vel.value = velScrub;
 
     /* ── Trova scena corrente e progresso locale ── */
     var scene = findScene(attuale);

@@ -41,6 +41,7 @@ async function renderProduttori() {
         : '<a href="#" aria-disabled="true">Il loro sito &nearr;</a>';
 
       card.innerHTML =
+        '<p class="produttore-card__n mono" aria-hidden="true">ΟΙ·' + String(i + 1).padStart(2, '0') + '</p>' +
         '<p class="produttore-card__nome">' + p.nome + '</p>' +
         '<p class="produttore-card__meta">' + p.comune + ' · ' + p.denominazione + '</p>' +
         '<p class="produttore-card__riga">' + p.riga + '</p>' +

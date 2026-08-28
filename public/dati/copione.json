@@ -133,5 +133,15 @@
   "occhiello": "Oggi",
   "testo": "La mano che sigillava l'anfora e quella che regola il termostato fanno lo stesso mestiere. In mezzo ci sono tremila anni e nessuna interruzione.",
   "peso": "corpo"
+ },
+ {
+  "atto": 1,
+  "at": 0.975,
+  "occhiello": "ΤΕΛΟΣ",
+  "greco": "testo",
+  "testo": "Οἰνωτρία.",
+  "peso": "capitolo",
+  "tinta": "scura",
+  "meta": "La terra del vino, ancora."
  }
 ]

@@ -1,29 +1,7 @@
 {
  "generato_da": "regia — elenco inquadrature dai momenti dello storyboard (lab/prompts-flow-video.md)",
- "nota": "la camera non sta sempre a campo pieno: entra su mani, volti e oggetti, tiene, e riapre mentre il film scorre. Fuori da queste finestre e dai ponti si torna a pieno quadro.",
+ "nota": "la camera non sta sempre a campo pieno: entra su mani, volti e oggetti, tiene, e riapre mentre il film scorre. Fuori da queste finestre e dai ponti si torna a pieno quadro. I primi tre video (nave, approdo, vigna) restano a campo pieno: gli unici due movimenti sono i raccordi dell occhio e del cielo.",
  "inquadrature": [
-  {
-   "id": "la-nave",
-   "da": 40,
-   "a": 150,
-   "px": 0.63,
-   "py": 0.74,
-   "z": 1.6,
-   "entra": 40,
-   "esce": 40,
-   "nota": "la nave che attraversa: mezza inquadratura sullo scafo, il mare piatto sotto"
-  },
-  {
-   "id": "lo-sbarco",
-   "da": 320,
-   "a": 400,
-   "px": 0.7,
-   "py": 0.76,
-   "z": 1.7,
-   "entra": 44,
-   "esce": 36,
-   "nota": "lo sbarco: l anfora scaricata dalla nave spiaggiata"
-  },
   {
    "id": "il-respiro",
    "da": 672,

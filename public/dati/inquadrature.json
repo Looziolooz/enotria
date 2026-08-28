@@ -8,7 +8,7 @@
    "a": 150,
    "px": 0.63,
    "py": 0.74,
-   "z": 1.8,
+   "z": 1.6,
    "entra": 40,
    "esce": 40,
    "nota": "la nave che attraversa: mezza inquadratura sullo scafo, il mare piatto sotto"
@@ -19,7 +19,7 @@
    "a": 400,
    "px": 0.7,
    "py": 0.76,
-   "z": 1.9,
+   "z": 1.7,
    "entra": 44,
    "esce": 36,
    "nota": "lo sbarco: l anfora scaricata dalla nave spiaggiata"
@@ -30,7 +30,7 @@
    "a": 748,
    "px": 0.345,
    "py": 0.33,
-   "z": 2.3,
+   "z": 2,
    "entra": 44,
    "esce": 26,
    "nota": "IL RESPIRO DELLA DONNA: il volto in primo piano fra i tralci, prima che la mano si alzi"
@@ -41,7 +41,7 @@
    "a": 842,
    "px": 0.5,
    "py": 0.3,
-   "z": 2.7,
+   "z": 2.3,
    "entra": 36,
    "esce": 24,
    "nota": "LO STACCO DALL ALBERO: solo la mano e il grappolo, il gesto che da il nome alla terra"
@@ -52,7 +52,7 @@
    "a": 928,
    "px": 0.55,
    "py": 0.545,
-   "z": 2.6,
+   "z": 2.2,
    "entra": 14,
    "esce": 10,
    "nota": "IL DONO: le due mani e il grappolo che passa. Il momento piu breve del film e il piu stretto: la camera ci sta addosso"
@@ -63,7 +63,7 @@
    "a": 1052,
    "px": 0.47,
    "py": 0.64,
-   "z": 2.1,
+   "z": 1.8,
    "entra": 46,
    "esce": 34,
    "nota": "IL RAGAZZO CHE VA VIA COL CESTO: il cesto colmo al fianco, la camera cammina con lui"
@@ -74,7 +74,7 @@
    "a": 1310,
    "px": 0.52,
    "py": 0.56,
-   "z": 2,
+   "z": 1.8,
    "entra": 44,
    "esce": 36,
    "nota": "l uva che cade nella vasca: il cesto rovesciato, i grappoli che scendono"
@@ -85,7 +85,7 @@
    "a": 1536,
    "px": 0.64,
    "py": 0.43,
-   "z": 2.2,
+   "z": 1.9,
    "entra": 52,
    "esce": 40,
    "nota": "LA DONNA CHE PIGIA L UVA: mezza figura sulla vasca, il peso del corpo sul mosto"
@@ -96,7 +96,7 @@
    "a": 1730,
    "px": 0.7,
    "py": 0.62,
-   "z": 2,
+   "z": 1.8,
    "entra": 46,
    "esce": 38,
    "nota": "il cantiniere solleva l anfora: le mani e la spalla, la fatica del gesto"
@@ -107,7 +107,7 @@
    "a": 2190,
    "px": 0.48,
    "py": 0.45,
-   "z": 2.4,
+   "z": 2.1,
    "entra": 50,
    "esce": 42,
    "nota": "IL PASSAGGIO FRA I MONDI: quattro mani sulla stessa anfora nella lama di luce. Il cuore del film"
@@ -118,7 +118,7 @@
    "a": 2310,
    "px": 0.35,
    "py": 0.23,
-   "z": 2.2,
+   "z": 1.9,
    "entra": 40,
    "esce": 36,
    "nota": "il volto del vignaiolo di oggi: chi riceve, e chi continua"
@@ -129,7 +129,7 @@
    "a": 2500,
    "px": 0.43,
    "py": 0.66,
-   "z": 2.3,
+   "z": 2,
    "entra": 44,
    "esce": 38,
    "nota": "IL VINO CHE CADE NELLA BOTTE: solo il getto e le mani che reggono l anfora"

@@ -8,7 +8,7 @@
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview",
-    "anteprima": "vite build && npx serve dist -l 4180"
+    "anteprima": "vite build && vite preview --port 4180"
   },
   "keywords": [],
   "author": "",

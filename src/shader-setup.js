@@ -110,7 +110,20 @@ function fattoreZoom() {
   return 0.34 + (ar - 0.62) * (0.66 / 0.58);
 }
 var ZOOM_K = fattoreZoom();
-function zSchermo(z) { return 1 + (z - 1) * ZOOM_K; }
+
+/* Tetto di ingrandimento: quanto il sorgente puo' essere stirato prima
+   di sgranare. Il film e' 1280 (720 sul tier mobile); se il canvas e'
+   piu' largo, la corsa dello zoom si accorcia di conseguenza. 2.6 e' il
+   massimo stiramento che la lettura a quattro prelievi tiene pittorica. */
+var LARG_SORGENTE = TIER === 'frames-m' ? 720 : 1280;
+var TOLLERANZA = 2.6;
+function zoomMassimo() {
+  if (typeof window === 'undefined') return 3.2;
+  var largCanvas = window.innerWidth * Math.min(window.devicePixelRatio || 1, 1.35);
+  return Math.max(1.35, Math.min(3.2, LARG_SORGENTE * TOLLERANZA / Math.max(1, largCanvas)));
+}
+var Z_MAX = zoomMassimo();
+function zSchermo(z) { return Math.min(1 + (z - 1) * ZOOM_K, Z_MAX); }
 
 /* ══════════════════════════════════════════════════════════════════════
    Utilita
@@ -260,7 +273,8 @@ if (typeof window !== 'undefined') {
   };
 }
 var FIN_SGOMBERO = 40;      /* isteresi prima di distruggere */
-var MAX_INFLIGHT = 48;      /* richieste di rete contemporanee */
+var MAX_INFLIGHT = 16;      /* richieste contemporanee: oltre ~16 il browser accoda comunque, e i
+                               server statici semplici esauriscono gli handle (EMFILE) */
 var _inflight = 0;
 var _richiesti = {};
 var _falliti = {};
@@ -1006,7 +1020,7 @@ export function initShader() {
 
   var renderer = new Renderer({
     canvas: canvas,
-    dpr: Math.min(window.devicePixelRatio, 2),
+    dpr: Math.min(window.devicePixelRatio, 1.35),
     alpha: false,
     antialias: false,
     preserveDrawingBuffer: new URLSearchParams(location.search).has("qa"),
@@ -1386,6 +1400,7 @@ export function initShader() {
   window.addEventListener('resize', function () {
     clearTimeout(resizeTimer);
     resizeTimer = setTimeout(function () {
+      ZOOM_K = fattoreZoom(); Z_MAX = zoomMassimo();
       renderer.setSize(window.innerWidth, window.innerHeight);
       program.uniforms.res.value = [gl.canvas.width, gl.canvas.height];
     }, 150);

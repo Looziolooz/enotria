@@ -213,10 +213,90 @@ function unloadScene(gl, sceneIdx) {
 function getFrameTex(sceneIdx, frameIdx) {
   var frames = sceneFrames[sceneIdx];
   if (frames && frames[frameIdx]) return frames[frameIdx];
-  /* Fallback: primo frame della scena, poi fallback statico, poi nero */
-  if (frames && frames[0]) return frames[0];
+  /* Fallback: il fotogramma CARICATO piu' vicino (mai un salto al frame 1:
+     durante un salto lungo si tiene l ultima immagine disponibile, come
+     insegna pear.no), poi il fallback statico, poi nero. */
+  if (frames) {
+    for (var d = 1; d <= 60; d++) {
+      if (frames[frameIdx - d]) return frames[frameIdx - d];
+      if (frames[frameIdx + d]) return frames[frameIdx + d];
+    }
+  }
   if (fallbackTextures[sceneIdx]) return fallbackTextures[sceneIdx];
   return null;
+}
+
+/* ══════════════════════════════════════════════════════════════════════
+   FINESTRA SCORREVOLE — il film ha 2999 fotogrammi: tenerli tutti in GPU
+   sono ~11 GB e la tab muore. Si tiene solo una finestra attorno alla
+   posizione di scrub (piu' avanti che indietro), si caricano i mancanti
+   dal centro verso i bordi, si distruggono le texture fuori finestra.
+   ══════════════════════════════════════════════════════════════════════ */
+
+var FIN_DIETRO = 90;        /* fotogrammi tenuti dietro il playhead */
+var FIN_AVANTI = 200;       /* fotogrammi tenuti davanti */
+
+/* Sonda diagnostica (solo lettura, usata da lab/qa-scrub.mjs) */
+if (typeof window !== 'undefined') {
+  window.__film = {
+    caricati: function () { var f = sceneFrames[0] || [], n = 0; for (var i = 0; i < f.length; i++) if (f[i]) n++; return n; },
+    attorno: function (c, r) { var f = sceneFrames[0] || [], n = 0; for (var i = c - r; i <= c + r; i++) if (f[i]) n++; return n; },
+    attuale: function () { return attuale; },
+    inflight: function () { return _inflight; },
+  };
+}
+var FIN_SGOMBERO = 60;      /* isteresi prima di distruggere */
+var MAX_INFLIGHT = 48;      /* richieste di rete contemporanee */
+var _inflight = 0;
+var _richiesti = {};
+var _sgomberoTick = 0;
+
+function curaFinestra(gl) {
+  var data = framesData[0];
+  if (!data) return;
+  var n = data.n;
+  if (!sceneFrames[0]) sceneFrames[0] = [];
+  var frames = sceneFrames[0];
+  var c = Math.round(attuale * (n - 1));
+  var lo = Math.max(0, c - FIN_DIETRO);
+  var hi = Math.min(n - 1, c + FIN_AVANTI);
+
+  /* Sgombero fuori finestra, ogni ~30 tick */
+  if (++_sgomberoTick >= 30) {
+    _sgomberoTick = 0;
+    for (var i = 0; i < n; i++) {
+      if (frames[i] && (i < lo - FIN_SGOMBERO || i > hi + FIN_SGOMBERO)) {
+        if (frames[i].destroy) frames[i].destroy(gl);
+        frames[i] = undefined;
+      }
+    }
+  }
+
+  /* Caricamento dei mancanti, dal playhead verso i bordi */
+  var maxD = Math.max(c - lo, hi - c);
+  for (var d = 0; d <= maxD && _inflight < MAX_INFLIGHT; d++) {
+    var due = d === 0 ? [c] : [c + d, c - d];
+    for (var k = 0; k < due.length && _inflight < MAX_INFLIGHT; k++) {
+      (function (idx) {
+        if (idx < lo || idx > hi || frames[idx] || _richiesti[idx]) return;
+        _richiesti[idx] = 1;
+        _inflight++;
+        var num = String(idx + 1).padStart(4, '0');
+        loadFrame(gl, '/frames/' + CLIP_FOLDERS[0] + '/' + num + '.webp').then(function (tex) {
+          _inflight--;
+          delete _richiesti[idx];
+          if (!tex) return;
+          /* se nel frattempo la finestra e' scappata via, non tenerla */
+          var c2 = Math.round(attuale * (n - 1));
+          if (idx < c2 - FIN_DIETRO - FIN_SGOMBERO || idx > c2 + FIN_AVANTI + FIN_SGOMBERO) {
+            if (tex.destroy) tex.destroy(gl);
+            return;
+          }
+          frames[idx] = tex;
+        });
+      })(due[k]);
+    }
+  }
 }
 
 /* ══════════════════════════════════════════════════════════════════════
@@ -851,13 +931,10 @@ export function initShader() {
       if (fallbackTextures[0]) {
         program.uniforms.img.value = [fallbackTextures[0]._realWidth, fallbackTextures[0]._realHeight];
       }
-      loadScene(gl, 0).then(function () {
-        if (sceneFrames[0] && sceneFrames[0][0]) {
-          program.uniforms.img.value = [sceneFrames[0][0]._realWidth, sceneFrames[0][0]._realHeight];
-        }
-        /* Le differenze di giunzione hanno senso solo a film completo */
-        computeSeamDiffs();
-      }).catch(function (e) { console.error('caricamento film:', e); });
+      /* Finestra scorrevole: carica solo attorno al playhead, il resto
+         del film non entra mai tutto insieme in GPU. */
+      curaFinestra(gl);
+      computeSeamDiffs();
 
       /* Carica copione */
       return fetch('/dati/copione.json')
@@ -894,7 +971,8 @@ export function initShader() {
     /* ── Trova scena corrente e progresso locale ── */
     var scene = findScene(attuale);
 
-    /* ── Gestione memoria ── */
+    /* ── Gestione memoria: finestra scorrevole sul film ── */
+    curaFinestra(gl);
     manageSceneMemory(gl, scene.idx);
 
     /* ── Seleziona frame e transizione ── */
@@ -989,10 +1067,19 @@ export function initShader() {
          fotogrammi che collega. Senza questo tutte le tende sarebbero
          dello stesso colore, e la tinta non direbbe piu' niente. */
       if (taglio.col) program.uniforms.bridgeColor.value = taglio.col;
+    } else if (!sel.inTransition) {
+      /* ── SUB-FRAME: fuori dai tagli il film non salta mai di fotogramma
+         in fotogramma. La parte frazionaria del playhead fonde N con N+1
+         (modo 17, dissolvenza pura): lo scrub diventa liquido. ── */
+      var nSub = (framesData[0] && framesData[0].n) || 1;
+      var fSub = attuale * (nSub - 1);
+      var i0Sub = Math.floor(fSub);
+      program.uniforms.mode.value = 17;
+      program.uniforms.progress.value = fSub - i0Sub;
+      sel._subA = i0Sub;
+      sel._subB = Math.min(nSub - 1, i0Sub + 1);
     } else {
-      program.uniforms.progress.value = sel.inTransition
-        ? (sel._blendProgress !== undefined ? sel._blendProgress : sel.transProgress)
-        : 0;
+      program.uniforms.progress.value = sel._blendProgress !== undefined ? sel._blendProgress : sel.transProgress;
       program.uniforms.mode.value = sel.shaderMode >= 0 ? sel.shaderMode : 0;
     }
 
@@ -1018,6 +1105,13 @@ export function initShader() {
       var tB = getFrameTex(0, Math.min(nTot - 1, iTaglio));
       if (tA) { program.uniforms.t1.value = tA; program.uniforms.img.value = [tA._realWidth, tA._realHeight]; }
       if (tB) { program.uniforms.t2.value = tB; }
+    } else if (sel._subA !== undefined) {
+      /* Sub-frame: le due texture sono i fotogrammi adiacenti al playhead */
+      var tSubA = getFrameTex(0, sel._subA);
+      var tSubB = getFrameTex(0, sel._subB);
+      if (tSubA) { program.uniforms.t1.value = tSubA; program.uniforms.img.value = [tSubA._realWidth, tSubA._realHeight]; }
+      if (tSubB) { program.uniforms.t2.value = tSubB; }
+      else if (tSubA) { program.uniforms.t2.value = tSubA; }
     } else if (sel.inTransition) {
       var frameBRaw = sel.frameB !== undefined ? sel.frameB : 0;
       var frameBEff = effectiveFrame(scene.idx + 1, frameBRaw);

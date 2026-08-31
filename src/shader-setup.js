@@ -19,6 +19,7 @@
 import { Renderer, Triangle, Program, Mesh, Texture } from 'ogl';
 import { initLinee, aggiornaLinee } from './linee.js';
 import { initInserti, aggiornaInserti } from './inserti.js';
+import { initAscii, aggiornaAscii } from './ascii.js';
 import { VERT, FRAG } from './shader.js';
 
 /* ══════════════════════════════════════════════════════════════════════
@@ -1389,6 +1390,9 @@ export function initShader() {
     renderer.render({ scene: mesh });
     animateStageText(bersaglio);
     aggiornaHud(attuale);
+    /* lo strumento rilegge il fotogramma come caratteri (src/ascii.js) */
+    var texAscii = program.uniforms.t1.value;
+    aggiornaAscii(texAscii && texAscii.image, hudUltimo, velScrub);
     aggiornaInserti(attuale);
     aggiornaLinee(attuale, performance.now(), fotogrammaChiaro(attuale));
   }

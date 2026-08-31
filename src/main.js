@@ -16,6 +16,7 @@ import { initChoreo } from './choreo.js';
 import { initShader } from './shader-setup.js';
 import { initCartina } from './cartina.js';
 import { initCapitoli } from './capitoli.js';
+import { initAscii } from './ascii.js';
 
 /* ── Render schede produttori da dati/produttori.json ── */
 async function renderProduttori() {
@@ -63,4 +64,5 @@ document.addEventListener('DOMContentLoaded', function () {
   renderProduttori();
   initCartina();
   initCapitoli();
+  setTimeout(initAscii, 400);   /* dopo che lo shader ha creato la HUD */
 });

@@ -1975,3 +1975,62 @@ video.cap__quadro {
 @media (hover: none) {
   .cap__invito { display: none; }
 }
+
+/* ═══════════════════════════════════════════════════════════
+   DUE EFFETTI, IN LINGUAGGIO DEL SITO
+   Non filtri presi da una libreria: la lama di luce del film
+   che passa sull oro, e la comparsa a grana delle schede, la
+   stessa dissolvenza sgranata che il film usa nei suoi stacchi.
+   Solo transform e opacity; niente se il moto e ridotto.
+   ═══════════════════════════════════════════════════════════ */
+
+/* ── La lama di luce sul fregio d oro ──
+   Al passaggio del cursore una luce attraversa il fregio da
+   sinistra a destra, una volta sola: e la stessa luce che in
+   cantina cade sull anfora. */
+.produttore-card::before,
+.cartina__magnete::before {
+  background-size: 200% 100%;
+  background-position: 0 0;
+}
+
+.produttore-card:hover::before,
+.cartina__magnete.aperta::before {
+  animation: lama-di-luce 1.1s cubic-bezier(0.22, 1, 0.36, 1) 1;
+}
+
+@keyframes lama-di-luce {
+  0%   { filter: brightness(1);   opacity: .45; }
+  35%  { filter: brightness(2.6); opacity: 1; }
+  100% { filter: brightness(1);   opacity: 1; }
+}
+
+/* La comparsa a grana sulle schede e stata provata e tolta: la maschera
+   radiale mangiava bordo e fregio, cioe proprio l identita della scheda.
+   Un effetto che toglie disegno non e un effetto: e un danno. */
+
+@media (prefers-reduced-motion: reduce) {
+  .produttore-card:hover::before,
+  .cartina__magnete.aperta::before { animation: none; }
+}
+
+/* ── Lo strumento legge il dipinto: il fotogramma come caratteri.
+   Compare solo mentre il film scorre, e resta sotto la riga del
+   contatore, nel registro mono di tutto l apparato di misura. ── */
+.hud__ascii {
+  display: block;
+  margin: .45rem 0 0;
+  font-family: var(--font-mono);
+  font-size: 5.5px;
+  line-height: 1.06;
+  letter-spacing: .04em;
+  color: var(--color-calce);
+  white-space: pre;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity .5s cubic-bezier(0.22, 1, 0.36, 1);
+  text-shadow: 0 1px 2px rgba(11, 10, 9, .5);
+}
+
+@media (max-width: 720px) { .hud__ascii { display: none; } }
+@media (prefers-reduced-motion: reduce) { .hud__ascii { display: none; } }

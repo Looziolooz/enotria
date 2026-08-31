@@ -77,7 +77,7 @@
     -0.008
    ],
    "preA": 45,
-   "postB": 70,
+   "postB": 0,
    "nota": "L UNICA discesa vera sull uva: match on action sul braccio che sale. A si ferma prima, B apre da piu vicino."
   },
   {
@@ -102,7 +102,7 @@
     0.018,
     -0.022
    ],
-   "preA": 55,
+   "preA": 20,
    "postB": 55,
    "nota": "lo zoom segue l anfora e il movimento delle mani: si stringe su di lei alla vasca e si riapre quando e gia in spalla"
   },
@@ -128,7 +128,7 @@
     0.008,
     0.018
    ],
-   "preA": 90,
+   "preA": 60,
    "postB": 50,
    "nota": "legno su legno, il vino scende: discesa lunga sulla doga, riapre sul rubinetto."
   },

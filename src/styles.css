@@ -1928,12 +1928,24 @@ html.schede-lastra .stage-text__inner::after { color: rgba(232, 223, 207, .38) !
 
 .cap__fig { position: relative; }
 
+/* I quadri sono verticali (9:16): il video non riempie la meta della
+   riga ma ci sta dentro come un pannello di vaso, alto e stretto,
+   centrato nella sua colonna. */
 video.cap__quadro {
   display: block;
-  width: 100%;
-  height: 100%;
+  width: auto;
+  max-width: 100%;
+  height: min(74vh, 40rem);
+  aspect-ratio: 9 / 16;
+  margin-inline: auto;
   object-fit: cover;
   background-color: var(--cap-fondo, #0b0a09);
+  -webkit-mask-image: radial-gradient(ellipse 88% 92% at 50% 50%, #000 62%, transparent 100%);
+  mask-image: radial-gradient(ellipse 88% 92% at 50% 50%, #000 62%, transparent 100%);
+}
+
+@media (max-width: 720px) {
+  video.cap__quadro { height: min(62vh, 30rem); }
 }
 
 .cap__invito {

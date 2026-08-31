@@ -74,6 +74,23 @@ Generate con Higgsfield `nano_banana_pro`, 2026-08-25, 6 crediti totali. In `pub
 | `texture/` | 3 webp | legno-botte, pennellata, pergamena | |
 | `produttori/` | 3 webp | `bottiglie-01/02/03` — bottiglie **generiche, senza etichette riconducibili a marchi** | Vincolo attivo: niente loghi né foto di produttori reali (decisione 2026-08-27, vedi vault `Decisions/`) |
 
+
+## Video dei capitoli (9:16)
+
+Quattro animazioni a figure rosse, Higgsfield, 2026-08-31. Sorgenti 16:9 in
+`_sorgenti/video/hf-foto/video-sezione vasi/`; in `public/video/capitoli/` stanno
+i ritagli **9:16** (540x960, h264 crf 28) con il poster webp del primo fotogramma.
+
+| File | Capitolo | Ritaglio (centro x della sorgente) |
+|---|---|---|
+| `enotro.mp4` | Α - Enotro salpa dall Arcadia | 0.61 |
+| `donna.mp4` | Β - Il vino non si beve puro | 0.50 |
+| `dioniso.mp4` | Γ - Il dono che si coltiva | 0.55 (testa, braccio e brocca) |
+| `vigna.mp4` | Δ - L alberello, ancora oggi | 0.56 |
+
+**Peso:** 1,4 MB in tutto (le sorgenti erano 15 MB). Partono al passaggio del
+cursore e non si scaricano prima: vedi `src/capitoli.js`.
+
 ## Fonts (`public/fonts/`)
 
 9 woff2 self-hosted: EB Garamond, Fraunces, GFS Didot (greco), Instrument Sans,

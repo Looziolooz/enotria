@@ -10,7 +10,7 @@
    "py": 0.545,
    "z": 2.2,
    "entra": 6,
-   "esce": 10,
+   "esce": 6,
    "nota": "IL DONO: le due mani e il grappolo che passa. Il momento piu breve del film e il piu stretto: la camera ci sta addosso"
   },
   {
@@ -20,7 +20,7 @@
    "px": 0.52,
    "py": 0.56,
    "z": 1.8,
-   "entra": 37,
+   "entra": 23,
    "esce": 36,
    "nota": "l uva che cade nella vasca: il cesto rovesciato, i grappoli che scendono"
   },
@@ -36,6 +36,17 @@
    "nota": "LA DONNA CHE PIGIA L UVA: mezza figura sulla vasca, il peso del corpo sul mosto"
   },
   {
+   "id": "la-presa",
+   "da": 1116,
+   "a": 1140,
+   "px": 0.56,
+   "py": 0.48,
+   "z": 2.4,
+   "entra": 14,
+   "esce": 18,
+   "nota": "LA PRESA: il cantiniere afferra l anfora e se la carica in spalla. La camera sta stretta su di lui per una ragione precisa: in quei fotogrammi la generazione ha fatto COMPARIRE la porta verde nel fondo, che prima non c era. Inquadrando l uomo il difetto resta fuori campo, e quando si riapre la porta e ormai parte della scena."
+  },
+  {
    "id": "le-quattro-mani",
    "da": 1536,
    "a": 1656,
@@ -43,7 +54,7 @@
    "py": 0.45,
    "z": 2.1,
    "entra": 50,
-   "esce": 42,
+   "esce": 18,
    "nota": "IL PASSAGGIO FRA I MONDI: quattro mani sulla stessa anfora nella lama di luce. Il cuore del film"
   },
   {
@@ -53,8 +64,8 @@
    "px": 0.35,
    "py": 0.23,
    "z": 1.9,
-   "entra": 40,
-   "esce": 36,
+   "entra": 16,
+   "esce": 28,
    "nota": "il volto del vignaiolo di oggi: chi riceve, e chi continua"
   },
   {
@@ -64,7 +75,7 @@
    "px": 0.43,
    "py": 0.66,
    "z": 2,
-   "entra": 44,
+   "entra": 36,
    "esce": 9,
    "nota": "IL VINO CHE CADE NELLA BOTTE: solo il getto e le mani che reggono l anfora"
   }

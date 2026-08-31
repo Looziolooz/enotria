@@ -288,8 +288,16 @@ function curaFinestra(gl) {
   if (!sceneFrames[0]) sceneFrames[0] = [];
   var frames = sceneFrames[0];
   var c = Math.round(attuale * (n - 1));
-  var lo = Math.max(0, c - FIN_DIETRO);
-  var hi = Math.min(n - 1, c + FIN_AVANTI);
+  /* La finestra segue la DIREZIONE del viaggio: scorrendo in avanti non
+     ha senso caricare dietro le spalle. A velocita alta si allunga
+     davanti e si accorcia dietro, cosi il playhead non scavalca mai i
+     fotogrammi caricati — e da li che nasce lo scatto. */
+  var verso = bersaglio > attuale ? 1 : (bersaglio < attuale ? -1 : 0);
+  var spinta = 1 + velScrub * 1.6;
+  var avanti = Math.round(FIN_AVANTI * (verso >= 0 ? spinta : 0.45));
+  var dietro = Math.round(FIN_DIETRO * (verso <= 0 ? spinta : 0.45));
+  var lo = Math.max(0, c - (verso >= 0 ? dietro : avanti));
+  var hi = Math.min(n - 1, c + (verso >= 0 ? avanti : dietro));
 
   /* Sgombero fuori finestra, ogni ~30 tick */
   if (++_sgomberoTick >= 30) {
@@ -1330,10 +1338,18 @@ export function initShader() {
       var nSub = (framesData[0] && framesData[0].n) || 1;
       var fSub = attuale * (nSub - 1);
       var i0Sub = Math.floor(fSub);
+      /* Otturatore: da fermo si fondono due fotogrammi adiacenti; a scrub
+         veloce la coppia si allarga di uno, e la fusione diventa una
+         scia — la stessa cosa che fa un otturatore aperto piu a lungo.
+         Oltre due non si va: sarebbe sdoppiamento, non movimento. */
+      var passo = velScrub > 0.55 ? 2 : 1;
+      var iB = Math.min(nSub - 1, i0Sub + passo);
       program.uniforms.mode.value = 17;
-      program.uniforms.progress.value = fSub - i0Sub;
+      program.uniforms.progress.value = passo === 1
+        ? (fSub - i0Sub)
+        : Math.min(1, (fSub - i0Sub) / passo + 0.25);
       sel._subA = i0Sub;
-      sel._subB = Math.min(nSub - 1, i0Sub + 1);
+      sel._subB = iB;
     } else {
       program.uniforms.progress.value = sel._blendProgress !== undefined ? sel._blendProgress : sel.transProgress;
       program.uniforms.mode.value = sel.shaderMode >= 0 ? sel.shaderMode : 0;

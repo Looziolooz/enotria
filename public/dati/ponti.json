@@ -1,13 +1,13 @@
 {
  "generato_da": "regia v2: inquadrature lunghe (preA/postB) + coordinate misurate",
- "nota": "ogni raccordo e una inquadratura: discesa mentre il film scorre, fermo immagine breve sul dettaglio condiviso, risalita mentre il film e gia ripartito",
+ "nota": "raccordi vivi: A = ultimo fotogramma dell inquadratura uscente, B = primo di quella entrante; la zona del ponte serve solo come spazio di scroll",
  "ponti": [
   {
    "id": "nave-approdo",
    "da": 193,
    "a": 222,
-   "frameA": 191,
-   "frameB": 222,
+   "frameA": 192,
+   "frameB": 223,
    "A": {
     "px": 0.462,
     "py": 0.775,
@@ -32,8 +32,8 @@
    "id": "approdo-vigna",
    "da": 415,
    "a": 444,
-   "frameA": 413,
-   "frameB": 444,
+   "frameA": 414,
+   "frameB": 445,
    "A": {
     "px": 0.32,
     "py": 0.12,
@@ -58,8 +58,8 @@
    "id": "vigna-scambio",
    "da": 637,
    "a": 666,
-   "frameA": 635,
-   "frameB": 666,
+   "frameA": 636,
+   "frameB": 667,
    "A": {
     "px": 0.294,
     "py": 0.287,
@@ -84,8 +84,8 @@
    "id": "pigiatura-porta",
    "da": 1095,
    "a": 1124,
-   "frameA": 1093,
-   "frameB": 1124,
+   "frameA": 1094,
+   "frameB": 1125,
    "A": {
     "px": 0.712,
     "py": 0.652,
@@ -110,8 +110,8 @@
    "id": "travaso-rubinetto",
    "da": 1941,
    "a": 1970,
-   "frameA": 1939,
-   "frameB": 1970,
+   "frameA": 1940,
+   "frameB": 1971,
    "A": {
     "px": 0.35,
     "py": 0.8,
@@ -136,8 +136,8 @@
    "id": "rubinetto-dentro-il-vino",
    "da": 2094,
    "a": 2123,
-   "frameA": 2092,
-   "frameB": 2123,
+   "frameA": 2093,
+   "frameB": 2124,
    "A": {
     "px": 0.564,
     "py": 0.673,

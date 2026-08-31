@@ -120,7 +120,7 @@ const pon = JSON.parse(readFileSync(join(ROOT, 'public/dati/ponti.json'), 'utf8'
 const nuoviPonti = [];
 for (const s of nuoviSeg) {
   if (!s.id.startsWith('ponte-')) continue;
-  const base = { id: s.id.replace('ponte-', ''), da: s.da, a: s.a, frameA: s.da - 2, frameB: s.a };
+  const base = { id: s.id.replace('ponte-', ''), da: s.da, a: s.a, frameA: s.da - 1, frameB: s.a + 1 };
   const orig = pon.ponti.find((p) => mappa[p.da] === s.da);
   if (orig) {
     nuoviPonti.push({ ...orig, ...base });

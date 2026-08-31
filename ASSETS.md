@@ -87,6 +87,24 @@ Generate con Higgsfield `nano_banana_pro`, 2026-08-25, 6 crediti totali. In `pub
 | 4 | `04-anfora-vite.webp` (+ `@1280`) | Anfora e vite sul pietrisco |
 | 5 | `05-costa-terrazze.webp` · `06-tempio-vigna.webp` · `07-cantina-moderna.webp` | Riserve, stessa serie |
 
+
+### Ingrandimento AI dei dodici fermi (31 ago)
+
+I dodici fermi-immagine dei raccordi sono stati portati a **2560x1440** con
+Real-ESRGAN x4plus (ONNX, fp16) e ridotti a 2x: 130 -> 390 KB medi, +3 MB in tutto.
+Script: `lab/ingrandisci-fermi.py` (originali in `_sorgenti/fermi-prima-dell-ingrandimento/`).
+
+**Su questa macchina QualityScaler e realesrgan-ncnn-vulkan non partono:**
+`vkEnumeratePhysicalDevices` fallisce con errore 5 — la Radeon 520 ha driver del
+2019 e Vulkan non si inizializza. La via che funziona e' onnxruntime su CPU
+(gia' installato, come opencv e numpy): 4 minuti a fotogramma con tasselli da
+480 px e otto thread; era 15 con tasselli da 192 e due thread.
+
+**Il guadagno vero non e' solo la definizione:** con i fermi a 2560 il tetto di
+zoom per i raccordi passa da 1,95 a 3,20 su schermo ad alta densita'
+(`Z_MAX_FERMI` in `src/shader-setup.js`). Prima la regia scritta a 2,6 veniva
+tagliata a 1,95 e non si vedeva per intero.
+
 ## Immagini di corredo (`public/img/`)
 
 | Cartella | File | Contenuto | Nota |

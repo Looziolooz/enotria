@@ -81,37 +81,11 @@
    "nota": "L UNICA discesa vera sull uva: match on action sul braccio che sale. A si ferma prima, B apre da piu vicino."
   },
   {
-   "id": "pigiatura-porta",
-   "da": 1095,
-   "a": 1124,
-   "frameA": 1094,
-   "frameB": 1125,
-   "A": {
-    "px": 0.712,
-    "py": 0.652,
-    "z": 1.9
-   },
-   "B": {
-    "px": 0.766,
-    "py": 0.413,
-    "z": 1.7
-   },
-   "apice": 0.5,
-   "fusione": 0.26,
-   "dir": [
-    0.018,
-    -0.022
-   ],
-   "preA": 20,
-   "postB": 55,
-   "nota": "lo zoom segue l anfora e il movimento delle mani: si stringe su di lei alla vasca e si riapre quando e gia in spalla"
-  },
-  {
    "id": "travaso-rubinetto",
-   "da": 1941,
-   "a": 1970,
-   "frameA": 1940,
-   "frameB": 1971,
+   "da": 2043,
+   "a": 2072,
+   "frameA": 2042,
+   "frameB": 2073,
    "A": {
     "px": 0.35,
     "py": 0.8,
@@ -134,10 +108,10 @@
   },
   {
    "id": "rubinetto-dentro-il-vino",
-   "da": 2094,
-   "a": 2123,
-   "frameA": 2093,
-   "frameB": 2124,
+   "da": 2196,
+   "a": 2225,
+   "frameA": 2195,
+   "frameB": 2226,
    "A": {
     "px": 0.564,
     "py": 0.673,

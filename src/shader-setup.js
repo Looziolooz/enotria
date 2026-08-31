@@ -124,6 +124,19 @@ function zoomMassimo() {
   return Math.max(1.35, Math.min(3.2, LARG_SORGENTE * TOLLERANZA / Math.max(1, largCanvas)));
 }
 var Z_MAX = zoomMassimo();
+
+/* I dodici fermi-immagine dei raccordi sono ingranditi con l AI a 2560 px
+   (lab/ingrandisci-fermi.py) sul solo tier desktop: per loro il tetto e il
+   doppio, e la regia dei raccordi torna a esprimersi per intero anche su
+   schermi ad alta densita, dove prima veniva tagliata a 1,95. */
+var LARG_FERMI = TIER === 'frames-m' ? 720 : 2560;
+function zoomMassimoFermi() {
+  if (typeof window === 'undefined') return 3.2;
+  var largCanvas = window.innerWidth * Math.min(window.devicePixelRatio || 1, 1.35);
+  return Math.max(1.35, Math.min(3.2, LARG_FERMI * TOLLERANZA / Math.max(1, largCanvas)));
+}
+var Z_MAX_FERMI = zoomMassimoFermi();
+function zFermo(z) { return Math.min(1 + (z - 1) * ZOOM_K, Z_MAX_FERMI); }
 function zSchermo(z) { return Math.min(1 + (z - 1) * ZOOM_K, Z_MAX); }
 
 /* ══════════════════════════════════════════════════════════════════════
@@ -1194,14 +1207,14 @@ export function initShader() {
             : f2 + pp * (1 - f2);
       var apiceT = f1 + apice * (f2 - f1);
       /* lato A: da campo pieno verso il dettaglio */
-      zoomAVal = 1 + (zSchermo(pv.A.z) - 1) * sstep2(T / Math.max(0.05, apiceT + (f2 - f1) * fusione * 0.5));
-      var zAmax = zSchermo(pv.A.z);
+      zoomAVal = 1 + (zFermo(pv.A.z) - 1) * sstep2(T / Math.max(0.05, apiceT + (f2 - f1) * fusione * 0.5));
+      var zAmax = zFermo(pv.A.z);
       var sPanA = zAmax > 1 ? (1 - 1 / zoomAVal) / (1 - 1 / zAmax) : 0;
       panAX = (pv.A.px - 0.5) * sPanA;
       panAY = (ayA - 0.5) * sPanA;
       /* lato B: dal dettaglio al campo pieno */
-      zoomBVal = 1 + (zSchermo(pv.B.z) - 1) * sstep2((1 - T) / Math.max(0.05, 1 - apiceT + (f2 - f1) * fusione * 0.5));
-      var zBmax = zSchermo(pv.B.z);
+      zoomBVal = 1 + (zFermo(pv.B.z) - 1) * sstep2((1 - T) / Math.max(0.05, 1 - apiceT + (f2 - f1) * fusione * 0.5));
+      var zBmax = zFermo(pv.B.z);
       var sPanB = zBmax > 1 ? (1 - 1 / zoomBVal) / (1 - 1 / zBmax) : 0;
       panBX = (pv.B.px - 0.5) * sPanB;
       panBY = (ayB - 0.5) * sPanB;
@@ -1420,7 +1433,7 @@ export function initShader() {
   window.addEventListener('resize', function () {
     clearTimeout(resizeTimer);
     resizeTimer = setTimeout(function () {
-      ZOOM_K = fattoreZoom(); Z_MAX = zoomMassimo();
+      ZOOM_K = fattoreZoom(); Z_MAX = zoomMassimo(); Z_MAX_FERMI = zoomMassimoFermi();
       renderer.setSize(window.innerWidth, window.innerHeight);
       program.uniforms.res.value = [gl.canvas.width, gl.canvas.height];
     }, 150);

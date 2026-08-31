@@ -141,11 +141,11 @@ body,
 /* ══════════════════════════════════════════════════════════════════
     PALCO — il cuore della timeline (film v2: 2759 fotogrammi, 15 clip)
     Struttura pear.no: 1 section, 1 pin, 100svh.
-    7200vh: film v4 da 2393 fotogrammi a ~3vh a fotogramma.
+    7400vh: film v5 da 2465 fotogrammi a ~3vh a fotogramma.
     ══════════════════════════════════════════════════════════════════ */
 .stage {
   position: relative;
-  height: 7200vh;
+  height: 7400vh;
 }
 
 .pin {

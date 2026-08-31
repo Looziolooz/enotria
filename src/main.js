@@ -15,6 +15,7 @@
 import { initChoreo } from './choreo.js';
 import { initShader } from './shader-setup.js';
 import { initCartina } from './cartina.js';
+import { initCapitoli } from './capitoli.js';
 
 /* ── Render schede produttori da dati/produttori.json ── */
 async function renderProduttori() {
@@ -61,4 +62,5 @@ document.addEventListener('DOMContentLoaded', function () {
   initShader();
   renderProduttori();
   initCartina();
+  initCapitoli();
 });

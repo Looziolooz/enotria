@@ -1,7 +1,7 @@
 {
  "generato_da": "lab/assembla-film-v3.mjs — derivato",
  "film": {
-  "n": 2393,
+  "n": 2363,
   "w": 1280,
   "h": 720,
   "fps": 24,
@@ -20,7 +20,7 @@
    "sorgente": "Clip-1.mp4",
    "giunzione_in": null,
    "giunzione_out": {
-    "at": 0.0802,
+    "at": 0.0813,
     "modo": "—",
     "verso": "nave→ponte-nave-approdo"
    }
@@ -32,12 +32,12 @@
    "n": 30,
    "sorgente": "lab/ponti/nave-approdo (match cut)",
    "giunzione_in": {
-    "at": 0.0802,
+    "at": 0.0813,
     "modo": "—",
     "verso": "nave→ponte-nave-approdo"
    },
    "giunzione_out": {
-    "at": 0.0928,
+    "at": 0.0939,
     "modo": "—",
     "verso": "ponte-nave-approdo→approdo"
    }
@@ -49,12 +49,12 @@
    "n": 192,
    "sorgente": "clip-2.mp4",
    "giunzione_in": {
-    "at": 0.0928,
+    "at": 0.0939,
     "modo": "—",
     "verso": "ponte-nave-approdo→approdo"
    },
    "giunzione_out": {
-    "at": 0.173,
+    "at": 0.1752,
     "modo": "—",
     "verso": "approdo→ponte-approdo-vigna"
    }
@@ -66,12 +66,12 @@
    "n": 30,
    "sorgente": "lab/ponti/approdo-vigna (match cut)",
    "giunzione_in": {
-    "at": 0.173,
+    "at": 0.1752,
     "modo": "—",
     "verso": "approdo→ponte-approdo-vigna"
    },
    "giunzione_out": {
-    "at": 0.1855,
+    "at": 0.1879,
     "modo": "—",
     "verso": "ponte-approdo-vigna→vigna"
    }
@@ -83,12 +83,12 @@
    "n": 192,
    "sorgente": "clip-3.mp4",
    "giunzione_in": {
-    "at": 0.1855,
+    "at": 0.1879,
     "modo": "—",
     "verso": "ponte-approdo-vigna→vigna"
    },
    "giunzione_out": {
-    "at": 0.2658,
+    "at": 0.2691,
     "modo": "—",
     "verso": "vigna→ponte-vigna-scambio"
    }
@@ -100,12 +100,12 @@
    "n": 30,
    "sorgente": "lab/ponti/vigna-raccolta (match cut)",
    "giunzione_in": {
-    "at": 0.2658,
+    "at": 0.2691,
     "modo": "—",
     "verso": "vigna→ponte-vigna-scambio"
    },
    "giunzione_out": {
-    "at": 0.2783,
+    "at": 0.2818,
     "modo": "—",
     "verso": "ponte-vigna-scambio→scambio"
    }
@@ -117,211 +117,194 @@
    "n": 44,
    "sorgente": "clip-4.mp4",
    "giunzione_in": {
-    "at": 0.2783,
+    "at": 0.2818,
     "modo": "—",
     "verso": "ponte-vigna-scambio→scambio"
    },
    "giunzione_out": {
-    "at": 0.2967,
+    "at": 0.3005,
     "modo": "—",
-    "verso": "scambio→ponte-scambio-vasca"
-   }
-  },
-  {
-   "id": "ponte-scambio-vasca",
-   "da": 711,
-   "a": 740,
-   "n": 30,
-   "sorgente": "lab/ponti/scambio-trasporto (match cut)",
-   "giunzione_in": {
-    "at": 0.2967,
-    "modo": "—",
-    "verso": "scambio→ponte-scambio-vasca"
-   },
-   "giunzione_out": {
-    "at": 0.3092,
-    "modo": "—",
-    "verso": "ponte-scambio-vasca→vasca"
+    "verso": "scambio→vasca"
    }
   },
   {
    "id": "vasca",
-   "da": 741,
-   "a": 932,
+   "da": 711,
+   "a": 902,
    "n": 192,
    "sorgente": "clip-6.mp4",
    "giunzione_in": {
-    "at": 0.3092,
+    "at": 0.3005,
     "modo": "—",
-    "verso": "ponte-scambio-vasca→vasca"
+    "verso": "scambio→vasca"
    },
    "giunzione_out": {
-    "at": 0.3895,
+    "at": 0.3817,
     "modo": "—",
     "verso": "vasca→pigiatura"
    }
   },
   {
    "id": "pigiatura",
-   "da": 933,
-   "a": 1124,
+   "da": 903,
+   "a": 1094,
    "n": 192,
    "sorgente": "clip-7.mp4",
    "giunzione_in": {
-    "at": 0.3895,
+    "at": 0.3817,
     "modo": "—",
     "verso": "vasca→pigiatura"
    },
    "giunzione_out": {
-    "at": 0.4697,
+    "at": 0.463,
     "modo": "—",
     "verso": "pigiatura→ponte-pigiatura-porta"
    }
   },
   {
    "id": "ponte-pigiatura-porta",
-   "da": 1125,
-   "a": 1154,
+   "da": 1095,
+   "a": 1124,
    "n": 30,
    "sorgente": "clip-8.mp4",
    "giunzione_in": {
-    "at": 0.4697,
+    "at": 0.463,
     "modo": "—",
     "verso": "pigiatura→ponte-pigiatura-porta"
    },
    "giunzione_out": {
-    "at": 0.4822,
+    "at": 0.4757,
     "modo": "—",
     "verso": "ponte-pigiatura-porta→porta"
    }
   },
   {
    "id": "porta",
-   "da": 1155,
-   "a": 1346,
+   "da": 1125,
+   "a": 1316,
    "n": 192,
    "sorgente": "clip-9.mp4",
    "giunzione_in": {
-    "at": 0.4822,
+    "at": 0.4757,
     "modo": "—",
     "verso": "ponte-pigiatura-porta→porta"
    },
    "giunzione_out": {
-    "at": 0.5625,
+    "at": 0.5569,
     "modo": "—",
     "verso": "porta→mondi"
    }
   },
   {
    "id": "mondi",
-   "da": 1347,
-   "a": 1538,
+   "da": 1317,
+   "a": 1508,
    "n": 192,
    "sorgente": "clip-10.mp4",
    "giunzione_in": {
-    "at": 0.5625,
+    "at": 0.5569,
     "modo": "—",
     "verso": "porta→mondi"
    },
    "giunzione_out": {
-    "at": 0.6427,
+    "at": 0.6382,
     "modo": "—",
     "verso": "mondi→botti"
    }
   },
   {
    "id": "botti",
-   "da": 1539,
-   "a": 1730,
+   "da": 1509,
+   "a": 1700,
    "n": 192,
    "sorgente": "clip-11.mp4",
    "giunzione_in": {
-    "at": 0.6427,
+    "at": 0.6382,
     "modo": "—",
     "verso": "mondi→botti"
    },
    "giunzione_out": {
-    "at": 0.7229,
+    "at": 0.7194,
     "modo": "—",
     "verso": "botti→travaso"
    }
   },
   {
    "id": "travaso",
-   "da": 1731,
-   "a": 1970,
+   "da": 1701,
+   "a": 1940,
    "n": 240,
    "sorgente": "clip-12.mp4",
    "giunzione_in": {
-    "at": 0.7229,
+    "at": 0.7194,
     "modo": "—",
     "verso": "botti→travaso"
    },
    "giunzione_out": {
-    "at": 0.8232,
+    "at": 0.821,
     "modo": "—",
     "verso": "travaso→ponte-travaso-rubinetto"
    }
   },
   {
    "id": "ponte-travaso-rubinetto",
-   "da": 1971,
-   "a": 2000,
+   "da": 1941,
+   "a": 1970,
    "n": 30,
    "sorgente": "lab/ponti/travaso-rubinetto (match cut)",
    "giunzione_in": {
-    "at": 0.8232,
+    "at": 0.821,
     "modo": "—",
     "verso": "travaso→ponte-travaso-rubinetto"
    },
    "giunzione_out": {
-    "at": 0.8358,
+    "at": 0.8337,
     "modo": "—",
     "verso": "ponte-travaso-rubinetto→rubinetto"
    }
   },
   {
    "id": "rubinetto",
-   "da": 2001,
-   "a": 2123,
+   "da": 1971,
+   "a": 2093,
    "n": 123,
    "sorgente": "clip-13.mp4",
    "giunzione_in": {
-    "at": 0.8358,
+    "at": 0.8337,
     "modo": "—",
     "verso": "ponte-travaso-rubinetto→rubinetto"
    },
    "giunzione_out": {
-    "at": 0.8872,
+    "at": 0.8857,
     "modo": "—",
     "verso": "rubinetto→ponte-rubinetto-dentro-il-vino"
    }
   },
   {
    "id": "ponte-rubinetto-dentro-il-vino",
-   "da": 2124,
-   "a": 2153,
+   "da": 2094,
+   "a": 2123,
    "n": 30,
    "sorgente": "lab/ponti/rubinetto-vino (match cut)",
    "giunzione_in": {
-    "at": 0.8872,
+    "at": 0.8857,
     "modo": "—",
     "verso": "rubinetto→ponte-rubinetto-dentro-il-vino"
    },
    "giunzione_out": {
-    "at": 0.8997,
+    "at": 0.8984,
     "modo": "—",
     "verso": "ponte-rubinetto-dentro-il-vino→dentro-il-vino"
    }
   },
   {
    "id": "dentro-il-vino",
-   "da": 2154,
-   "a": 2393,
+   "da": 2124,
+   "a": 2363,
    "n": 240,
    "sorgente": "clip-14.mp4",
    "giunzione_in": {
-    "at": 0.8997,
+    "at": 0.8984,
     "modo": "—",
     "verso": "ponte-rubinetto-dentro-il-vino→dentro-il-vino"
    },

@@ -81,37 +81,11 @@
    "nota": "L UNICA discesa vera sull uva: match on action sul braccio che sale. A si ferma prima, B apre da piu vicino."
   },
   {
-   "id": "scambio-vasca",
-   "da": 711,
-   "a": 740,
-   "frameA": 709,
-   "frameB": 740,
-   "A": {
-    "px": 0.244,
-    "py": 0.637,
-    "z": 1.2
-   },
-   "B": {
-    "px": 0.414,
-    "py": 0.583,
-    "z": 1.3
-   },
-   "apice": 0.46,
-   "fusione": 0.32,
-   "dir": [
-    0.004,
-    0.02
-   ],
-   "preA": 6,
-   "postB": 80,
-   "nota": "quasi nessun zoom: la camera scende appena col grappolo nel cesto e poi accompagna il trasporto. Riposo dopo il dono."
-  },
-  {
    "id": "pigiatura-porta",
-   "da": 1125,
-   "a": 1154,
-   "frameA": 1123,
-   "frameB": 1154,
+   "da": 1095,
+   "a": 1124,
+   "frameA": 1093,
+   "frameB": 1124,
    "A": {
     "px": 0.712,
     "py": 0.652,
@@ -134,10 +108,10 @@
   },
   {
    "id": "travaso-rubinetto",
-   "da": 1971,
-   "a": 2000,
-   "frameA": 1969,
-   "frameB": 2000,
+   "da": 1941,
+   "a": 1970,
+   "frameA": 1939,
+   "frameB": 1970,
    "A": {
     "px": 0.35,
     "py": 0.8,
@@ -160,10 +134,10 @@
   },
   {
    "id": "rubinetto-dentro-il-vino",
-   "da": 2124,
-   "a": 2153,
-   "frameA": 2122,
-   "frameB": 2153,
+   "da": 2094,
+   "a": 2123,
+   "frameA": 2092,
+   "frameB": 2123,
    "A": {
     "px": 0.564,
     "py": 0.673,

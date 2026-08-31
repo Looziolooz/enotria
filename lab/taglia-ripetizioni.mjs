@@ -26,14 +26,17 @@ const M = join(ROOT, 'public/frames-m/film');
 const ARCH = join(ROOT, '_sorgenti/frames-tagliati');
 
 /* intervalli da togliere, numerazione attuale (1-based, inclusivi) */
-const TAGLI = [
-  { da: 667, a: 888, perche: 'raccolta + ponte: seconda raccolta dell uva' },
-  { da: 963, a: 1184, perche: 'trasporto + ponte: secondo trasporto del cesto' },
-  { da: 1569, a: 1730, perche: 'arrivo del cantiniere: tempo morto fra pigiatura e porta' },
-];
+const ARG = process.argv.slice(2).filter((a) => /^[0-9]+-[0-9]+$/.test(a));
+const TAGLI = ARG.length
+  ? ARG.map((a) => { const [da, x] = a.split('-').map(Number); return { da, a: x, perche: 'taglio da riga di comando' }; })
+  : [
+      { da: 667, a: 888, perche: 'raccolta + ponte: seconda raccolta dell uva' },
+      { da: 963, a: 1184, perche: 'trasporto + ponte: secondo trasporto del cesto' },
+      { da: 1569, a: 1730, perche: 'arrivo del cantiniere: tempo morto fra pigiatura e porta' },
+    ];
 
 /* il resto di 'anfora' diventa lo spazio del nuovo raccordo */
-const NUOVO_PONTE = {
+const NUOVO_PONTE = ARG.length ? null : {
   daSegmento: 'anfora',
   id: 'pigiatura-porta',
   A: { px: 0.712, py: 0.652, z: 1.9 },   /* l anfora e le mani, alla vasca */
@@ -92,7 +95,7 @@ const nuoviSeg = vivi.map((s) => {
   while (da <= N_VECCHIO && mappa[da] === 0) da++;
   while (a >= 1 && mappa[a] === 0) a--;
   const out = { id: s.id, da: mappa[da], a: mappa[a], n: mappa[a] - mappa[da] + 1, sorgente: s.sorgente };
-  if (s.id === NUOVO_PONTE.daSegmento) out.id = 'ponte-' + NUOVO_PONTE.id;
+  if (NUOVO_PONTE && s.id === NUOVO_PONTE.daSegmento) out.id = 'ponte-' + NUOVO_PONTE.id;
   return out;
 });
 /* i ponti superstiti ora collegano altro: rinominali dai vicini */
@@ -121,7 +124,7 @@ for (const s of nuoviSeg) {
   const orig = pon.ponti.find((p) => mappa[p.da] === s.da);
   if (orig) {
     nuoviPonti.push({ ...orig, ...base });
-  } else {
+  } else if (NUOVO_PONTE) {
     /* e il ponte nuovo, ricavato dal resto di 'anfora' */
     nuoviPonti.push({ ...base, A: NUOVO_PONTE.A, B: NUOVO_PONTE.B, apice: NUOVO_PONTE.apice,
       fusione: NUOVO_PONTE.fusione, dir: NUOVO_PONTE.dir, preA: NUOVO_PONTE.preA, postB: NUOVO_PONTE.postB, nota: NUOVO_PONTE.nota });

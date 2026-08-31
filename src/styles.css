@@ -141,11 +141,11 @@ body,
 /* ══════════════════════════════════════════════════════════════════
     PALCO — il cuore della timeline (film v2: 2759 fotogrammi, 15 clip)
     Struttura pear.no: 1 section, 1 pin, 100svh.
-    9000vh: film v3 da 2999 fotogrammi a ~3vh a fotogramma.
+    7200vh: film v4 da 2393 fotogrammi a ~3vh a fotogramma.
     ══════════════════════════════════════════════════════════════════ */
 .stage {
   position: relative;
-  height: 9000vh;
+  height: 7200vh;
 }
 
 .pin {
@@ -1761,4 +1761,84 @@ html.schede-lastra .stage-text__inner::after { color: rgba(232, 223, 207, .38) !
 @media (max-width: 520px) {
   .produttore-card__n { position: static; text-align: right; opacity: .32; }
   .banda-bottiglie { display: none; }
+}
+
+/* ═══════════════════════════════════════════════════════════
+   SCHEDE MAGNETICHE — le informazioni si aprono ACCANTO al punto
+   cliccato, non in un riquadro lontano. Se si clicca un altro
+   punto la scheda ci scivola sopra: da qui il nome. Tutto su
+   transform e opacity, niente proprieta di layout.
+   ═══════════════════════════════════════════════════════════ */
+
+.cartina__mappa { position: relative; }
+
+.cartina__magnete {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 6;
+  width: min(21rem, 74vw);
+  padding: 1rem 1.15rem 1.15rem;
+  background: rgba(11, 10, 9, 0.93);
+  border: 1px solid rgba(201, 162, 39, 0.34);
+  border-radius: 2px;
+  box-shadow: 0 14px 40px rgba(0, 0, 0, 0.45);
+  backdrop-filter: blur(3px);
+  opacity: 0;
+  pointer-events: none;
+  transform: translate3d(0, 0, 0) scale(0.96);
+  transition: transform .52s cubic-bezier(0.22, 1, 0.36, 1),
+              opacity .3s cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: transform, opacity;
+}
+
+.cartina__magnete.aperta {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* fregio d'oro in testa, come sulle schede dei produttori */
+.cartina__magnete::before {
+  content: '';
+  position: absolute;
+  top: -1px;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: repeating-linear-gradient(90deg,
+    rgba(201, 162, 39, 0.5) 0 9px, transparent 9px 15px,
+    rgba(201, 162, 39, 0.5) 15px 17px, transparent 17px 24px);
+}
+
+.cartina__magnete--lungo .cartina__magnete-corpo {
+  max-height: min(24rem, 46vh);
+  overflow-y: auto;
+  padding-right: .4rem;
+}
+
+.cartina__magnete-chiudi {
+  position: absolute;
+  top: .35rem;
+  right: .5rem;
+  width: 1.6rem;
+  height: 1.6rem;
+  line-height: 1;
+  font-size: 1.15rem;
+  color: var(--color-calce);
+  background: transparent;
+  border: 0;
+  opacity: .5;
+  cursor: pointer;
+  transition: opacity .3s;
+}
+
+.cartina__magnete-chiudi:hover { opacity: 1; }
+
+.cartina__magnete .cartina__cantine { columns: 1; font-size: .85rem; }
+
+/* il perno cliccato resta acceso mentre la scheda e aperta */
+.cartina__punto--attivo .cartina__alone { opacity: .5; }
+
+@media (max-width: 720px) {
+  .cartina__magnete { width: min(20rem, 84vw); }
 }

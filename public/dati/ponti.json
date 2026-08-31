@@ -55,7 +55,7 @@
    "nota": "si sale al cielo che i due mondi condividono: dal teal piatto degli anelli al blu vero della vigna. Non si vede il taglio: cambia solo il cielo."
   },
   {
-   "id": "vigna-raccolta",
+   "id": "vigna-scambio",
    "da": 637,
    "a": 666,
    "frameA": 635,
@@ -81,37 +81,11 @@
    "nota": "L UNICA discesa vera sull uva: match on action sul braccio che sale. A si ferma prima, B apre da piu vicino."
   },
   {
-   "id": "raccolta-scambio",
-   "da": 859,
-   "a": 888,
-   "frameA": 857,
-   "frameB": 888,
-   "A": {
-    "px": 0.239,
-    "py": 0.321,
-    "z": 1.4
-   },
-   "B": {
-    "px": 0.779,
-    "py": 0.497,
-    "z": 1.4
-   },
-   "apice": 0.5,
-   "fusione": 0.3,
-   "dir": [
-    0.022,
-    0.006
-   ],
-   "preA": 14,
-   "postB": 6,
-   "nota": "niente secondo zoom sull uva: solo una deriva di camera verso di lui, il dono passa senza che la camera insista."
-  },
-  {
-   "id": "scambio-trasporto",
-   "da": 933,
-   "a": 962,
-   "frameA": 931,
-   "frameB": 962,
+   "id": "scambio-vasca",
+   "da": 711,
+   "a": 740,
+   "frameA": 709,
+   "frameB": 740,
    "A": {
     "px": 0.244,
     "py": 0.637,
@@ -133,63 +107,37 @@
    "nota": "quasi nessun zoom: la camera scende appena col grappolo nel cesto e poi accompagna il trasporto. Riposo dopo il dono."
   },
   {
-   "id": "trasporto-vasca",
-   "da": 1155,
-   "a": 1184,
-   "frameA": 1153,
-   "frameB": 1184,
+   "id": "pigiatura-porta",
+   "da": 1125,
+   "a": 1154,
+   "frameA": 1123,
+   "frameB": 1154,
    "A": {
-    "px": 0.55,
-    "py": 0.588,
-    "z": 1.5
+    "px": 0.712,
+    "py": 0.652,
+    "z": 1.9
    },
    "B": {
-    "px": 0.474,
-    "py": 0.66,
-    "z": 1.5
+    "px": 0.766,
+    "py": 0.413,
+    "z": 1.7
    },
    "apice": 0.5,
-   "fusione": 0.34,
+   "fusione": 0.26,
    "dir": [
-    0.02,
-    0
+    0.018,
+    -0.022
    ],
-   "preA": 90,
-   "postB": 90,
-   "nota": "raccordo di camminata: inquadratura lunghissima sul cesto colmo, il passo verso destra attraversa il taglio."
-  },
-  {
-   "id": "porta-mondi",
-   "da": 1953,
-   "a": 1953,
-   "frameA": 1951,
-   "frameB": 1953,
-   "A": {
-    "px": 0.687,
-    "py": 0.308,
-    "z": 2
-   },
-   "B": {
-    "px": 0.72,
-    "py": 0.308,
-    "z": 1.8
-   },
-   "apice": 0.5,
-   "fusione": 0.4,
-   "dir": [
-    0.006,
-    -0.014
-   ],
-   "preA": 85,
-   "postB": 85,
-   "nota": "IL SIGNORE CHE PRENDE IL VASO: discesa lenta sull anfora in spalla nella lama di luce, e riapertura sulla cantina. I due lati sono quasi identici: il taglio sparisce, resta il respiro della camera."
+   "preA": 55,
+   "postB": 55,
+   "nota": "lo zoom segue l anfora e il movimento delle mani: si stringe su di lei alla vasca e si riapre quando e gia in spalla"
   },
   {
    "id": "travaso-rubinetto",
-   "da": 2577,
-   "a": 2606,
-   "frameA": 2575,
-   "frameB": 2606,
+   "da": 1971,
+   "a": 2000,
+   "frameA": 1969,
+   "frameB": 2000,
    "A": {
     "px": 0.35,
     "py": 0.8,
@@ -211,11 +159,11 @@
    "nota": "legno su legno, il vino scende: discesa lunga sulla doga, riapre sul rubinetto."
   },
   {
-   "id": "rubinetto-vino",
-   "da": 2730,
-   "a": 2759,
-   "frameA": 2728,
-   "frameB": 2759,
+   "id": "rubinetto-dentro-il-vino",
+   "da": 2124,
+   "a": 2153,
+   "frameA": 2122,
+   "frameB": 2153,
    "A": {
     "px": 0.564,
     "py": 0.673,

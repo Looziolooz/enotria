@@ -194,6 +194,8 @@ function crea(tag, attrs) {
 function trovato(id) { return document.getElementById(id); }
 
 var contenitore = null;   /* .cartina__mappa */
+var magnete = null;       /* scheda che si apre accanto al punto cliccato */
+var ancoraCorrente = null;
 var pannello = null;      /* #cartina-scheda */
 var punti = {};           /* id zona -> <g> */
 var gruppi = {};          /* id provincia -> <g> */
@@ -231,13 +233,75 @@ function setAttivi(tipo, id) {
   }
 }
 
+/* Il passaggio del mouse illumina soltanto: la scheda si apre al click
+   (o con Invio da tastiera). Aprirla al passaggio faceva saltare il
+   riquadro da un punto all'altro mentre si attraversava la cartina. */
 function lega(el, cb) {
-  el.addEventListener('click', cb);
-  el.addEventListener('mouseenter', cb);
-  el.addEventListener('focus', cb);
+  el.addEventListener('click', function (e) { e.stopPropagation(); cb(el); });
   el.addEventListener('keydown', function (e) {
-    if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); cb(); }
+    if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); e.stopPropagation(); cb(el); }
   });
+}
+
+/* ── Scheda magnetica: si apre accanto al punto e, se si clicca un altro
+   punto, ci scivola sopra invece di sparire e riapparire altrove. ── */
+function creaMagnete() {
+  var el = document.createElement('div');
+  el.className = 'cartina__magnete';
+  el.setAttribute('role', 'dialog');
+  el.setAttribute('aria-live', 'polite');
+  var chiudi = document.createElement('button');
+  chiudi.className = 'cartina__magnete-chiudi';
+  chiudi.setAttribute('type', 'button');
+  chiudi.setAttribute('aria-label', 'Chiudi la scheda');
+  chiudi.innerHTML = '&times;';
+  chiudi.addEventListener('click', function (e) { e.stopPropagation(); chiudiMagnete(); });
+  var corpo = document.createElement('div');
+  corpo.className = 'cartina__magnete-corpo';
+  el.appendChild(chiudi);
+  el.appendChild(corpo);
+  return el;
+}
+
+function posizionaMagnete() {
+  if (!magnete || !ancoraCorrente || !contenitore) return;
+  var cr = contenitore.getBoundingClientRect();
+  var ar = ancoraCorrente.getBoundingClientRect();
+  var cx = ar.left + ar.width / 2 - cr.left;
+  var cy = ar.top + ar.height / 2 - cr.top;
+  var mw = magnete.offsetWidth || 300;
+  var mh = magnete.offsetHeight || 200;
+  var gap = 16, bordo = 8;
+  /* di preferenza a destra del punto; se non ci sta, a sinistra; se non
+     ci sta da nessuna parte, centrata e appena sotto */
+  var x = cx + gap;
+  if (x + mw > cr.width - bordo) x = cx - gap - mw;
+  if (x < bordo) x = Math.max(bordo, Math.min(cr.width - mw - bordo, cx - mw / 2));
+  var y = cy - mh / 2;
+  /* la scheda resta dentro il riquadro della cartina E dentro lo schermo:
+     su una cartina piu alta della finestra, un punto in basso apriva la
+     scheda sotto il bordo visibile. */
+  var minY = Math.max(bordo, 8 - cr.top);
+  var maxY = Math.min(cr.height - mh - bordo, window.innerHeight - 8 - mh - cr.top);
+  if (maxY < minY) maxY = minY;
+  y = Math.max(minY, Math.min(maxY, y));
+  magnete.style.transform = 'translate3d(' + Math.round(x) + 'px,' + Math.round(y) + 'px,0) scale(1)';
+}
+
+function apriMagnete(html, ancora, lungo) {
+  if (!magnete) return;
+  magnete.querySelector('.cartina__magnete-corpo').innerHTML = html;
+  magnete.classList.toggle('cartina__magnete--lungo', !!lungo);
+  ancoraCorrente = ancora;
+  magnete.classList.add('aperta');
+  posizionaMagnete();
+}
+
+function chiudiMagnete() {
+  if (!magnete) return;
+  magnete.classList.remove('aperta');
+  ancoraCorrente = null;
+  setAttivi(null, null);
 }
 
 function costruisciSvg() {
@@ -267,8 +331,8 @@ function costruisciSvg() {
       'aria-label': pr.nome + ' — le cantine della provincia',
     });
     lb.textContent = pr.nome;
-    lega(lb, function () {
-      pannello.innerHTML = schedaProvincia(pr.id);
+    lega(lb, function (el) {
+      apriMagnete(schedaProvincia(pr.id), el, true);
       setAttivi('provincia', pr.id);
     });
     g.appendChild(lb);
@@ -298,8 +362,8 @@ function costruisciSvg() {
     et.textContent = z.breve || z.nome;
     g.appendChild(et);
 
-    lega(g, function () {
-      pannello.innerHTML = schedaZona(z);
+    lega(g, function (el) {
+      apriMagnete(schedaZona(z), el, false);
       setAttivi('zona', z.id);
     });
 
@@ -316,6 +380,12 @@ export function initCartina() {
 
   contenitore.appendChild(costruisciSvg());
 
+  magnete = creaMagnete();
+  contenitore.appendChild(magnete);
+  contenitore.addEventListener('click', function () { chiudiMagnete(); });
+  document.addEventListener('keydown', function (e) { if (e.key === 'Escape') chiudiMagnete(); });
+  window.addEventListener('resize', posizionaMagnete);
+
   var rIgt = trovato('cartina-igt');
   var rAut = trovato('cartina-autoctoni');
   if (rIgt) rIgt.textContent = IGT;
@@ -324,5 +394,5 @@ export function initCartina() {
   pannello.innerHTML =
     '<p class="mono cartina__scheda-tipo">Cartina</p>' +
     '<h3 class="cartina__scheda-nome">Nove zone, un territorio</h3>' +
-    '<p class="cartina__scheda-nota">Scegli una denominazione o una provincia sulla cartina per leggerne vitigni e comuni.</p>';
+    '<p class="cartina__scheda-nota">Scegli una denominazione o una provincia sulla cartina: la scheda si apre accanto al punto.</p>';
 }

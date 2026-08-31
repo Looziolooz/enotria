@@ -51,6 +51,30 @@ il passo di ~3vh a fotogramma. Il film v1 (1737 frame, 19 clip) è archiviato in
 
 **Peso:** desktop ~89 MB, mobile ~39 MB.
 
+
+## Qualità dei fotogrammi — misurata, non decisa a occhio
+
+Prova del 2026-08-31 sul fotogramma 100 di  (SSIM contro il fotogramma
+sorgente, e confronto visivo a 3× di ingrandimento):
+
+| Livello | Peso | SSIM | Si vede? |
+|---|---|---|---|
+| desktop q62 (era) | 40 KB | 0.962 | — |
+| desktop q82 | 60 KB | 0.972 | **no**: a 3× indistinguibile da q62 |
+| desktop q90 | 92 KB | 0.981 | no |
+| mobile q42 (era) | 20 KB | 0.939 | — |
+| mobile q62 | 24 KB | 0.952 | **sì**: le foglie smettono di impastarsi |
+
+**Conclusione:** sul desktop a grandezza naturale il limite non è il WebP ma la
+compressione H.264 della clip sorgente — alzare la qualità pesa e non si vede.
+Il guadagno vero è altrove, e la rifinitura è stata applicata solo lì
+(, ):
+
+- **tutto il tier mobile q42 → q62** (27 → 33 MB): era vent'anni indietro rispetto al desktop;
+- **desktop q88 sui 1029 fotogrammi dentro le inquadrature** (68 → 98 MB), ingranditi 1,8–2,2×, dove gli artefatti crescono con l'immagine;
+- **q95 sui 12 fermi-immagine dei raccordi**, ingranditi fino a 2,6×;
+- **zone-ponte cotte saltate**: 150 fotogrammi che non vengono mai mostrati, perché i raccordi sono vivi.
+
 ## Texture del palco (OGL)
 
 Generate con Higgsfield `nano_banana_pro`, 2026-08-25, 6 crediti totali. In `public/img/`:

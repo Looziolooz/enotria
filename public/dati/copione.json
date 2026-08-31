@@ -13,7 +13,8 @@
   "at": 0.0928,
   "occhiello": "",
   "testo": "I Greci sbarcarono qui quasi tremila anni fa. La vite cresceva già su queste colline. Diedero alla terra il nome del vino.",
-  "peso": "corpo"
+  "peso": "corpo",
+  "meta": "Dionigi di Alicarnasso: i primi Greci ad attraversare lo Ionio"
  },
  {
   "atto": 1,
@@ -30,7 +31,8 @@
   "occhiello": "",
   "testo": "Οἰνωτρία, Oinotria. La radice è οἶνος: vino.",
   "peso": "nota",
-  "greco": "testo"
+  "greco": "testo",
+  "meta": "Sofocle, Trittolemo: «l’Enotria che si distende ampia»"
  },
  {
   "atto": 1,
@@ -43,8 +45,9 @@
   "atto": 1,
   "at": 0.2826,
   "occhiello": "",
-  "testo": "Enotro, figlio di Licaone, lasciò l'Arcadia con la sua gente e attraversò il mare in cerca di terra da coltivare. Approdò su questa costa. È un racconto, non una cronaca. Ma è il racconto che la Calabria ha scelto per dire da dove viene.",
-  "peso": "corpo"
+  "testo": "Enotro, figlio di Licaone, lasciò l’Arcadia perché la sua parte era troppo piccola: il padre aveva ventidue figli, e la terra andava divisa in ventidue. Attraversò il mare per averne una da coltivare.",
+  "peso": "corpo",
+  "meta": "Dionigi di Alicarnasso, Antichità romane I 11"
  },
  {
   "atto": 1,
@@ -52,7 +55,8 @@
   "occhiello": "",
   "testo": "Οἰνωτρός, Oinotrós: colui che sostiene la vite.",
   "peso": "nota",
-  "greco": "testo"
+  "greco": "testo",
+  "meta": "Esichio di Alessandria: οἴνωτρον, il palo che regge la vite"
  },
  {
   "atto": 1,

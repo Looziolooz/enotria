@@ -35,7 +35,7 @@ var ZONE = [
   { id: 'ciro', nome: 'Cirò', provincia: 'crotone', tipo: 'DOC',
     comuni: 'Cirò, Cirò Marina, Crucoli, Melissa (KR)',
     vitigni: ['Gaglioppo', 'Greco Bianco'],
-    nota: 'La zona classica, sulla costa ionica dove sorgeva Krimisa. Il rosso è Gaglioppo; il bianco, Greco.' },
+    nota: 'La zona classica, sulla costa ionica, nell’area dove la tradizione colloca Krimisa: Strabone la dice fondata da Filottete, che vi dedicò il suo arco ad Apollo Aleo. Il rosso è Gaglioppo; il bianco, Greco.' },
   { id: 'melissa', nome: 'Melissa', provincia: 'crotone', tipo: 'DOC',
     comuni: 'Melissa e comuni del crotonese',
     vitigni: ['Gaglioppo', 'Greco Bianco'],

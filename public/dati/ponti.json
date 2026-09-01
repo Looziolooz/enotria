@@ -3,11 +3,37 @@
  "nota": "raccordi vivi: A = ultimo fotogramma dell inquadratura uscente, B = primo di quella entrante; la zona del ponte serve solo come spazio di scroll",
  "ponti": [
   {
-   "id": "nave-approdo",
+   "id": "enotro-nave",
    "da": 193,
    "a": 222,
    "frameA": 192,
    "frameB": 223,
+   "A": {
+    "px": 0.512,
+    "py": 0.825,
+    "z": 1.12
+   },
+   "B": {
+    "px": 0.235,
+    "py": 0.643,
+    "z": 2.5
+   },
+   "apice": 0.5,
+   "fusione": 0.34,
+   "dir": [
+    -0.006,
+    0
+   ],
+   "preA": 40,
+   "postB": 75,
+   "nota": "il sole d oro sull orizzonte: nei due quadri e lo stesso disco, al centro degli stessi archi a greca. La camera sul guerriero quasi non si muove — il filmato sta gia arretrando da solo — e riapre dal sole della marina. Non si vede un taglio: cambia il mondo intorno al sole, che resta dov era."
+  },
+  {
+   "id": "nave-approdo",
+   "da": 415,
+   "a": 444,
+   "frameA": 414,
+   "frameB": 445,
    "A": {
     "px": 0.462,
     "py": 0.775,
@@ -30,10 +56,10 @@
   },
   {
    "id": "approdo-vigna",
-   "da": 415,
-   "a": 444,
-   "frameA": 414,
-   "frameB": 445,
+   "da": 637,
+   "a": 666,
+   "frameA": 636,
+   "frameB": 667,
    "A": {
     "px": 0.32,
     "py": 0.12,
@@ -56,10 +82,10 @@
   },
   {
    "id": "vigna-scambio",
-   "da": 637,
-   "a": 666,
-   "frameA": 636,
-   "frameB": 667,
+   "da": 859,
+   "a": 888,
+   "frameA": 858,
+   "frameB": 889,
    "A": {
     "px": 0.294,
     "py": 0.287,
@@ -82,10 +108,10 @@
   },
   {
    "id": "travaso-rubinetto",
-   "da": 2043,
-   "a": 2072,
-   "frameA": 2042,
-   "frameB": 2073,
+   "da": 2265,
+   "a": 2294,
+   "frameA": 2264,
+   "frameB": 2295,
    "A": {
     "px": 0.35,
     "py": 0.8,
@@ -108,10 +134,10 @@
   },
   {
    "id": "rubinetto-dentro-il-vino",
-   "da": 2196,
-   "a": 2225,
-   "frameA": 2195,
-   "frameB": 2226,
+   "da": 2418,
+   "a": 2447,
+   "frameA": 2417,
+   "frameB": 2448,
    "A": {
     "px": 0.564,
     "py": 0.673,

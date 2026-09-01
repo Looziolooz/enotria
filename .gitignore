@@ -19,3 +19,7 @@ lab/*.raw
 nul
 .gstack/
 lab/qa-shots*/
+
+# materiale di regia del raccordo del guerriero (rigenerabile: python lab/prova-ponte.py)
+lab/guerriero/
+lab/__pycache__/

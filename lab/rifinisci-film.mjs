@@ -53,6 +53,10 @@ let lottiD = 0, lottiM = 0;
 for (const s of seg) {
   if (!s.sorgente || s.sorgente.startsWith('lab/')) continue;   /* zona cotta: mai mostrata */
   const mp4 = join(CLIP, s.sorgente);
+  /* 'enotro' finisce qui: la sua sorgente non sta in videoflow/ ma in
+     _sorgenti/video/. E' voluto — quel segmento ha il suo script
+     (lab/rifinisci-hero.mjs), che non tocca il fermo 0192 gia' ingrandito
+     con l'AI. Riportarlo dentro questo giro lo ricodificherebbe a 1280. */
   if (!existsSync(mp4)) { console.log(`${s.id}: manca ${s.sorgente}, saltato`); continue; }
 
   const n = s.a - s.da + 1;

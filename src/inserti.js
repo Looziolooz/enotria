@@ -34,12 +34,12 @@ var GLIFI = {
    (troppo corto), scene affollate, ponti, finale rubino.
    Ricalcolare gli `at` da public/dati/segmenti.json se il montaggio cambia. */
 var SEGNI = [
-  { g: 'anfora',      at: 0.106, x: '102%', y: '30%', s: 280, r: 3 },   /* approdo */
-  { g: 'colonna',     at: 0.180, x: '-3%',  y: '40%', s: 310, r: 0 },   /* vigna */
-  { g: 'busto-donna', at: 0.254, x: '102%', y: '66%', s: 300, r: -2 },  /* raccolta */
-  { g: 'cratere',     at: 0.491, x: '-3%',  y: '34%', s: 280, r: -3 },  /* pigiatura */
-  { g: 'lucerna',     at: 0.619, x: '-3%',  y: '30%', s: 240, r: 3 },   /* porta */
-  { g: 'busto-dio',   at: 0.683, x: '102%', y: '62%', s: 300, r: 2 },   /* i mondi */
+  { g: 'anfora',      at: 0.180, x: '102%', y: '30%', s: 280, r: 3 },   /* approdo */
+  { g: 'colonna',     at: 0.248, x: '-3%',  y: '40%', s: 310, r: 0 },   /* vigna */
+  { g: 'busto-donna', at: 0.316, x: '102%', y: '66%', s: 300, r: -2 },  /* raccolta */
+  { g: 'cratere',     at: 0.533, x: '-3%',  y: '34%', s: 280, r: -3 },  /* pigiatura */
+  { g: 'lucerna',     at: 0.650, x: '-3%',  y: '30%', s: 240, r: 3 },   /* porta */
+  { g: 'busto-dio',   at: 0.709, x: '102%', y: '62%', s: 300, r: 2 },   /* i mondi */
 ];
 
 var NS = 'http://www.w3.org/2000/svg';

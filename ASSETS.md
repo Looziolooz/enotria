@@ -49,7 +49,27 @@ L'ultimo fotogramma (campo rubino, `rgb(97,21,23)`) è anche il fondo della pagi
 il passo di ~3vh a fotogramma. Il film v1 (1737 frame, 19 clip) è archiviato in
 `_sorgenti/frames-vecchi/film-v1{,-m}/`.
 
-**Peso:** desktop ~89 MB, mobile ~39 MB.
+**Peso:** desktop ~130 MB, mobile ~47 MB.
+
+**v6 (2026-09-01) — il guerriero apre il film.** In testa alla sequenza entrano
+**192 fotogrammi** (`_sorgenti/video/Warrior_standing_in_strong_wind_202609011402.mp4`,
+Higgsfield, 8 s a 24 fps, 1280×720) più **30 di zona-ponte**: tutto il film slitta
+di 222 e il totale passa a **2687 fotogrammi / tier**. Montato da
+`lab/monta-hero.mjs`, qualità riportata allo standard del film da
+`lab/rifinisci-hero.mjs` (q82 desktop / q62 mobile: a grandezza naturale q90 non si
+distingue — SSIM 0.9939 contro 0.9890, +51% di peso).
+
+Il raccordo `enotro-nave` non è una transizione. La clip sorgente è lo **stesso
+disegno** della clip della nave — stesso teal, stessi archi a greca concentrici,
+stesso sole d'oro sull'orizzonte, e nell'ultimo fotogramma perfino una piccola nave
+nera posata sulla linea del mare. Quindi il lato A quasi non si muove (z 1,12: il
+filmato sta già arretrando da solo, misurato — la fascia di greca in alto passa da
+973 a 812 px) e il lato B riapre da z 2,50 sul proprio sole. Con l'ancora B a
+(0,235 · 0,643) le due linee d'acqua cadono nella stessa riga a meno di 5 px:
+l'apice si controlla senza browser con `python lab/prova-ponte.py enotro-nave`.
+
+Il palco passa da 7400 a **8070vh** (6980 sotto i 1024 px, 5670 sotto i 720),
+mantenendo il passo di ~3vh a fotogramma.
 
 
 ## Qualità dei fotogrammi — misurata, non decisa a occhio
@@ -153,6 +173,7 @@ JetBrains Mono — ciascuno regular + italic dove serve.
 
 | Dove | Cosa | Stato |
 |---|---|---|
+| `video/Warrior_standing_in_strong_wind_202609011402.mp4` | Guerriero greco nel vento, fondo teal con archi a greca e sole d'oro — Higgsfield, 2026-09-01, 8 s · 1280×720 · 24 fps | **Montato**: apre il film (segmento `enotro`, fotogrammi 0001–0192) |
 | `video/fuori1–8.mp4` | 8 clip scartate al montaggio | Tenute come riserva |
 | `video/Camera_zooming…`, `Figure_cutting…`, `Pouring_wine…`, `Three_figures…`, `Winemaker…`, `Zooming…` | Export AI con nome descrittivo (2026-08-25) — materiale grezzo pre-rimontaggio | Le versioni montate sono i file numerati |
 | `video/1..16/`, `tutti-frames/` | Estrazioni ezgif a bassa cadenza (12–30 f/clip) | Superate dal film a 24 fps |

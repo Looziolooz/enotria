@@ -34,7 +34,7 @@ var VH_PER_RACCORDO = 200;
    ai suoi punti. Niente scene separate, niente stacchi calcolati:
    il movimento e' tutto dentro i fotogrammi. */
 var SCENES = [
-  { vh: 5300, zoomStart: 1.00, zoom: 1.00, panStart: [0, 0], pan: [0, 0] },
+  { vh: 5780, zoomStart: 1.00, zoom: 1.00, panStart: [0, 0], pan: [0, 0] },
 ];
 
 /* Una sola cartella, un solo film */
@@ -885,6 +885,7 @@ var hudEl = null, hudUltimo = -1;
    mestiere (lenos e la vasca di pigiatura, sponde la libagione).
    Durante un ponte si mostra la destinazione: → nome. */
 var HUD_NOMI = {
+  'enotro': 'ΟΙΝΩΤΡΟΣ · l’uomo',
   'nave': 'ΝΑΥΣ · la nave',
   'approdo': 'ΑΦΙΞΙΣ · l’approdo',
   'vigna': 'ΑΜΠΕΛΟΣ · la vite',
@@ -1384,8 +1385,14 @@ export function initShader() {
     if (ponteVivo) {
       /* core: i due fermi-immagine del match cut. pre/post: i fotogrammi
          vivi del film, che continua a scorrere sotto la camera. */
-      var iPA = ponteVivo.zona === 'core' ? ponteVivo.dati.frameA : ponteVivo.subA;
-      var iPB = ponteVivo.zona === 'core' ? ponteVivo.dati.frameB : ponteVivo.subB;
+      /* ⚠️ ponti.json numera i fermi come i FILE, da 1 (frameA 192 vuol dire
+         0192.webp); getFrameTex indicizza da 0. Senza questo -1 il raccordo
+         prendeva il PRIMO fotogramma della zona-ponte al posto dell'ultimo
+         della scena: cioe' l'unico dei due che non e' stato ingrandito con
+         l'AI, e che veniva poi stirato fino a 2,5x. I dodici fermi a 2560 px
+         erano li' senza che nessuno li guardasse. */
+      var iPA = ponteVivo.zona === 'core' ? ponteVivo.dati.frameA - 1 : ponteVivo.subA;
+      var iPB = ponteVivo.zona === 'core' ? ponteVivo.dati.frameB - 1 : ponteVivo.subB;
       var tPA = getFrameTex(0, iPA);
       var tPB = getFrameTex(0, iPB);
       if (tPA) { program.uniforms.t1.value = tPA; program.uniforms.img.value = [tPA._realWidth, tPA._realHeight]; }
